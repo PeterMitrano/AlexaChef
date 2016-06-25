@@ -1,4 +1,4 @@
-var MyCookbook = require("./MyCookbook");
+var AlexaSkill = require("./AlexaSkill");
 
 /** this can be found on the amazon developer page for the skill */
 var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
@@ -7,22 +7,22 @@ var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
  * Represents a the overall skill object.
  * @constructor
  */
-var AlexaChef = function() {
-  MyCookbook.call(this, APP_ID);
+var MyCookbook = function() {
+  AlexaSkill.call(this, APP_ID);
 };
 
-AlexaChef.prototype =  Object.create(MyCookbook.prototype);
-AlexaChef.prototype.constructor = AlexaChef;
+MyCookbook.prototype =  Object.create(AlexaSkill.prototype);
+MyCookbook.prototype.constructor = MyCookbook;
 
 /** called when the user makes their first request per session.
- * Could be as simple as "Alexa, ask alexa_chef"
+ * Could be as simple as "Alexa, ask My Cookbook"
  * @param sessionStartedRequest the request body
  * @param session session object useful for tracking within a session
  */
-AlexaChef.prototype.eventHandlers.onSessionStarted =
+MyCookbook.prototype.eventHandlers.onSessionStarted =
   function(sessionStartedRequest, session) {
 
-  console.log("on Sessiont Started. request id:" +
+  console.log("on Session Started. request id:" +
       sessionStartedRequest.requestId +
       " session id:" +
       session.sessionId);
@@ -30,7 +30,7 @@ AlexaChef.prototype.eventHandlers.onSessionStarted =
 
 /** called when the user invokes our skill with no intent.
  * IE "Alexa, ask my professor" */
-AlexaChef.prototype.eventHandlers.onLaunch =
+MyCookbook.prototype.eventHandlers.onLaunch =
   function(launchRequest, session, response) {
 
   var output = "Hello, I'm the Professor." +
@@ -48,7 +48,7 @@ AlexaChef.prototype.eventHandlers.onLaunch =
 };
 
 /** called when the user launches with one of the specified intents **/
-AlexaChef.prototype.intentHandlers = {
+MyCookbook.prototype.intentHandlers = {
 
   NextClassIntent: function(intent, session, response) {
     response.tell("your next class is physics.");
@@ -93,6 +93,6 @@ AlexaChef.prototype.intentHandlers = {
 /** the function that alexa will call when envoking our skill.
 * The execute method essentially dispatches to on of our session handlers */
 exports.handler = function(event, context) {
-  var skill = new AlexaChef();
+  var skill = new MyCookbook();
   skill.execute(event, context);
 };
