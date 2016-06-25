@@ -1,0 +1,21 @@
+ListClassesIntent what are my classes
+ListClassesIntent list my classes
+ListClassesIntent list classes
+ListClassesIntent list
+
+NextClassIntent when is my next lecture
+NextClassIntent what is my next lecture
+NextClassIntent what my next lecture is
+NextClassIntent when my next lecture is
+NextClassIntent next lecture
+NextClassIntent when is my next course
+NextClassIntent what is my next course
+NextClassIntent what my next course is
+NextClassIntent when my next course is
+NextClassIntent next course
+NextClassIntent when is my next class
+NextClassIntent what is my next class
+NextClassIntent what my next class is
+NextClassIntent when my next class is
+NextClassIntent next class
+NextClassIntent next
