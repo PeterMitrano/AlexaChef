@@ -29,15 +29,14 @@ MyCookbook.prototype.eventHandlers.onSessionStarted =
 };
 
 /** called when the user invokes our skill with no intent.
- * IE "Alexa, ask my professor" */
+ * IE "Alexa, ask my cookbook" */
 MyCookbook.prototype.eventHandlers.onLaunch =
   function(launchRequest, session, response) {
 
-  var output = "Hello, I'm the Professor." +
-    " You can ask me when your next class is or what your next class is. " +
-    " I can also tell you when you need to leave in order to get on time.";
+  var output = "Hello, I'm your Cookbook." +
+    " You can ask me how to make a recipe, and I will walk you through it. ";
 
-  var reprompt = "Ask me when your next class is.";
+  var reprompt = "Ask me how to make meatloaf.";
 
   response.ask(output, reprompt);
 
