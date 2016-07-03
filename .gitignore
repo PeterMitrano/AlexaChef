@@ -2,4 +2,5 @@ node_modules
 build
 doc
 *.zip
+*.pdf
 *.swp
