@@ -14,6 +14,7 @@ var MyCookbook = function() {
 MyCookbook.prototype =  Object.create(AlexaSkill.prototype);
 MyCookbook.prototype.constructor = MyCookbook;
 
+
 /** called when the user makes their first request per session.
  * Could be as simple as "Alexa, ask My Cookbook"
  * @param sessionStartedRequest the request body

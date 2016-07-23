@@ -4,7 +4,8 @@
   "description": "alexa skill for university students",
   "main": "src/index.js",
   "dependencies": {
-    "node": "^0.0.0"
+    "node": "^0.0.0",
+    "alexa-sdk": "^1.0.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

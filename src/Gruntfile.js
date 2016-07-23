@@ -5,17 +5,16 @@ module.exports = function(grunt) {
     jshint : {
       files : [
         'Gruntfile.js',
-        'src/index.js'
+        'index.js'
       ]
     },
     jsdoc : {
       doc : {
         src : [
-          'src/AlexaSkill.js',
-          'src/index.js',
+          'index.js',
         ],
         options : {
-          destination : 'doc'
+          destination : '../doc'
         }
       }
     }
