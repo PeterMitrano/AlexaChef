@@ -1,6 +1,8 @@
 node_modules
 build
 doc
+*.bak
 *.zip
 *.pdf
 *.swp
+*.pyc

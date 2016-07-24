@@ -1,22 +1,25 @@
 {
   "intents": [
     {
-      "intent": "ListClassesIntent",
-      "slots": []
+      "intent": "StartNewRecipeIntent",
+      "slots": [
+        {
+          "name": "RecipeName",
+          "type": "AMAZON.LITERAL"
+        }
+      ]
     },
 
-    {
-      "intent": "NextClassIntent",
-      "slots": []
-    },
-
-    { "intent": "DontKnowIntent" },
-    { "intent": "AMAZON.StartOverIntent" },
-    { "intent": "AMAZON.RepeatIntent" },
     { "intent": "AMAZON.HelpIntent" },
+    { "intent": "AMAZON.CancelIntent" },
+    { "intent": "AMAZON.StopIntent" },
+    { "intent": "AMAZON.NextIntent" },
+    { "intent": "AMAZON.PauseIntent" },
+    { "intent": "AMAZON.PreviousIntent" },
+    { "intent": "AMAZON.RepeatIntent" },
+    { "intent": "AMAZON.StartOverIntent" },
     { "intent": "AMAZON.YesIntent" },
     { "intent": "AMAZON.NoIntent" },
-    { "intent": "AMAZON.StopIntent" },
-    { "intent": "AMAZON.CancelIntent" }
+    { "intent": "AMAZON.ResumeIntent" }
   ]
 }

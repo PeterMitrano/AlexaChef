@@ -1,21 +1,140 @@
-ListClassesIntent what are my classes
-ListClassesIntent list my classes
-ListClassesIntent list classes
-ListClassesIntent list
-
-NextClassIntent when is my next lecture
-NextClassIntent what is my next lecture
-NextClassIntent what my next lecture is
-NextClassIntent when my next lecture is
-NextClassIntent next lecture
-NextClassIntent when is my next course
-NextClassIntent what is my next course
-NextClassIntent what my next course is
-NextClassIntent when my next course is
-NextClassIntent next course
-NextClassIntent when is my next class
-NextClassIntent what is my next class
-NextClassIntent what my next class is
-NextClassIntent when my next class is
-NextClassIntent next class
-NextClassIntent next
+StartNewRecipeIntent Find me a recipe for { meatloaf |RecipeName}
+StartNewRecipeIntent Find me a recipe for { chicken with rice |RecipeName}
+StartNewRecipeIntent Find me a recipe for { pizza |RecipeName}
+StartNewRecipeIntent Find me a recipe for { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent Find me a recipe for { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent Find me a recipe for { pumpkin muffins |RecipeName}
+StartNewRecipeIntent Find me a recipe for { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent Let's make { meatloaf |RecipeName}
+StartNewRecipeIntent Let's make { chicken with rice |RecipeName}
+StartNewRecipeIntent Let's make { pizza |RecipeName}
+StartNewRecipeIntent Let's make { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent Let's make { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent Let's make { pumpkin muffins |RecipeName}
+StartNewRecipeIntent Let's make { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent How do I cook { meatloaf |RecipeName}
+StartNewRecipeIntent How do I cook { chicken with rice |RecipeName}
+StartNewRecipeIntent How do I cook { pizza |RecipeName}
+StartNewRecipeIntent How do I cook { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent How do I cook { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent How do I cook { pumpkin muffins |RecipeName}
+StartNewRecipeIntent How do I cook { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent How do I make { meatloaf |RecipeName}
+StartNewRecipeIntent How do I make { chicken with rice |RecipeName}
+StartNewRecipeIntent How do I make { pizza |RecipeName}
+StartNewRecipeIntent How do I make { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent How do I make { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent How do I make { pumpkin muffins |RecipeName}
+StartNewRecipeIntent How do I make { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent How do I create { meatloaf |RecipeName}
+StartNewRecipeIntent How do I create { chicken with rice |RecipeName}
+StartNewRecipeIntent How do I create { pizza |RecipeName}
+StartNewRecipeIntent How do I create { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent How do I create { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent How do I create { pumpkin muffins |RecipeName}
+StartNewRecipeIntent How do I create { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent Show me how to cook { meatloaf |RecipeName}
+StartNewRecipeIntent Show me how to cook { chicken with rice |RecipeName}
+StartNewRecipeIntent Show me how to cook { pizza |RecipeName}
+StartNewRecipeIntent Show me how to cook { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent Show me how to cook { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent Show me how to cook { pumpkin muffins |RecipeName}
+StartNewRecipeIntent Show me how to cook { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent Show me how to make { meatloaf |RecipeName}
+StartNewRecipeIntent Show me how to make { chicken with rice |RecipeName}
+StartNewRecipeIntent Show me how to make { pizza |RecipeName}
+StartNewRecipeIntent Show me how to make { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent Show me how to make { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent Show me how to make { pumpkin muffins |RecipeName}
+StartNewRecipeIntent Show me how to make { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent Show me how to create { meatloaf |RecipeName}
+StartNewRecipeIntent Show me how to create { chicken with rice |RecipeName}
+StartNewRecipeIntent Show me how to create { pizza |RecipeName}
+StartNewRecipeIntent Show me how to create { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent Show me how to create { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent Show me how to create { pumpkin muffins |RecipeName}
+StartNewRecipeIntent Show me how to create { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent Help me cook { meatloaf |RecipeName}
+StartNewRecipeIntent Help me cook { chicken with rice |RecipeName}
+StartNewRecipeIntent Help me cook { pizza |RecipeName}
+StartNewRecipeIntent Help me cook { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent Help me cook { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent Help me cook { pumpkin muffins |RecipeName}
+StartNewRecipeIntent Help me cook { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent Help me make { meatloaf |RecipeName}
+StartNewRecipeIntent Help me make { chicken with rice |RecipeName}
+StartNewRecipeIntent Help me make { pizza |RecipeName}
+StartNewRecipeIntent Help me make { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent Help me make { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent Help me make { pumpkin muffins |RecipeName}
+StartNewRecipeIntent Help me make { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent Help me create { meatloaf |RecipeName}
+StartNewRecipeIntent Help me create { chicken with rice |RecipeName}
+StartNewRecipeIntent Help me create { pizza |RecipeName}
+StartNewRecipeIntent Help me create { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent Help me create { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent Help me create { pumpkin muffins |RecipeName}
+StartNewRecipeIntent Help me create { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent show me how to cook { meatloaf |RecipeName}
+StartNewRecipeIntent show me how to cook { chicken with rice |RecipeName}
+StartNewRecipeIntent show me how to cook { pizza |RecipeName}
+StartNewRecipeIntent show me how to cook { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent show me how to cook { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent show me how to cook { pumpkin muffins |RecipeName}
+StartNewRecipeIntent show me how to cook { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent show me how to make { meatloaf |RecipeName}
+StartNewRecipeIntent show me how to make { chicken with rice |RecipeName}
+StartNewRecipeIntent show me how to make { pizza |RecipeName}
+StartNewRecipeIntent show me how to make { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent show me how to make { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent show me how to make { pumpkin muffins |RecipeName}
+StartNewRecipeIntent show me how to make { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent show me how to create { meatloaf |RecipeName}
+StartNewRecipeIntent show me how to create { chicken with rice |RecipeName}
+StartNewRecipeIntent show me how to create { pizza |RecipeName}
+StartNewRecipeIntent show me how to create { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent show me how to create { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent show me how to create { pumpkin muffins |RecipeName}
+StartNewRecipeIntent show me how to create { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent tell me how to cook { meatloaf |RecipeName}
+StartNewRecipeIntent tell me how to cook { chicken with rice |RecipeName}
+StartNewRecipeIntent tell me how to cook { pizza |RecipeName}
+StartNewRecipeIntent tell me how to cook { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent tell me how to cook { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent tell me how to cook { pumpkin muffins |RecipeName}
+StartNewRecipeIntent tell me how to cook { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent tell me how to make { meatloaf |RecipeName}
+StartNewRecipeIntent tell me how to make { chicken with rice |RecipeName}
+StartNewRecipeIntent tell me how to make { pizza |RecipeName}
+StartNewRecipeIntent tell me how to make { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent tell me how to make { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent tell me how to make { pumpkin muffins |RecipeName}
+StartNewRecipeIntent tell me how to make { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent tell me how to create { meatloaf |RecipeName}
+StartNewRecipeIntent tell me how to create { chicken with rice |RecipeName}
+StartNewRecipeIntent tell me how to create { pizza |RecipeName}
+StartNewRecipeIntent tell me how to create { roasted duck with a side of carrots |RecipeName}
+StartNewRecipeIntent tell me how to create { chocolate chip cookies |RecipeName}
+StartNewRecipeIntent tell me how to create { pumpkin muffins |RecipeName}
+StartNewRecipeIntent tell me how to create { black bean burritos with peas |RecipeName}
+StartNewRecipeIntent How is { meatloaf |RecipeName} cook
+StartNewRecipeIntent How is { meatloaf |RecipeName} make
+StartNewRecipeIntent How is { meatloaf |RecipeName} create
+StartNewRecipeIntent How is { chicken with rice |RecipeName} cook
+StartNewRecipeIntent How is { chicken with rice |RecipeName} make
+StartNewRecipeIntent How is { chicken with rice |RecipeName} create
+StartNewRecipeIntent How is { pizza |RecipeName} cook
+StartNewRecipeIntent How is { pizza |RecipeName} make
+StartNewRecipeIntent How is { pizza |RecipeName} create
+StartNewRecipeIntent How is { roasted duck with a side of carrots |RecipeName} cook
+StartNewRecipeIntent How is { roasted duck with a side of carrots |RecipeName} make
+StartNewRecipeIntent How is { roasted duck with a side of carrots |RecipeName} create
+StartNewRecipeIntent How is { chocolate chip cookies |RecipeName} cook
+StartNewRecipeIntent How is { chocolate chip cookies |RecipeName} make
+StartNewRecipeIntent How is { chocolate chip cookies |RecipeName} create
+StartNewRecipeIntent How is { pumpkin muffins |RecipeName} cook
+StartNewRecipeIntent How is { pumpkin muffins |RecipeName} make
+StartNewRecipeIntent How is { pumpkin muffins |RecipeName} create
+StartNewRecipeIntent How is { black bean burritos with peas |RecipeName} cook
+StartNewRecipeIntent How is { black bean burritos with peas |RecipeName} make
+StartNewRecipeIntent How is { black bean burritos with peas |RecipeName} create
