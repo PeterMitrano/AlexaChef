@@ -1,12 +1,12 @@
 'use strict';
 
-var states = {
-    START: '_START',
-    ONLINE_SEARCH:
-
-};
-
 var Alexa = require('alexa-sdk');
+
+var states = {
+    TUTORIAL: '_TUTORIAL',
+    SEARCH_ONLINE: '_SEARCH_ONLINE',
+    INGREDIENT_OR_INSTRUCTIONS: 'INGREDIENT_OR_INSTRUCTIONS',
+};
 
 /** this can be found on the amazon developer page for the skill */
 var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
@@ -25,43 +25,43 @@ var handlers = {
       // here we make an API call and find out if the user has a recipe for this already or not.
       let user_has_recipe = Math.random() < 0.5; // TODO: make api call, for now it's random
       if (user_has_recipe) {
-        this.emit(":ask", 'I found a recipe for ' + recipe_name ', In your cookbook. Do you want to use that?');
+        this.emit(":ask", 'I found a recipe for ' + recipe_name + ', In your cookbook. Do you want to use that?');
       }
       else {
-        this.emit(":ask", 'I didn\'t find any recipe for ' + recipe_name ', In your cookbook. Should I find one online?',
+        this.emit(":ask", 'I didn\'t find any recipe for ' + recipe_name + ', In your cookbook. Should I find one online?',
           'Do you want to find another recipe?');
       }
     }
   },
   'AMAZON.NextIntent': function() {
-    this.emit("AMAZON.NextIntent");
+    this.emit(":tell", "intent equals, AMAZON.NextIntent");
   },
   'AMAZON.HelpIntent': function() {
-    this.emit("AMAZON.HelpIntent");
-  },
-  'NewSession': function () {
-    console.log("NewSession");
+    this.emit(":tell", "intent equals, AMAZON.HelpIntent");
   },
   'OnSessionStarted': function () {
-    console.log("OnSessionStarted");
+    this.emit(":tell", "intent equals, OnSessionStarted");
   },
   'OnSessionEnded': function () {
-    console.log("OnSessionEnded");
+    this.emit(":tell", "intent equals, OnSessionEnded");
   },
   'OnLaunch': function () {
-    console.log("OnLaunch");
+    this.emit(":tell", "intent equals, OnLaunch");
+  },
+  'NewSession': function () {
+    this.emit(":ask", "This is your first time using this skill.");
   },
   'Unhandled': function() {
-    console.log("Unhandled");
+    this.emit(":tell", "intent equals, Unhandled");
   }
 };
-
 
 /** the function that alexa will call when envoking our skill.
 * The execute method essentially dispatches to on of our session handlers */
 exports.handler = function(event, context) {
   var alexa = Alexa.handler(event, context);
   alexa.registerHandlers(handlers);
-  alexa.APP_ID = APP_ID;
+  alexa.dynamoDBTableName = 'my_cookbook_users';
+  alexa.appId = APP_ID;
   alexa.execute();
 };
