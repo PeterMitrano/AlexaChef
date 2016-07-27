@@ -1,11 +1,11 @@
 {
   "name": "my_cookbook",
   "version": "0.0.0",
-  "description": "alexa skill for university students",
+  "description": "alexa skill for foodies",
   "main": "src/index.js",
   "dependencies": {
     "node": "^0.0.0",
-    "alexa-sdk": "^1.0.3"
+    "aws-sdk": "^2.4.7"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
