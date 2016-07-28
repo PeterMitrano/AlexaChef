@@ -16,15 +16,15 @@ var handlers = {
   // by addressing our skill
   'NewSession': function () {
     // first we want to see if this is the users first time ever
-    if (this.attributes['number_of_invocations'] === undefined ||
-        this.attributes['number_of_invocations'] === 0) {
+    if (this.attributes.invocations === undefined ||
+        this.attributes.invocations === 0) {
       this.emit(":tell", "This is your first time using this skill.");
       console.log(this.attributes);
-      this.attributes['number_of_invocations'] = 1;
+      this.attributes.invocations = 1;
     }
     else {
       this.emit(":tell", "Welcome back!");
-      this.attributes['number_of_invocations'] += 1;
+      this.attributes.invocations += 1;
     }
 
     // force save number_of_invocations
