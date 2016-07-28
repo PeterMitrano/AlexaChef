@@ -6,5 +6,4 @@ before_script:
   - cd src
   - npm install
 script:
-  - cd src
   - grunt
