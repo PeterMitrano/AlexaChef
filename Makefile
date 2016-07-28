@@ -17,6 +17,6 @@ PAYLOAD := $(shell cat ${FILE})
 test:
 	@aws lambda invoke --invocation-type RequestResponse --function-name MyCookbook --log-type Tail \
 		--payload '$(PAYLOAD)' ./build/output.log > ./build/encoded_tail.json
-	cat ./build/output.log | python -m json.tool
-	./tail_helper.py ./build/encoded_tail.json
+	@cat ./build/output.log | python -m json.tool
+	@./tail_helper.py ./build/encoded_tail.json
 

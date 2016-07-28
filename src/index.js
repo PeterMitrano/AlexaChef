@@ -1,6 +1,6 @@
 'use strict';
 
-var Alexa = require('alexa-sdk');
+var Alexa = require('./alexa');
 
 var states = {
     TUTORIAL: '_TUTORIAL',
@@ -12,6 +12,24 @@ var states = {
 var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
 
 var handlers = {
+  // A new session is called every time the user starts a new invocation
+  // by addressing our skill
+  'NewSession': function () {
+    // first we want to see if this is the users first time ever
+    if (this.attributes['number_of_invocations'] === undefined ||
+        this.attributes['number_of_invocations'] === 0) {
+      this.emit(":tell", "This is your first time using this skill.");
+      console.log(this.attributes);
+      this.attributes['number_of_invocations'] = 1;
+    }
+    else {
+      this.emit(":tell", "Welcome back!");
+      this.attributes['number_of_invocations'] += 1;
+    }
+
+    // force save number_of_invocations
+    this.emit(':saveState', true);
+  },
 
   'StartNewRecipeIntent': function () {
     // javascript why do you suck so much?
@@ -45,11 +63,8 @@ var handlers = {
   'OnSessionEnded': function () {
     this.emit(":tell", "intent equals, OnSessionEnded");
   },
-  'OnLaunch': function () {
+  'LaunchRequest': function () {
     this.emit(":tell", "intent equals, OnLaunch");
-  },
-  'NewSession': function () {
-    this.emit(":ask", "This is your first time using this skill.");
   },
   'Unhandled': function() {
     this.emit(":tell", "intent equals, Unhandled");
@@ -59,7 +74,8 @@ var handlers = {
 /** the function that alexa will call when envoking our skill.
 * The execute method essentially dispatches to on of our session handlers */
 exports.handler = function(event, context) {
-  var alexa = Alexa.handler(event, context);
+  var alexa = Alexa.LambdaHandler(event, context);
+
   alexa.registerHandlers(handlers);
   alexa.dynamoDBTableName = 'my_cookbook_users';
   alexa.appId = APP_ID;

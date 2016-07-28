@@ -117,6 +117,7 @@ function HandleLambdaEvent() {
 
 function EmitEvent() {
     this.state = this._event.session.attributes[_StateString] || '';
+
     var eventString = '';
 
     if (this._event.session['new'] && this.listenerCount('NewSession' + this.state) === 1) {
@@ -130,6 +131,8 @@ function EmitEvent() {
     }
 
     eventString += this.state;
+
+    console.log("eventString: " + eventString);
 
     if(this.listenerCount(eventString) < 1) {
         eventString = 'Unhandled' + this.state;

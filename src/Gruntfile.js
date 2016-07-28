@@ -3,6 +3,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg : grunt.file.readJSON('package.json'),
     jshint : {
+      options: {
+        node: true,
+        esnext: true
+      },
       files : [
         'Gruntfile.js',
         'index.js'
