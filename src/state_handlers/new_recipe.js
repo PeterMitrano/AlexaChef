@@ -1,8 +1,16 @@
+/**
+ * @fileOverview
+ * @author Peter Mitrano- mitrnanopeter@gmail.com
+ */
+
 'use strict';
 
-var Core = require('./core');
+var Core = require('../core');
 var Alexa = require('./alexa');
 
+/**
+ * Represents the reponses when we expect the user to request to make a new recipe
+ */
 module.exports = Alexa.CreateStateHandler(Core.states.NEW_RECIPE, {
   'StartNewRecipeIntent': function () {
     // javascript why do you suck so much?

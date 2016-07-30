@@ -1,9 +1,17 @@
+/**
+ * @fileOverview
+ * @author Peter Mitrano- mitrnanopeter@gmail.com
+ */
 
 'use strict';
 
-var Core = require('./core');
+var Core = require('../core');
 var Alexa = require('./alexa');
 
+/**
+ * Represents the reponses when we've just asked if the user wants to search
+ * online for their recipe
+ */
 module.exports = Alexa.CreateStateHandler(Core.states.ASK_SEARCH, {
   'AMAZON.YesIntent': function() {
     this.handers.state = Core.states.INGREDIENT_OR_INSTRUCTIONS;

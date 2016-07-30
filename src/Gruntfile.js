@@ -8,13 +8,16 @@ module.exports = function(grunt) {
         esnext: true
       },
       files : [
-        '*.js'
+        '*.js',
+        'state_handlers/*.js'
       ]
     },
     jsdoc : {
       doc : {
         src : [
           '*.js',
+          'state_handlers/*.js',
+          '../README.md'
         ],
         options : {
           destination : '../doc'

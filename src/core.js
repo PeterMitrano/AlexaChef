@@ -1,3 +1,7 @@
+/**
+ * @fileOverview
+ * @author Peter Mitrano- mitrnanopeter@gmail.com
+ */
 
 module.exports  = {
   'states': {

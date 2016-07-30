@@ -1,8 +1,17 @@
+/**
+ * @fileOverview
+ * @author Peter Mitrano- mitrnanopeter@gmail.com
+ */
+
 'use strict';
 
-var Core = require('./core');
+var Core = require('../core');
 var Alexa = require('./alexa');
 
+/**
+ * Represents the reponses when we've just asked if the user wants to follow
+ * a tutorial on how to use the app.
+ */
 module.exports = Alexa.CreateStateHandler(Core.states.ASK_TUTORIAL, {
   'AMAZON.YesIntent': function() {
     // for now we just shortcut and end here
