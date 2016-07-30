@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # A test runner for my_cookbook built using boto3, the python
 # sdk for aws services
 
@@ -51,7 +53,7 @@ def run_tests(payload_filename):
         result = response['Payload']
         print bcolors.BOLD + bcolors.GREEN, 'Response:', bcolors.ENDC
         result_str = result.read()
-        result_json = json.loads(result_str);
+        result_json = json.loads(result_str)
         print(json.dumps(result_json, indent=4))
     else:
         print bcolors.BOLD + bcolors.YELLOW, 'No payload in response.', bcolors.ENDC
@@ -59,9 +61,15 @@ def run_tests(payload_filename):
 @cli.command()
 @click.option("--userid", default="user0", help="delete this user from the my_cookbook_users table")
 def delete_user(userid):
-    dynamo_client = boto3.client('dynamodb')
-    key = {"userId": {"S" : userid}}
-    dynamo_client.delete_item(TableName="my_cookbook_users", Key=key)
+    print "Are you sure you want to delete user", userid, "? [y/N]"
+    answer = raw_input()
+    if answer == "y" or answer == "Y":
+        print "deleting", userid
+        dynamo_client = boto3.client('dynamodb')
+        key = {"userId": {"S" : userid}}
+        dynamo_client.delete_item(TableName="my_cookbook_users", Key=key)
+    else:
+        print "Aborting."
 
 if __name__ == "__main__":
     cli()
