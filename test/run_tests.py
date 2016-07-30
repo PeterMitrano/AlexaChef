@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # A test runner for my_cookbook built using boto3, the python
 # sdk for aws services
 
@@ -19,12 +17,16 @@ class bcolors:
     BOLD = '\033[1m'
 
 
-@click.command()
-@click.option("--payload-filename", default="./test/Payload.json", help="file of json to send as request")
+@click.group()
+def cli():
+  pass
+
+@cli.command()
+@click.option("--payload-filename", default="./test/payload.json", help="file of json to send as request")
 def run_tests(payload_filename):
     lambda_client = boto3.client("lambda")
 
-    payload_file = open(payload_filename, 'r')
+    payload_file = open(str(payload_filename), 'r')
 
     response = lambda_client.invoke(FunctionName = 'MyCookbook', InvocationType = 'RequestResponse', LogType = 'Tail', Payload= payload_file)
 
@@ -54,5 +56,12 @@ def run_tests(payload_filename):
     else:
         print bcolors.BOLD + bcolors.YELLOW, 'No payload in response.', bcolors.ENDC
 
+@cli.command()
+@click.option("--userid", default="user0", help="delete this user from the my_cookbook_users table")
+def delete_user(userid):
+    dynamo_client = boto3.client('dynamodb')
+    key = {"userId": {"S" : userid}}
+    dynamo_client.delete_item(TableName="my_cookbook_users", Key=key)
+
 if __name__ == "__main__":
-    run_tests()
+    cli()

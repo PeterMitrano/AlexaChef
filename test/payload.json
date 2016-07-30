@@ -5,21 +5,16 @@
         },
         "attributes": {},
         "new": true,
-        "sessionId": "SessionId.5f8dd515-762a-4712-9479-e579e81ce686",
         "user": {
             "userId": "test0"
         }
     },
     "request": {
         "type": "IntentRequest",
-        "locale": "en-US",
-        "requestId": "EdwRequestId.3509c1e0-3f8b-43d8-92d0-cb8271192b09",
-        "timestamp": "2016-07-27T08:17:41Z",
         "intent": {
           "name": "AMAZON.NoIntent",
           "slots": {
           }
         }
-    },
-    "version": "1.0"
+    }
 }
