@@ -1,3 +1,4 @@
+// jshint ignore: start
 'use strict';
 
 var EventEmitter = require('events').EventEmitter;
@@ -131,8 +132,6 @@ function EmitEvent() {
     }
 
     eventString += this.state;
-
-    console.log("eventString: " + eventString);
 
     if(this.listenerCount(eventString) < 1) {
         eventString = 'Unhandled' + this.state;

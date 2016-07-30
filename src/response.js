@@ -1,3 +1,4 @@
+// jshint ignore: start
 'use strict';
 var attributesHelper = require('./DynamoAttributesHelper');
 

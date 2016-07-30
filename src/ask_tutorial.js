@@ -1,0 +1,24 @@
+'use strict';
+
+var Core = require('./core');
+var Alexa = require('./alexa');
+
+module.exports = Alexa.CreateStateHandler(Core.states.ASK_TUTORIAL, {
+  'AMAZON.YesIntent': function() {
+    // for now we just shortcut and end here
+    //
+    // this.handler.state = Core.states.TELL_TUTORIAL;
+    //
+    this.emit(":tell", "I am capable of finding recipes and walking you through making them");
+    delete this.handler.state;
+    this.emit(':saveState', true);
+  },
+  'AMAZON.NoIntent': function() {
+    this.handler.state = Core.states.PROMPT_FOR_START;
+    this.emit(":ask", "Are you ready to start making something? You can say yes, or ask me someting else.");
+  },
+  'Unhandled': function() {
+    this.emit(":tell", "I'm confused. Do you want to start with a tutorial? Try saying yes or no.");
+  }
+});
+

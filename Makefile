@@ -7,7 +7,7 @@ zip:
 	cp src/package.json build
 	cd build && zip -q -r skill.zip node_modules *.js package.json
 
-upload:
+upload: zip
 	aws lambda update-function-code --function-name MyCookbook --zip-file fileb://build/skill.zip
 
 FILE=test/payload.json

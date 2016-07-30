@@ -8,14 +8,13 @@ module.exports = function(grunt) {
         esnext: true
       },
       files : [
-        'Gruntfile.js',
-        'index.js'
+        '*.js'
       ]
     },
     jsdoc : {
       doc : {
         src : [
-          'index.js',
+          '*.js',
         ],
         options : {
           destination : '../doc'
