@@ -119,6 +119,8 @@ function HandleLambdaEvent() {
 function EmitEvent() {
     this.state = this._event.session.attributes[_StateString] || '';
 
+    console.log("State: " + this.state);
+
     var eventString = '';
 
     if (this._event.session['new'] && this.listenerCount('NewSession' + this.state) === 1) {

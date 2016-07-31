@@ -12,7 +12,7 @@ var Alexa = require('../alexa');
  * Represents the reponses when we've just asked if the user wants to hear the
  * instructions or the ingredients for a recipe
  */
-module.exports = Alexa.CreateStateHandler(Core.states.INGREDIENT_OR_INSTRUCTIONS, {
+module.exports = Alexa.CreateStateHandler(Core.states.INGREDIENTS_OR_INSTRUCTIONS, {
   'IngredientsIntent': function() {
     this.emit(":tell", "Starting with ingredients");
   },

@@ -3,17 +3,24 @@
         "application": {
             "applicationId": "amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05"
         },
-        "attributes": {},
-        "new": true,
+        "attributes": {
+          "STATE": "_INGREDIENTS_OR_INSTRUCTIONS",
+          "invocations": 1
+        },
+        "new": false,
         "user": {
-            "userId": "user0"
+            "userId": "amzn1.account.AHI6EJHVJCBLLXLYYZLZHXEX2KNQ"
         }
     },
     "request": {
         "type": "IntentRequest",
         "intent": {
-          "name": "AMAZON.NoIntent",
+          "name": "IngredientsIntent",
           "slots": {
+            "RecipeName": {
+              "name": "RecipeName",
+              "value": "chicken fried rice"
+            }
           }
         }
     }

@@ -111,11 +111,13 @@ module.exports = (function () {
             }
 
             if(this.saveBeforeResponse || forceSave || this.handler.response.response.shouldEndSession) {
+                console.log("putting.");
                 attributesHelper.set(this.handler.dynamoDBTableName, this.event.session.user.userId, this.attributes,
-                    (err) => {
+                    (err, data) => {
                         if(err) {
                             return this.emit(':saveStateError', err);
                         }
+                        console.log("success");
                         this.context.succeed(this.handler.response);
                 });
             } else {

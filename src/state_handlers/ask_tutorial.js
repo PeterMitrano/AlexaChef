@@ -14,12 +14,8 @@ var Alexa = require('../alexa');
  */
 module.exports = Alexa.CreateStateHandler(Core.states.ASK_TUTORIAL, {
   'AMAZON.YesIntent': function() {
-    // for now we just shortcut and end here
-    //
-    // this.handler.state = Core.states.TELL_TUTORIAL;
-    //
+    this.handler.state = Core.states.INITIAL_STATE;
     this.emit(":tell", "I am capable of finding recipes and walking you through making them");
-    delete this.handler.state;
     this.emit(':saveState', true);
   },
   'AMAZON.NoIntent': function() {
