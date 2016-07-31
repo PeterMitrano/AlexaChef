@@ -118,5 +118,8 @@ exports.handler = function(event, context, callback) {
   alexa.saveOnEndSession = false;
   alexa.dynamoDBTableName = 'my_cookbook_users';
   alexa.appId = APP_ID;
+
+  console.log("State: " + JSON.stringify(event.session.attributes, null, 2));
+
   alexa.execute();
 };

@@ -9,10 +9,11 @@ var Core = require('../core');
 var Alexa = require('../alexa');
 
 /**
- * For telling user about tutorial. this hasn't been properly thought out yet.
+ * For asking user about tutorial. this hasn't been properly thought out yet.
  */
 module.exports  = Alexa.CreateStateHandler(Core.states.TELL_TUTORIAL, {
   'Unhandled': function() {
-    this.emit(":tell", "I'm confused. I was telling you about how to use this app");
+    this.handler.state = Core.states.INITIAL_STATE;
+    this.emit(":ask", "This stae is unimplemented.");
   }
 });

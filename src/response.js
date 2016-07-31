@@ -23,7 +23,7 @@ module.exports = (function () {
             this.handler.response = buildSpeechletResponse({
                 sessionAttributes: this.attributes,
                 output: getSSMLResponse(speechOutput),
-                reprompt: getSSMLResponse(repromptSpeech),
+                reprompt: getSSMLResponse(repromptSpeech || speechOutput),
                 shouldEndSession: false
             });
             this.emit(':responseReady');
@@ -35,7 +35,7 @@ module.exports = (function () {
 
             this.handler.response = buildSpeechletResponse({
                 sessionAttributes: this.attributes,
-                output: getSSMLResponse(speechOutput),
+                output: getSSMLResponse(speechOutput || speechOutput),
                 reprompt: getSSMLResponse(repromptSpeech),
                 cardTitle: cardTitle,
                 cardContent: cardContent,
@@ -80,7 +80,7 @@ module.exports = (function () {
             this.handler.response = buildSpeechletResponse({
                 sessionAttributes: this.attributes,
                 output: getSSMLResponse(speechOutput),
-                reprompt: getSSMLResponse(repromptSpeech),
+                reprompt: getSSMLResponse(repromptSpeech || speechOutput),
                 cardType: 'LinkAccount',
                 shouldEndSession: false
             });
@@ -99,7 +99,9 @@ module.exports = (function () {
                 return this.emit(':saveState');
             }
 
-            this.callback(null, this.hander.response);
+            console.log("Full Response :");
+            console.log(this.handler.response);
+            this.callback(null, this.handler.response);
         },
         ':saveState': function(forceSave) {
             if (this.isOverridden()) {

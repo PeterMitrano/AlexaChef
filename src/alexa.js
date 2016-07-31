@@ -137,8 +137,11 @@ function EmitEvent() {
     }
 
     eventString += this.state;
+    console.log("eventString: " + eventString);
+
 
     if(this.listenerCount(eventString) < 1) {
+      console.log("No handler for " + eventString + ", emitting Unhandled instead");
         eventString = 'Unhandled' + this.state;
     }
 

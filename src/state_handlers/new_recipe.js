@@ -17,7 +17,7 @@ module.exports = Alexa.CreateStateHandler(Core.states.NEW_RECIPE, {
     // check if the slot is empty *sigh*
     let recipe_name = this.event.request.intent.slots.RecipeName.value;
     if (this.event.request.intent.slots.RecipeName.value === undefined) {
-      this.emit(":tell", 'I couldn\'t figure what recipe you wanted. Try saying, How do I make pancakes?',
+      this.emit(":ask", 'I couldn\'t figure what recipe you wanted. Try saying, How do I make pancakes?',
         'Try saying, How do I make pancakes?');
     }
     else {
@@ -35,6 +35,6 @@ module.exports = Alexa.CreateStateHandler(Core.states.NEW_RECIPE, {
     }
   },
   'Unhandled': function() {
-    this.emit(":tell", "I'm confused. Try telling me what you want to make.");
+    this.emit(":ask", "I'm confused. Try asking me what you want to make.");
   }
 });

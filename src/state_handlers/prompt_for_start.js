@@ -16,7 +16,7 @@ module.exports = Alexa.CreateStateHandler(Core.states.PROMPT_FOR_START, {
     this.emit("StartNewRecipeIntent" + Core.states.NEW_RECIPE);
   },
   'Unhandled': function() {
-    this.emit(":tell", "I'm confused. Try asking for start a new recipe, or ask to quit.");
+    this.emit(":ask", "I'm confused. Try asking for start a new recipe, or ask to quit.");
   }
 });
 

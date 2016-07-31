@@ -15,14 +15,17 @@ var Alexa = require('../alexa');
 module.exports = Alexa.CreateStateHandler(Core.states.ASK_TUTORIAL, {
   'AMAZON.YesIntent': function() {
     this.handler.state = Core.states.INITIAL_STATE;
-    this.emit(":tell", "I am capable of finding recipes and walking you through making them");
+    // don't end session here. It's convenient so that we don't
+    // have say "ask my cookbook" again
+    this.emit(":ask", "I am capable of finding recipes and walking you through making them. Try asking how to make pancakes");
+    this.emit(":saveState", true);
   },
   'AMAZON.NoIntent': function() {
     this.handler.state = Core.states.PROMPT_FOR_START;
     this.emit(":ask", "Are you ready to start making something? You can say yes, or ask me something else.");
   },
   'Unhandled': function() {
-    this.emit(":tell", "I'm confused. Do you want to start with a tutorial? Try saying yes or no.");
+    this.emit(":ask", "I'm confused. Do you want to start with a tutorial? Try saying yes or no.");
   }
 });
 
