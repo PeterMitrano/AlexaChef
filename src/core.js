@@ -24,11 +24,14 @@ module.exports  = {
    */
   'firstTimeIntroductionIfNeeded': function (handlerContext) {
 
+    console.log(JSON.stringify(handlerContext.attributes, null, 2));
+
     if (handlerContext.attributes.invocations === undefined || handlerContext.attributes.invocations === 0) {
-      handlerContext.emit(":ask", "Hi, I'm your new cookbook. Would you like to start off with a tutorial?");
       handlerContext.handler.state = this.states.ASK_TUTORIAL;
       handlerContext.attributes.invocations = 1;
-      //handlerContext.emit(':saveState', true);
+      handlerContext.emit(":ask", "Hi, I'm your new cookbook. Would you like to start off with a tutorial?");
+      handlerContext.emit(':saveState', true);
+      handlerContext.emit(':saveState', true);
       return true;
     }
 
