@@ -21,10 +21,6 @@ module.exports  = {
    * @param {handlerContext} handlerContext - the session related info
    */
   'firstTimeIntroductionIfNeeded': function (handlerContext) {
-    if (handlerContext.attributes === undefined) {
-      console.log("fuk m8");
-      return true;
-    }
     if (handlerContext.attributes.invocations === undefined ||
         handlerContext.attributes.invocations === 0) {
       handlerContext.emit(":ask", "Hi, I'm your new cookbook. Would you like to start off with a tutorial?");

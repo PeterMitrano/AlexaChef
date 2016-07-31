@@ -1,7 +1,7 @@
 'use strict';
 
 var Core = require('../core');
-var Alexa = require('./alexa');
+var Alexa = require('../alexa');
 
 module.exports = Alexa.CreateStateHandler(Core.states.PROMPT_FOR_START, {
   'AMAZON.YesIntent': function() {

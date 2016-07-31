@@ -27,7 +27,7 @@ def cli():
 @click.option("-v", "--verbose", count=True)
 @click.option('-q', "--quiet", is_flag=True)
 @click.option("--payload-filename")
-@click.option("--new/--not-new", default=True)
+@click.option('-n', "--new", is_flag=True, default=False)
 @click.option("--userid")
 @click.option("--request", type=click.Choice(['launch', 'yes']))
 def run_tests(verbose, quiet, payload_filename, new, userid, request):
@@ -38,7 +38,7 @@ def run_tests(verbose, quiet, payload_filename, new, userid, request):
         payload = open(payload_filename, 'r')
         if verbose >= 1 and not quiet:
             print bcolors.BOLD, 'Using ', payload_filename, 'as request', bcolors.ENDC
-    elif new and userid and request:
+    elif userid and request:
         payload = {
             "session": {
                 "application": {
@@ -76,6 +76,7 @@ def run_tests(verbose, quiet, payload_filename, new, userid, request):
             print payload
     else:
         if not quiet:
+            print 'new:', new, 'userid', userid, 'request', request
             print "Bad arguments"
         return
 

@@ -44,14 +44,14 @@ var StatelessHandlers = {
   },
   /** The user says something like "ask my cookbook for help" */
   'AMAZON.HelpIntent': function() {
-    let ftu = Core.firstTimeIntroductionIfNeeded();
+    let ftu = Core.firstTimeIntroductionIfNeeded(this);
     if (!ftu) {
       this.emit(":tell", "If you need help, you can ask for the tutorial by saying, ask my .");
     }
   },
   /** The user says something like "Open my cookbook" */
   'LaunchRequest': function () {
-    let ftu = Core.firstTimeIntroductionIfNeeded();
+    let ftu = Core.firstTimeIntroductionIfNeeded(this);
     if (!ftu) {
       this.emit(":ask", "Hi again. Shall we make something?");
       this.handler.state = Core.states.ASK_MAKE_SOMETHING;
@@ -59,7 +59,7 @@ var StatelessHandlers = {
   },
   /** Any intents not handled above go here */
   'Unhandled': function() {
-    let ftu = Core.firstTimeIntroductionIfNeeded();
+    let ftu = Core.firstTimeIntroductionIfNeeded(this);
     if (!ftu) {
       this.emit(":tell", "intent equals, Unhandled");
     }

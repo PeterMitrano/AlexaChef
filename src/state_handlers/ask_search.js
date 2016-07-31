@@ -6,7 +6,7 @@
 'use strict';
 
 var Core = require('../core');
-var Alexa = require('./alexa');
+var Alexa = require('../alexa');
 
 /**
  * Represents the reponses when we've just asked if the user wants to search

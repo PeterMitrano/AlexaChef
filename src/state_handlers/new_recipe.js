@@ -6,7 +6,7 @@
 'use strict';
 
 var Core = require('../core');
-var Alexa = require('./alexa');
+var Alexa = require('../alexa');
 
 /**
  * Represents the reponses when we expect the user to request to make a new recipe

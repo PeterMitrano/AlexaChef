@@ -6,7 +6,7 @@
 'use strict';
 
 var Core = require('../core');
-var Alexa = require('./alexa');
+var Alexa = require('../alexa');
 
 /**
  * For telling user about tutorial. this hasn't been properly thought out yet.
