@@ -11,7 +11,6 @@ Run `grunt`. This will run jshint and generate jsdocs.
 
 ## TODO:
 
- - find a way to implement some intent the same in all states, such as the AMAZON.RepeatIntent
  - create a AskStateIntent so I can ask what state the skill is in. Just for deubgging purposes.
 
 
