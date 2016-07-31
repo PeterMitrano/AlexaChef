@@ -99,7 +99,7 @@ module.exports = (function () {
                 return this.emit(':saveState');
             }
 
-            this.context.succeed(this.handler.response);
+            this.callback(null, this.hander.response);
         },
         ':saveState': function(forceSave) {
             if (this.isOverridden()) {
@@ -110,24 +110,23 @@ module.exports = (function () {
                 this.attributes['STATE'] = this.handler.state;
             }
 
-            if(this.saveBeforeResponse || forceSave || this.handler.response.response.shouldEndSession) {
+            if(this.saveBeforeResponse || forceSave || (this.saveOnEndSession && this.handler.response.response.shouldEndSession)) {
                 attributesHelper.set(this.handler.dynamoDBTableName, this.event.session.user.userId, this.attributes,
-                    (err) => {
+                    (err, data) => {
                         if(err) {
                             return this.emit(':saveStateError', err);
                         }
-                        this.context.succeed(this.handler.response);
+                        this.callback(null, this.handler.response);
                 });
             } else {
-                this.context.succeed(this.handler.response);
+                this.callback(null, this.handler.response);
             }
         },
         ':saveStateError': function(err) {
             if(this.isOverridden()) {
                 return;
             }
-            console.log(`Error saving state: ${err}\n${err.stack}`);
-            this.context.fail(err);
+            this.callback(new Error(`Error saving state: ${err}\n${err.stack}`));
         }
     };
 })();

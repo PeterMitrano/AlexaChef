@@ -29,7 +29,7 @@ def cli():
 @click.option("--payload-filename")
 @click.option('-n', "--new", is_flag=True, default=False)
 @click.option("--userid")
-@click.option("--request", type=click.Choice(['launch', 'yes']))
+@click.option("--request", type=click.Choice(['launch', 'quit', 'yes', 'no']))
 def run_tests(verbose, quiet, payload_filename, new, userid, request):
     lambda_client = boto3.client("lambda")
 
@@ -55,6 +55,18 @@ def run_tests(verbose, quiet, payload_filename, new, userid, request):
         if request == 'launch':
             payload['request'] = {
                 "type": "LaunchRequest"
+            }
+        elif request == 'quit':
+            payload['request'] = {
+                "type": "SessionEndedRequest",
+                "reason": "USER_INITIATED"
+            }
+        elif request == 'no':
+            payload['request'] = {
+                "type": "IntentRequest",
+                "intent": {
+                    "name": "AMAZON.NoIntent"
+                }
             }
         elif request == 'yes':
             payload['request'] = {
