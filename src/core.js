@@ -21,13 +21,17 @@ module.exports  = {
    * @param {handlerContext} handlerContext - the session related info
    */
   'firstTimeIntroductionIfNeeded': function (handlerContext) {
-    if (handlerContext.attributes.invocations === undefined ||
-        handlerContext.attributes.invocations === 0) {
+
+    console.log("new: " + handlerContext.event.session.new);
+
+    if (handlerContext.attributes.invocations === undefined || handlerContext.attributes.invocations === 0) {
       handlerContext.emit(":ask", "Hi, I'm your new cookbook. Would you like to start off with a tutorial?");
       handlerContext.handler.state = this.states.ASK_TUTORIAL;
       handlerContext.attributes.invocations = 1;
+      handlerContext.emit(':saveState', true);
       return true;
     }
+    handlerContext.emit(':saveState', true);
     return false;
   }
 };

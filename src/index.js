@@ -24,20 +24,6 @@ var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
  * but it could be other things
  */
 var StatelessHandlers = {
-  /** Called any time the 'new' attribute is true and we're not in any specific state. */
-  'NewSession': function () {
-    let ftu = Core.firstTimeIntroductionIfNeeded(this);
-
-    if (!ftu) {
-      this.emit(":ask", "Welcome back! Tell me what you want to make.");
-      this.handler.state = Core.states.NEW_RECIPE;
-      this.attributes.invocations += 1;
-    }
-
-    // we always increment in this Intent, so we must save that
-    console.log("invocations: " + this.attributes.invocations);
-    this.emit(':saveState', true);
-  },
   /** User can start off by immediately asking for a recipe */
   'StartNewRecipeIntent': function () {
     this.emit("StartNewRecipeIntent" + Core.states.NEW_RECIPE);
@@ -66,10 +52,15 @@ var StatelessHandlers = {
   }
 };
 
-/** the function that alexa will call when envoking our skill.
-* The execute method essentially dispatches to on of our session handlers */
+/**
+ * the function that alexa will call when envoking our skill.
+ * The execute method essentially dispatches to on of our session handlers
+ */
 exports.handler = function(event, context) {
   var alexa = Alexa.LambdaHandler(event, context);
+
+  alexa._context.succeed = function(event, data) {
+  };
 
   alexa.registerHandlers(StatelessHandlers,
     AskTutorialHandlers,
