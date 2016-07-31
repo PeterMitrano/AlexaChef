@@ -136,13 +136,16 @@ function EmitEvent() {
         eventString = 'SessionEndedRequest';
     }
 
-    eventString += this.state;
-    console.log("eventString: " + eventString);
+    var statefulEventString = eventString + this.state;
+    console.log("statefulEventString: " + statefulEventString);
 
 
-    if(this.listenerCount(eventString) < 1) {
-      console.log("No handler for " + eventString + ", emitting Unhandled instead");
+    if(this.listenerCount(statefulEventString) < 1) {
+      console.log("No handler for " + statefulEventString + ", checking stateless handler");
+      if(this.listenerCount(eventString) < 1) {
+        console.log("No handler for " + eventString + ", emitting Unhandled instead");
         eventString = 'Unhandled' + this.state;
+      }
     }
 
     if(this.listenerCount(eventString) < 1){

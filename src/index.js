@@ -30,22 +30,14 @@ var StatelessHandlers = {
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit("LaunchRequest" + Core.states.INITIAL_STATE);
   },
-  /** Any intents not handled above go here */
-  'SessionEndedRequest': function() {
-    this.handler.state = Core.states.INITIAL_STATE;
-    this.emit("SessionEndedRequest" + Core.states.INITIAL_STATE);
-  },
   'AMAZON.HelpIntent': function() {
-    this.handler.state = Core.states.INITIAL_STATE;
-    this.emit("AMAZON.HelpIntent" + Core.states.INITIAL_STATE);
-  },
-  'LaunchRequest': function () {
-    this.handler.state = Core.states.INITIAL_STATE;
-    this.emit("LaunchRequest" + Core.states.INITIAL_STATE);
+    this.handler.state = Core.states.ASK_TUTORIAL;
+    this.emit("AMAZON.YesIntent" + Core.states.ASK_TUTORIAL);
   },
   'Unhandled': function () {
     this.handler.state = Core.states.INITIAL_STATE;
-    this.emit("Unhandled" + Core.states.INITIAL_STATE);
+    this.emit(":tell", `We've already been talking but I have no idea what about,
+        so I will exit this session. Please start over by saying, Alexa launch my cookbok.`);
   },
 };
 
@@ -69,10 +61,6 @@ var InitialStateHandlers = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
         this.emit(":tell", "I've already been launched");
       }
     }
-  },
-  'AMAZON.HelpIntent': function() {
-    this.handler.state = Core.states.ASK_TUTORIAL;
-    this.emit("AMAZON.YesIntent" + Core.states.ASK_TUTORIAL);
   },
   'SessionEndedRequest': function() {
     this.emit(":tell", "Goodbye!");
