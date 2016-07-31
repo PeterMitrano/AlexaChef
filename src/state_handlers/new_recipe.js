@@ -1,6 +1,6 @@
 /**
  * @fileOverview
- * @author Peter Mitrano- mitrnanopeter@gmail.com
+ * @author Peter Mitrano- mitranopeter@gmail.com
  */
 
 'use strict';

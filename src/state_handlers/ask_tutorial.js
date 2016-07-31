@@ -1,6 +1,6 @@
 /**
  * @fileOverview
- * @author Peter Mitrano- mitrnanopeter@gmail.com
+ * @author Peter Mitrano- mitranopeter@gmail.com
  */
 
 'use strict';
@@ -19,8 +19,7 @@ module.exports = Alexa.CreateStateHandler(Core.states.ASK_TUTORIAL, {
     // this.handler.state = Core.states.TELL_TUTORIAL;
     //
     this.emit(":tell", "I am capable of finding recipes and walking you through making them");
-    delete this.handler.state;
-    this.emit(':saveState', true);
+    this.emit(':saveState', false);
   },
   'AMAZON.NoIntent': function() {
     this.handler.state = Core.states.PROMPT_FOR_START;
