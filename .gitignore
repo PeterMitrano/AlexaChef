@@ -6,3 +6,4 @@ doc
 *.pdf
 *.swp
 *.pyc
+test/payload.json

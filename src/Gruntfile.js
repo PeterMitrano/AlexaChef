@@ -3,15 +3,21 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg : grunt.file.readJSON('package.json'),
     jshint : {
+      options: {
+        node: true,
+        esnext: true
+      },
       files : [
-        'Gruntfile.js',
-        'index.js'
+        '*.js',
+        'state_handlers/*.js'
       ]
     },
     jsdoc : {
       doc : {
         src : [
-          'index.js',
+          '*.js',
+          'state_handlers/*.js',
+          '../README.md'
         ],
         options : {
           destination : '../doc'

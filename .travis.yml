@@ -1,0 +1,10 @@
+language: node_js
+sudo: false
+node_js:
+  - '4'
+before_script:
+  - cd src
+  - npm config set -g production false
+  - npm install
+script:
+  - grunt

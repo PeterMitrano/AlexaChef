@@ -1586,3 +1586,7 @@ StartNewRecipeIntent How is {Papaya with Lime|RecipeName} create
 StartNewRecipeIntent How is {Tropical Banana Treat|RecipeName} cook
 StartNewRecipeIntent How is {Tropical Banana Treat|RecipeName} make
 StartNewRecipeIntent How is {Tropical Banana Treat|RecipeName} create
+IngredientsIntent Ingredients
+IngredientsIntent The ingredients
+InstructionsIntent Instructions
+InstructionsIntent The instructions

@@ -1,67 +1,113 @@
+/**
+ * @fileOverview
+ * @author Peter Mitrano- mitrnanopeter@gmail.com
+ */
+
 'use strict';
 
-var Alexa = require('alexa-sdk');
+var Alexa = require('./alexa');
+var Core = require('./core');
+var attributesHelper = require('./DynamoAttributesHelper');
 
-var states = {
-    TUTORIAL: '_TUTORIAL',
-    SEARCH_ONLINE: '_SEARCH_ONLINE',
-    INGREDIENT_OR_INSTRUCTIONS: 'INGREDIENT_OR_INSTRUCTIONS',
-};
+var AskMakeCookbookHandlers = require('./state_handlers/ask_make_cookbook');
+var AskSearchHandlers = require('./state_handlers/ask_search');
+var AskTutorialHandlers = require('./state_handlers/ask_tutorial');
+var IngredientsOrInstructionsHandler = require('./state_handlers/ingredients_or_instructions');
+var NewRecipeHandlers = require('./state_handlers/new_recipe');
+var PromptForStartHandlers = require('./state_handlers/prompt_for_start');
+var TellTutorialHandlers = require('./state_handlers/tell_tutorial');
 
 /** this can be found on the amazon developer page for the skill */
 var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
 
-var handlers = {
-
-  'StartNewRecipeIntent': function () {
-    // javascript why do you suck so much?
-    // check if the slot is empty *sigh*
-    let recipe_name = this.event.request.intent.slots.RecipeName.value;
-    if (this.event.request.intent.slots.RecipeName.value === undefined) {
-      this.emit(":tell", 'I couldn\'t figure what recipe you wanted. Try saying, How do I make pancakes?',
-        'Try saying, How do I make pancakes?');
-    }
-    else {
-      // here we make an API call and find out if the user has a recipe for this already or not.
-      let user_has_recipe = Math.random() < 0.5; // TODO: make api call, for now it's random
-      if (user_has_recipe) {
-        this.emit(":ask", 'I found a recipe for ' + recipe_name + ', In your cookbook. Do you want to use that?');
-      }
-      else {
-        this.emit(":ask", 'I didn\'t find any recipe for ' + recipe_name + ', In your cookbook. Should I find one online?',
-          'Do you want to find another recipe?');
-      }
-    }
-  },
-  'AMAZON.NextIntent': function() {
-    this.emit(":tell", "intent equals, AMAZON.NextIntent");
+/**
+ * Handle requests from the user when we are not in any given state.
+ * This usually means the first time the user launches a new session,
+ * but it could be other things
+ */
+var StatelessHandlers = {
+  'NewSession': function () {
+    this.handler.state = Core.states.INITIAL_STATE;
+    this.emit("LaunchRequest" + Core.states.INITIAL_STATE);
   },
   'AMAZON.HelpIntent': function() {
-    this.emit(":tell", "intent equals, AMAZON.HelpIntent");
+    this.handler.state = Core.states.ASK_TUTORIAL;
+    this.emit("AMAZON.YesIntent" + Core.states.ASK_TUTORIAL);
   },
-  'OnSessionStarted': function () {
-    this.emit(":tell", "intent equals, OnSessionStarted");
+  'Unhandled': function () {
+    this.handler.state = Core.states.INITIAL_STATE;
+    this.emit(":tell", `We've already been talking but I have no idea what about,
+        so I will exit this session. Please start over by saying, Alexa launch my cookbok.`);
   },
-  'OnSessionEnded': function () {
-    this.emit(":tell", "intent equals, OnSessionEnded");
-  },
-  'OnLaunch': function () {
-    this.emit(":tell", "intent equals, OnLaunch");
-  },
-  'NewSession': function () {
-    this.emit(":ask", "This is your first time using this skill.");
-  },
-  'Unhandled': function() {
-    this.emit(":tell", "intent equals, Unhandled");
-  }
 };
 
-/** the function that alexa will call when envoking our skill.
-* The execute method essentially dispatches to on of our session handlers */
-exports.handler = function(event, context) {
-  var alexa = Alexa.handler(event, context);
-  alexa.registerHandlers(handlers);
+var InitialStateHandlers = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
+  /** User can start off by immediately asking for a recipe */
+  'StartNewRecipeIntent': function () {
+    this.emit("StartNewRecipeIntent" + Core.states.NEW_RECIPE);
+  },
+  /** The user says something like "Open my cookbook" */
+  'LaunchRequest': function () {
+    let ftu = Core.firstTimeIntroductionIfNeeded(this);
+    if (!ftu) {
+      if (this.event.session.new) {
+        this.attributes.invocations += 1;
+        this.handler.state = Core.states.NEW_RECIPE;
+        this.emit(":ask", "Hi again. What do you want to make?");
+        this.emit(':saveState', true);
+        return true;
+      }
+      else {
+        this.emit(":tell", "I've already been launched");
+      }
+    }
+  },
+  'SessionEndedRequest': function() {
+    this.emit(":tell", "Goodbye!");
+  },
+  /** Any intents not handled above go here */
+  'Unhandled': function() {
+    if (this.event.session.new) {
+      let ftu = Core.firstTimeIntroductionIfNeeded(this);
+      if (!ftu) {
+        this.emit(":tell", "I'm not sure what you want. Try asking to make something.");
+      }
+    }
+    else {
+      attributesHelper.get(this.handler.dynamoDBTableName, this.event.session.user.userId, (err, data) => {
+          if(err) {
+            this.emit(":tell", "I was unable to find your information in my database. Try quitting this skill and starting over.");
+          }
+          // We've successfuly gotten the user
+          // if it didn't exist, now it does
+          this.emit(":tell", "I'm not sure what you want. start by asking to make something.");
+      });
+    }
+  }
+});
+
+/**
+ * the function that alexa will call when envoking our skill.
+ * The execute method essentially dispatches to on of our session handlers
+ */
+exports.handler = function(event, context, callback) {
+  var alexa = Alexa.LambdaHandler(event, context, callback);
+
+  alexa.registerHandlers(StatelessHandlers,
+    InitialStateHandlers,
+    AskMakeCookbookHandlers,
+    AskSearchHandlers,
+    AskTutorialHandlers,
+    IngredientsOrInstructionsHandler,
+    TellTutorialHandlers,
+    PromptForStartHandlers,
+    NewRecipeHandlers
+    );
+  alexa.saveOnEndSession = false;
   alexa.dynamoDBTableName = 'my_cookbook_users';
   alexa.appId = APP_ID;
+
+  console.log("State: " + JSON.stringify(event.session.attributes, null, 2));
+
   alexa.execute();
 };

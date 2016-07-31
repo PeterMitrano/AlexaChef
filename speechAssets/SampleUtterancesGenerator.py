@@ -146,7 +146,22 @@ intents = [
             [['show', 'tell'], ' me how to ' , words_for_cook,  ' {', recipe_literals, '|RecipeName}'],
             ['How is {', recipe_literals ,'|RecipeName} ' , words_for_cook],
         ]
+    },
+    {
+        'name': 'IngredientsIntent',
+        'samples': [
+            ['Ingredients'],
+            ['The ingredients'],
+        ]
+    },
+    {
+        'name': 'InstructionsIntent',
+        'samples': [
+            ['Instructions'],
+            ['The instructions'],
+        ]
     }
+
 ]
 
 

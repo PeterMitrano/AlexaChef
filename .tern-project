@@ -2,6 +2,7 @@
   "libs": [
   ],
   "loadEagerly": [
+    "src/*.js"
   ],
   "plugins": {
     "node": {}
