@@ -7,6 +7,7 @@
 
 var Alexa = require('./alexa');
 var Core = require('./core');
+var attributesHelper = require('./DynamoAttributesHelper');
 
 var AskMakeCookbookHandlers = require('./state_handlers/ask_make_cookbook');
 var AskSearchHandlers = require('./state_handlers/ask_search');
@@ -26,7 +27,6 @@ var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
  */
 var StatelessHandlers = {
   'NewSession': function () {
-    //shortcut to stateless Launch request
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit("LaunchRequest" + Core.states.INITIAL_STATE);
   },
@@ -34,7 +34,15 @@ var StatelessHandlers = {
   'SessionEndedRequest': function() {
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit("SessionEndedRequest" + Core.states.INITIAL_STATE);
-  }
+  },
+  'AMAZON.HelpIntent': function() {
+    this.handler.state = Core.states.INITIAL_STATE;
+    this.emit("AMAZON.HelpIntent" + Core.states.INITIAL_STATE);
+  },
+  'Unhandled': function () {
+    this.handler.state = Core.states.INITIAL_STATE;
+    this.emit("Unhandled" + Core.states.INITIAL_STATE);
+  },
 };
 
 var InitialStateHandlers = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
@@ -58,20 +66,34 @@ var InitialStateHandlers = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
       }
     }
   },
+  'AMAZON.HelpIntent': function() {
+    console.log("help");
+    this.handler.state = Core.states.ASK_TUTORIAL;
+    this.emit("AMAZON.YesIntent" + Core.states.ASK_TUTORIAL);
+  },
   'SessionEndedRequest': function() {
     this.emit(":tell", "Goodbye!");
   },
   /** Any intents not handled above go here */
   'Unhandled': function() {
-    console.log("unhandled no state");
-    let ftu = Core.firstTimeIntroductionIfNeeded(this);
-    if (!ftu) {
-      if (this.event.session.new) {
-        this.emit(":tell", "I'm not sure what you want. Try asking for help");
+    if (this.event.session.new) {
+      let ftu = Core.firstTimeIntroductionIfNeeded(this);
+      if (!ftu) {
+        this.emit(":tell", "I'm not sure what you want. Try asking to make something.");
       }
-      else {
-        this.emit(":tell", "How did you manage to get here? I have no idea what you want.");
-      }
+    }
+    else {
+      this.emit(":tell", "I'm not sure what you want. start by asking to make something.");
+      //console.log("need to get stuff from db");
+      //attributesHelper.get(this.handler.dynamoDBTableName, this.event.session.user.userId, (err, data) => {
+          //if(err) {
+              //console.log("get failed");
+          //}
+          //// We've successfuly gotten the user
+          //// if it didn't exist, now it does
+          //console.log("get succeeded");
+          //this.emit(":tell", "How did you manage to get here? I have no idea what you want.");
+      //});
     }
   }
 });
