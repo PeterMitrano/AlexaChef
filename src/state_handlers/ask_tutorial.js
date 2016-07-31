@@ -20,7 +20,7 @@ module.exports = Alexa.CreateStateHandler(Core.states.ASK_TUTORIAL, {
   },
   'AMAZON.NoIntent': function() {
     this.handler.state = Core.states.PROMPT_FOR_START;
-    this.emit(":ask", "Are you ready to start making something? You can say yes, or ask me someting else.");
+    this.emit(":ask", "Are you ready to start making something? You can say yes, or ask me something else.");
   },
   'Unhandled': function() {
     this.emit(":tell", "I'm confused. Do you want to start with a tutorial? Try saying yes or no.");

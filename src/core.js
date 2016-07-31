@@ -31,7 +31,6 @@ module.exports  = {
       handlerContext.attributes.invocations = 1;
       handlerContext.emit(":ask", "Hi, I'm your new cookbook. Would you like to start off with a tutorial?");
       handlerContext.emit(':saveState', true);
-      handlerContext.emit(':saveState', true);
       return true;
     }
 

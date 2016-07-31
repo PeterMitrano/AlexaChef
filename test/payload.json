@@ -4,16 +4,17 @@
             "applicationId": "amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05"
         },
         "attributes": {
+          STATE
         },
-        "new": true,
+        "new": false,
         "user": {
             "userId": "amzn1.account.AHI6EJHVJCBLLXLYYZLZHXEX2KNQ"
         }
     },
     "request": {
-        "type": "LaunchRequest",
+        "type": "IntentRequest",
         "intent": {
-          "name": "AMAZON.HelpIntent",
+          "name": "AMAZON.NoIntent",
           "slots": {
             "RecipeName": {
               "name": "RecipeName",
