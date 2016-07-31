@@ -27,9 +27,13 @@ var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
 var StatelessHandlers = {
   'NewSession': function () {
     //shortcut to stateless Launch request
-    console.log("stateless launch");
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit("LaunchRequest" + Core.states.INITIAL_STATE);
+  },
+  /** Any intents not handled above go here */
+  'SessionEndedRequest': function() {
+    this.handler.state = Core.states.INITIAL_STATE;
+    this.emit("SessionEndedRequest" + Core.states.INITIAL_STATE);
   }
 };
 
@@ -53,6 +57,9 @@ var InitialStateHandlers = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
         this.emit(":tell", "I've already been launched");
       }
     }
+  },
+  'SessionEndedRequest': function() {
+    this.emit(":tell", "Goodbye!");
   },
   /** Any intents not handled above go here */
   'Unhandled': function() {

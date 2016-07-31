@@ -19,7 +19,7 @@ module.exports = Alexa.CreateStateHandler(Core.states.ASK_MAKE_COOKBOOK, {
   'AMAZON.NoIntent': function () {
     // return to initial state!
     this.handler.state = Core.states.INITIAL_STATE;
-    this.emit(":tell", "You can say quit, or ask to make something else.");
+    this.emit(":ask", "You can say quit, or ask to make something else.");
   },
   'Unhandled': function () {
     this.emit(":ask", "I'm confused. Do you want to make the recipe from your cookbook?");
