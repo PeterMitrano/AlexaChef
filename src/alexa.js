@@ -56,6 +56,11 @@ function alexaRequestHandler(event, context, callback) {
         writable: true
     });
 
+    Object.defineProperty(handler, 'saveOnEndSession', {
+        value: true,
+        writable: true
+    });
+
     Object.defineProperty(handler, 'saveBeforeResponse', {
         value: false,
         writable: true
@@ -94,13 +99,14 @@ function HandleLambdaEvent() {
         // Validate that this request originated from authorized source.
         if (handlerAppId && (requestAppId !== handlerAppId)) {
             console.log(`The applicationIds don\'t match: ${requestAppId} and ${handlerAppId}`);
-            return context.fail('Invalid ApplicationId: ' + handlerAppId);
+            return this._callback(new Error('Invalid ApplicationId: ' + handlerAppId));
+
         }
 
         if(this.dynamoDBTableName && event.session['new']) {
             attributesHelper.get(this.dynamoDBTableName, event.session.user.userId, (err, data) => {
                 if(err) {
-                    return context.fail('Error fetching user state: ' + err);
+                    return this._callback(new Error('Error fetching user state: ' + err));
                 }
 
                 Object.assign(this._event.session.attributes, data);
@@ -111,15 +117,12 @@ function HandleLambdaEvent() {
             EmitEvent.call(this);
         }
     } catch (e) {
-        console.log(`Unexpected exception '${e}':\n${e.stack}`);
-        context.fail(e);
+      this._callback(new Error(`Unexpected exception '${e}':\n${e.stack}`));
     }
 }
 
 function EmitEvent() {
     this.state = this._event.session.attributes[_StateString] || '';
-
-    console.log("State: " + this.state);
 
     var eventString = '';
 
@@ -176,6 +179,7 @@ function RegisterHandlers() {
                 event: this._event,
                 attributes: this._event.session.attributes,
                 context: this._context,
+                callback: this._callback,
                 name: eventName,
                 isOverridden:  IsOverridden.bind(this, eventName)
             };

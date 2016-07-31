@@ -16,7 +16,6 @@ module.exports = Alexa.CreateStateHandler(Core.states.ASK_TUTORIAL, {
   'AMAZON.YesIntent': function() {
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit(":tell", "I am capable of finding recipes and walking you through making them");
-    this.emit(':saveState', true);
   },
   'AMAZON.NoIntent': function() {
     this.handler.state = Core.states.PROMPT_FOR_START;

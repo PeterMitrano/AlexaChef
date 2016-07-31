@@ -39,6 +39,10 @@ var StatelessHandlers = {
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit("AMAZON.HelpIntent" + Core.states.INITIAL_STATE);
   },
+  'LaunchRequest': function () {
+    this.handler.state = Core.states.INITIAL_STATE;
+    this.emit("LaunchRequest" + Core.states.INITIAL_STATE);
+  },
   'Unhandled': function () {
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit("Unhandled" + Core.states.INITIAL_STATE);
@@ -67,7 +71,6 @@ var InitialStateHandlers = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
     }
   },
   'AMAZON.HelpIntent': function() {
-    console.log("help");
     this.handler.state = Core.states.ASK_TUTORIAL;
     this.emit("AMAZON.YesIntent" + Core.states.ASK_TUTORIAL);
   },
@@ -83,17 +86,14 @@ var InitialStateHandlers = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
       }
     }
     else {
-      this.emit(":tell", "I'm not sure what you want. start by asking to make something.");
-      //console.log("need to get stuff from db");
-      //attributesHelper.get(this.handler.dynamoDBTableName, this.event.session.user.userId, (err, data) => {
-          //if(err) {
-              //console.log("get failed");
-          //}
-          //// We've successfuly gotten the user
-          //// if it didn't exist, now it does
-          //console.log("get succeeded");
-          //this.emit(":tell", "How did you manage to get here? I have no idea what you want.");
-      //});
+      attributesHelper.get(this.handler.dynamoDBTableName, this.event.session.user.userId, (err, data) => {
+          if(err) {
+            this.emit(":tell", "I was unable to find your information in my database. Try quitting this skill and starting over.");
+          }
+          // We've successfuly gotten the user
+          // if it didn't exist, now it does
+          this.emit(":tell", "I'm not sure what you want. start by asking to make something.");
+      });
     }
   }
 });
@@ -102,8 +102,8 @@ var InitialStateHandlers = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
  * the function that alexa will call when envoking our skill.
  * The execute method essentially dispatches to on of our session handlers
  */
-exports.handler = function(event, context) {
-  var alexa = Alexa.LambdaHandler(event, context);
+exports.handler = function(event, context, callback) {
+  var alexa = Alexa.LambdaHandler(event, context, callback);
 
   alexa.registerHandlers(StatelessHandlers,
     InitialStateHandlers,
@@ -115,6 +115,7 @@ exports.handler = function(event, context) {
     PromptForStartHandlers,
     NewRecipeHandlers
     );
+  alexa.saveOnEndSession = false;
   alexa.dynamoDBTableName = 'my_cookbook_users';
   alexa.appId = APP_ID;
   alexa.execute();

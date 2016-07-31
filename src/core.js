@@ -23,9 +23,6 @@ module.exports  = {
    * @param {handlerContext} handlerContext - the session related info
    */
   'firstTimeIntroductionIfNeeded': function (handlerContext) {
-
-    console.log(JSON.stringify(handlerContext.attributes, null, 2));
-
     if (handlerContext.attributes.invocations === undefined || handlerContext.attributes.invocations === 0) {
       handlerContext.handler.state = this.states.ASK_TUTORIAL;
       handlerContext.attributes.invocations = 1;
