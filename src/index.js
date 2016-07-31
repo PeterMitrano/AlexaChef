@@ -10,7 +10,7 @@ var Core = require('./core');
 
 var AskTutorialHandlers = require('./state_handlers/ask_tutorial');
 var AskSearchHandlers = require('./state_handlers/ask_search');
-var IngredientsOrInstructionsHandler = require('./state_handlers/ingredients_or_instructions');
+//var IngredientsOrInstructionsHandler = require('./state_handlers/ingredients_or_instructions');
 var NewRecipeHandlers = require('./state_handlers/new_recipe');
 var PromptForStartHandlers = require('./state_handlers/prompt_for_start');
 var TellTutorialHandlers = require('./state_handlers/tell_tutorial');
@@ -45,10 +45,14 @@ var StatelessHandlers = {
   },
   /** Any intents not handled above go here */
   'Unhandled': function() {
-    let ftu = Core.firstTimeIntroductionIfNeeded(this);
-    if (!ftu) {
-      this.emit(":tell", "intent equals, Unhandled");
-    }
+    //let ftu = Core.firstTimeIntroductionIfNeeded(this);
+    //if (!ftu) {
+      //this.emit(":tell", "intent equals, Unhandled");
+    //}
+    console.log("nope");
+    this.emit(":tell", "I've set some attributes");
+    this.attributes.foo = "bar";
+    this.emit(':saveState', true);
   }
 };
 
@@ -59,13 +63,10 @@ var StatelessHandlers = {
 exports.handler = function(event, context) {
   var alexa = Alexa.LambdaHandler(event, context);
 
-  alexa._context.succeed = function(event, data) {
-  };
-
   alexa.registerHandlers(StatelessHandlers,
     AskTutorialHandlers,
     AskSearchHandlers,
-    IngredientsOrInstructionsHandler,
+    //IngredientsOrInstructionsHandler,
     TellTutorialHandlers,
     PromptForStartHandlers,
     NewRecipeHandlers
