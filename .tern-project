@@ -2,7 +2,8 @@
   "libs": [
   ],
   "loadEagerly": [
-    "src/*.js"
+    "src/*.js",
+    "src/state_handlers/*.js"
   ],
   "plugins": {
     "node": {}
