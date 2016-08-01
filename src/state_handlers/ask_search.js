@@ -14,7 +14,7 @@ var Alexa = require('../alexa');
  */
 module.exports = Alexa.CreateStateHandler(Core.states.ASK_SEARCH, {
   'AMAZON.YesIntent': function() {
-    this.handers.state = Core.states.INGREDIENTS_OR_INSTRUCTIONS;
+    this.handler.state = Core.states.INGREDIENTS_OR_INSTRUCTIONS;
     this.emit(":ask", "Which do you want to start with, the ingredients or the instructions?");
   },
   'AMAZON.NoIntent': function() {

@@ -136,23 +136,38 @@ function EmitEvent() {
         eventString = 'SessionEndedRequest';
     }
 
-    var statefulEventString = eventString + this.state;
+    let statefulEventString = eventString + this.state;
     console.log("statefulEventString: " + statefulEventString);
 
 
     if(this.listenerCount(statefulEventString) < 1) {
-      console.log("No handler for " + statefulEventString + ", checking stateless handler");
+      console.log("Skipping missing handler for " + statefulEventString);
+
       if(this.listenerCount(eventString) < 1) {
-        console.log("No handler for " + eventString + ", emitting Unhandled instead");
-        eventString = 'Unhandled' + this.state;
+        console.log("Skipping missing handler for " + eventString);
+
+        let statefulUnhandledString = 'Unhandled' + this.state;
+        if(this.listenerCount(statefulUnhandledString) < 1){
+          console.log("Skipping missing handler for " + statefulUnhandledString);
+
+          if (this.listenerCount("Unhandled") < 1) {
+            throw new Error('No stateless Unhandled function. Giving up.');
+          }
+          else {
+            this.emit("Unhandled");
+          }
+        }
+        else {
+          this.emit(statefulUnhandledString);
+        }
+      }
+      else {
+        this.emit(eventString);
       }
     }
-
-    if(this.listenerCount(eventString) < 1){
-        throw new Error(`No 'Unhandled' function defined for event: ${eventString}`);
+    else {
+      this.emit(statefulEventString);
     }
-
-    this.emit(eventString);
 }
 
 function RegisterHandlers() {
