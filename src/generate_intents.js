@@ -181,8 +181,7 @@ let intents = [
       'what\'s next',
     ]
   }
-
-]
+];
 
 intents.forEach(function (intent) {
   intent.templates.forEach(function (template) {
