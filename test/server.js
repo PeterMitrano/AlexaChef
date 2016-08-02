@@ -5,7 +5,7 @@ let bodyParser = require('body-parser');
 let path = require('path');
 let app = express();
 let index = require("../src/index");
-let generate = require("./generate_utterances");
+let generator = require("./generate_utterances");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -17,9 +17,9 @@ app.listen(3000, function () {
 });
 app.get('/', function(req,res) {
   res.render('test', {
-      "app": index.name,
-     "schema": {},
-     "utterances": generate(),
-     "intents": {}
+    "app": index.name,
+    "schema": JSON.stringify(generator.schema(), null, 2),
+    "intents": generator.intents(),
+    "utterances": generator.generate(),
   });
 });

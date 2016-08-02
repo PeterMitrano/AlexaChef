@@ -2,7 +2,7 @@
 
 var utterances = require("alexa-utterances");
 
-let intents = [
+let the_intents = [
   {
     "name": "StartNewRecipeIntent",
     "dictionary": {
@@ -183,9 +183,43 @@ let intents = [
   }
 ];
 
-function generateUtterances() {
+function getIntents() {
+  let result = {};
+  the_intents.forEach(function (intent) {
+    result[intent.name] = {
+      "name": intent.name,
+      "schema": {
+        "slots": intent.slots,
+        "utterances": "utterances"
+      }
+    };
+  });
+  console.log(JSON.stringify(result,null,2));
+  return  result;
+}
+
+function getSchema() {
   let result = [];
-  intents.forEach(function (intent) {
+  the_intents.forEach(function (intent) {
+    let slots = []
+    if (intent.slots) {
+      Object.keys(intent.slots).forEach(function (key) {
+        slots.push({"name": key, "type": intent.slots[key]});
+      });
+    }
+
+    let x = {
+      "intent": intent.name,
+      "slots": slots
+    };
+    result.push(x);
+  });
+  return  {"intents": result}
+}
+
+function generateUtterances() {
+  let result = "";
+  the_intents.forEach(function (intent) {
     intent.templates.forEach(function (template) {
       let samples = utterances(template, intent.slots, intent.dictionary, true);
       samples.forEach(function (utterance) {
@@ -196,7 +230,9 @@ function generateUtterances() {
   return result;
 };
 
-module.exports = generateUtterances;
+module.exports.generate = generateUtterances;
+module.exports.schema = getSchema;
+module.exports.intents = getIntents;
 
 if (!module.parent) {
   console.log(generateUtterances());
