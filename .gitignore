@@ -1,6 +1,5 @@
-node_modules
-build
 doc
+node_modules
 *.bak
 *.zip
 *.pdf
