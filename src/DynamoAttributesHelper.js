@@ -5,13 +5,19 @@ var doc;
 
 module.exports = (function() {
     return {
-        get: function(table, userId, callback) {
+        get: function(table, userId, callback, endpoint_url) {
             if(!table) {
                 callback('DynamoDB Table name is not set.', null);
             }
 
             if(!doc) {
-                doc = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+                if (endpoint_url) {
+                    // not sure how to control this, but the local dynamodb seems to set region to east
+                    doc = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10', region: 'us-east-1', endpoint: endpoint_url});
+                }
+                else {
+                    doc = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+                }
             }
 
             var params = {
@@ -27,7 +33,13 @@ module.exports = (function() {
                     console.log('get error: ' + JSON.stringify(err, null, 4));
 
                     if(err.code === 'ResourceNotFoundException') {
-                        var dynamoClient = new aws.DynamoDB();
+                        let dynamoClient = undefined;
+                        if (endpoint_url) {
+                          dynamoClient = new aws.DynamoDB({region: "us-east-1", endpoint: endpoint_url});
+                        }
+                        else {
+                          dynamoClient = new aws.DynamoDB();
+                        }
                         newTableParams['TableName'] = table;
                         dynamoClient.createTable(newTableParams, function (err, data) {
                             if(err) {
@@ -55,7 +67,12 @@ module.exports = (function() {
             }
 
             if(!doc) {
-                doc = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+                if (endpoint_url) {
+                    doc = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10', region: 'us-east-1', endpoint: endpoint_url});
+                }
+                else {
+                    doc = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+                }
             }
 
             var params = {
@@ -94,7 +111,7 @@ var newTableParams = {
         }
     ],
     ProvisionedThroughput: {
-        ReadCapacityUnits: 5,
-        WriteCapacityUnits: 5
+        ReadCapacityUnits: 1,
+        WriteCapacityUnits: 1
     }
 };

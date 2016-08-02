@@ -47,6 +47,7 @@ var StatelessHandlers = {
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit(":tell", `We've already been talking but I have no idea what about,
         so I will exit this session. Please start over by saying, Alexa launch my cookbok.`);
+    this.emit(":saveState", true);
   }
 };
 
@@ -55,7 +56,16 @@ var StatelessHandlers = {
  * The execute method essentially dispatches to on of our session handlers
  */
 exports.handler = function(event, context, callback) {
-  var alexa = Alexa.LambdaHandler(event, context, callback);
+
+  let params = {
+    saveOnEndSession: false,
+    endpoint_url: "http://localhost:8000"
+  };
+
+  var alexa = Alexa.LambdaHandler(event, context, callback, params);
+
+  alexa.dynamoDBTableName = 'my_cookbook_users';
+  alexa.appId = APP_ID;
 
   alexa.registerHandlers(StatelessHandlers,
     AskMakeCookbookHandlers,
@@ -67,9 +77,6 @@ exports.handler = function(event, context, callback) {
     PromptForStartHandlers,
     NewRecipeHandlers
     );
-  alexa.saveOnEndSession = false;
-  alexa.dynamoDBTableName = 'my_cookbook_users';
-  alexa.appId = APP_ID;
 
   console.log("State: " + JSON.stringify(event.session.attributes, null, 2));
 

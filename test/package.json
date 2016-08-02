@@ -1,0 +1,23 @@
+{
+  "name": "alexa_test_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/PeterMitrano/my_cookbook.git"
+  },
+  "author": "Peter Mitrano",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PeterMitrano/my_cookbook/issues"
+  },
+  "homepage": "https://github.com/PeterMitrano/my_cookbook#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

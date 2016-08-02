@@ -13,7 +13,7 @@ function AlexaRequestEmitter() {
 
 util.inherits(AlexaRequestEmitter, EventEmitter);
 
-function alexaRequestHandler(event, context, callback) {
+function alexaRequestHandler(event, context, callback, params) {
     if(!event.session['attributes']) {
         event.session['attributes'] = {};
     }
@@ -36,6 +36,11 @@ function alexaRequestHandler(event, context, callback) {
         writable: false
     });
 
+    Object.defineProperty(handler, '_params', {
+        value: params,
+        writable: false
+    });
+
     Object.defineProperty(handler, 'state', {
         value: null,
         writable: true
@@ -53,11 +58,6 @@ function alexaRequestHandler(event, context, callback) {
 
     Object.defineProperty(handler, 'dynamoDBTableName', {
         value: null,
-        writable: true
-    });
-
-    Object.defineProperty(handler, 'saveOnEndSession', {
-        value: true,
         writable: true
     });
 
@@ -112,7 +112,7 @@ function HandleLambdaEvent() {
                 Object.assign(this._event.session.attributes, data);
 
                 EmitEvent.call(this);
-            });
+            }, this._params.endpoint_url);
         } else {
             EmitEvent.call(this);
         }
@@ -201,6 +201,7 @@ function RegisterHandlers() {
                 attributes: this._event.session.attributes,
                 context: this._context,
                 callback: this._callback,
+                params: this._params,
                 name: eventName,
                 isOverridden:  IsOverridden.bind(this, eventName)
             };

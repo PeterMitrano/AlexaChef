@@ -112,14 +112,14 @@ module.exports = (function () {
                 this.attributes['STATE'] = this.handler.state;
             }
 
-            if(this.saveBeforeResponse || forceSave || (this.saveOnEndSession && this.handler.response.response.shouldEndSession)) {
+            if(this.saveBeforeResponse || forceSave || (this.context.saveOnEndSession && this.handler.response.response.shouldEndSession)) {
                 attributesHelper.set(this.handler.dynamoDBTableName, this.event.session.user.userId, this.attributes,
                     (err, data) => {
                         if(err) {
                             return this.emit(':saveStateError', err);
                         }
                         this.callback(null, this.handler.response);
-                });
+                }, this.params.endpoint_url);
             } else {
                 this.callback(null, this.handler.response);
             }
