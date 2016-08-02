@@ -317,7 +317,7 @@ e.$validators.maxlength=function(a,c){return 0>f||e.$isEmpty(c)||c.length<=f}}}}
 					"new": true,
 					"sessionId": "amzn1.echo-api.session.abeee1a7-aee0-41e6-8192-e6faaed9f5ef",
 					"application": {
-						"applicationId": "amzn1.echo-sdk-ams.app.000000-d0ed-0000-ad00-000000d00ebe"
+						"applicationId": "temp_app_id"
 					},
 					"attributes": {},
 					"user": {
@@ -377,7 +377,7 @@ e.$validators.maxlength=function(a,c){return 0>f||e.$isEmpty(c)||c.length<=f}}}}
 				}
 			};
 			// Extract the applicationId if it exists and update the templates
-			var applicationId = "<%= app.id || "" %>";
+			var applicationId = "<%= appId || "" %>";
 			if (applicationId) {
 				$scope.templates.launch.session.application.applicationId = applicationId;
 				$scope.templates.intent.session.application.applicationId = applicationId;
