@@ -18,7 +18,7 @@ var PromptForStartHandlers = require('./state_handlers/prompt_for_start');
 var TellTutorialHandlers = require('./state_handlers/tell_tutorial');
 
 /** this can be found on the amazon developer page for the skill */
-var APP_ID = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
+let appId = 'amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05';
 
 /**
  * Handle requests from the user when we are not in any given state.
@@ -65,7 +65,7 @@ exports.handler = function(event, context, callback) {
   var alexa = Alexa.LambdaHandler(event, context, callback, params);
 
   alexa.dynamoDBTableName = 'my_cookbook_users';
-  alexa.appId = APP_ID;
+  alexa.appId = appId;
 
   alexa.registerHandlers(StatelessHandlers,
     AskMakeCookbookHandlers,
@@ -82,3 +82,6 @@ exports.handler = function(event, context, callback) {
 
   alexa.execute();
 };
+
+module.exports.name = "my_cookbook";
+module.exports.appId = appId;

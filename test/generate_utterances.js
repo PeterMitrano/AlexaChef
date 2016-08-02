@@ -183,13 +183,21 @@ let intents = [
   }
 ];
 
-intents.forEach(function (intent) {
-  intent.templates.forEach(function (template) {
-    let samples = utterances(template, intent.slots, intent.dictionary, true);
-    samples.forEach(function (utterance) {
-      let result = intent.name + "\t" + (utterance.replace(/\s+/g, " ")).trim();
-      console.log(result);
+function generateUtterances() {
+  let result = [];
+  intents.forEach(function (intent) {
+    intent.templates.forEach(function (template) {
+      let samples = utterances(template, intent.slots, intent.dictionary, true);
+      samples.forEach(function (utterance) {
+        result += utterance + "\n";
+      });
     });
   });
-});
+  return result;
+};
 
+module.exports = generateUtterances;
+
+if (!module.parent) {
+  console.log(generateUtterances());
+}

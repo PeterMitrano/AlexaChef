@@ -1,11 +1,11 @@
 {
-  "name": "alexa_test_server",
+  "name": "test_server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server/server.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,12 @@
   },
   "homepage": "https://github.com/PeterMitrano/my_cookbook#readme",
   "dependencies": {
+    "alexa-utterances": "^0.2.1",
+    "body-parser": "^1.15.2",
+    "ejs": "^2.5.1",
     "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.10.0"
   }
 }
