@@ -14,3 +14,11 @@ Run `grunt`. This will run jshint and generate jsdocs.
 
     cd test
     node generate_utterances.js
+
+
+### Running local webserver & database for testing
+
+ - Download extract (the dynamodb tar file)[http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz]
+ - In that folder, run `java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb`
+ - Go to the test folder of this project and run `node server.js`
+ - Open up a browser and point it to (http://localhost:3000)[http://localhost:3000]
