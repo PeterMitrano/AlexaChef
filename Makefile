@@ -1,8 +1,11 @@
 all: zip upload test
 
 zip:
-	cd src &&	zip -q -r skill.zip state_handlers node_modules *.js package.json
+	mkdir -p build
+	cp -r src/* build
+	cp -r node_modules build
+	cp package.json build
+	cd build &&	zip -q -r skill.zip *
 
 upload: zip
-	aws lambda update-function-code --function-name MyCookbook --zip-file fileb://src/skill.zip
-	rm src/skill.zip
+	aws lambda update-function-code --function-name MyCookbook --zip-file fileb://build/skill.zip
