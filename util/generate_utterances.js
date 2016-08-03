@@ -216,7 +216,7 @@ function getIntents() {
 function getSchema() {
   let result = [];
   the_intents.forEach(function (intent) {
-    let slots = []
+    let slots = [];
     if (intent.slots) {
       Object.keys(intent.slots).forEach(function (key) {
         slots.push({"name": key, "type": intent.slots[key]});
@@ -229,7 +229,7 @@ function getSchema() {
     };
     result.push(x);
   });
-  return  {"intents": result}
+  return  {"intents": result};
 }
 
 function generateUtterances() {
@@ -243,7 +243,7 @@ function generateUtterances() {
     });
   });
   return result;
-};
+}
 
 module.exports.generate = generateUtterances;
 module.exports.schema = getSchema;
