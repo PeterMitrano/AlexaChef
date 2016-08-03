@@ -30,6 +30,10 @@ var StatelessHandlers = {
     this.handler.state = Core.states.INITIAL_STATE;
     this.emit("LaunchRequest" + Core.states.INITIAL_STATE);
   },
+  /** User can start off by immediately asking for a recipe */
+  'StartNewRecipeIntent': function () {
+    this.emit("StartNewRecipeIntent" + Core.states.NEW_RECIPE);
+  },
   'AMAZON.HelpIntent': function() {
     this.handler.state = Core.states.ASK_TUTORIAL;
     this.emit("AMAZON.YesIntent" + Core.states.ASK_TUTORIAL);

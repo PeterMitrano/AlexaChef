@@ -154,18 +154,22 @@ function EmitEvent() {
             throw new Error('No stateless Unhandled function. Giving up.');
           }
           else {
+            console.log("Found Unhandled");
             this.emit("Unhandled");
           }
         }
         else {
+          console.log("Found " +statefulUnhandledString);
           this.emit(statefulUnhandledString);
         }
       }
       else {
+        console.log("Found " +eventString);
         this.emit(eventString);
       }
     }
     else {
+      console.log("Found " +statefulEventString);
       this.emit(statefulEventString);
     }
 }

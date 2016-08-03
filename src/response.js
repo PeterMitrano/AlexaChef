@@ -96,10 +96,9 @@ module.exports = (function () {
             }
 
             if (this.handler.dynamoDBTableName) {
-                return this.emit(':saveState');
+                this.emit(':saveState');
             }
 
-            console.log("RESPONSE: " + this.handler.response);
             this.callback(null, this.handler.response);
         },
         ':saveState': function(forceSave) {
@@ -115,19 +114,10 @@ module.exports = (function () {
                 attributesHelper.set(this.handler.dynamoDBTableName, this.event.session.user.userId, this.attributes,
                     (err, data) => {
                         if(err) {
-                            return this.emit(':saveStateError', err);
+                          throw new Error(`Error saving state: ${err}\n${err.stack}`);
                         }
-                        //this.callback(null, this.handler.response);
                 }, this.params.endpoint_url);
-            } else {
-                //this.callback(null, this.handler.response);
             }
-        },
-        ':saveStateError': function(err) {
-            if(this.isOverridden()) {
-                return;
-            }
-            this.callback(new Error(`Error saving state: ${err}\n${err.stack}`));
         }
     };
 })();

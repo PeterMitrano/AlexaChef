@@ -14,10 +14,6 @@ var attributesHelper = require('../DynamoAttributesHelper');
  * This is also the state we should begin in for every new session
  */
 module.exports = Alexa.CreateStateHandler(Core.states.INITIAL_STATE, {
-  /** User can start off by immediately asking for a recipe */
-  'StartNewRecipeIntent': function () {
-    this.emit("StartNewRecipeIntent" + Core.states.NEW_RECIPE);
-  },
   /** The user says something like "Open my cookbook" */
   'LaunchRequest': function () {
     let ftu = Core.firstTimeIntroductionIfNeeded(this);
