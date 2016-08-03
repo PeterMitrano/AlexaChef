@@ -18,7 +18,6 @@ module.exports = Alexa.CreateStateHandler(Core.states.ASK_TUTORIAL, {
     // don't end session here. It's convenient so that we don't
     // have say "ask my cookbook" again
     this.emit(":ask", "I am capable of finding recipes and walking you through making them. Try asking how to make pancakes");
-    this.emit(":saveState", true);
   },
   'AMAZON.NoIntent': function() {
     this.handler.state = Core.states.PROMPT_FOR_START;
