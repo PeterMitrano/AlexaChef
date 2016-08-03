@@ -199,6 +199,81 @@ let the_intents = [
   }
 ];
 
+function request() {
+  return {
+    "version": "1.0",
+    "session": {
+      "new": false,
+      "sessionId": "amzn1.echo-api.session.test",
+      "application": {
+        //"applicationId": "amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05"
+      },
+      "attributes": {
+        //"STATE": "_ASK_MAKE_COOKBOOK",
+        //"invocations": 2
+      },
+      "user": {
+        //"userId": "amzn1.account.AM3B227HF3FAM1B261HK7FFM3A2"
+      }
+    },
+    "request": {
+      //"type": "IntentRequest",
+      "requestId": "amzn1.echo-api.request.test",
+      "timestamp": "0000-00-00T00:00:00Z",
+      //"intent": {
+        //"name": "StartNewRecipeIntent",
+        //"slots": {
+          //"RecipeName": {
+            //"value": "a",
+            //"name": "RecipeName"
+          //}
+        //}
+      //}
+    },
+
+    withAppId: function(appId) {
+      this.session.application.applicationId = appId;
+      return this;
+    },
+    withAttribute: function(name, value) {
+      this.session.attributes[name] = value;
+      return this;
+    },
+    withUser: function(userId) {
+      this.session.user.userId = userId;
+      return this;
+    },
+    withType: function(type) {
+      this.request.type =  type;
+      return this;
+    },
+    withIntent: function(intent) {
+      this.request.intent = intent;
+      return this;
+    }
+  };
+}
+
+function intent(name) {
+  return {
+    "name": name,
+    "slots" : {
+    //"RecipeName": {
+      //"value": "a",
+      //"name": "RecipeName"
+    //}
+    },
+
+    withSlot: function(name, value) {
+      this.slots[name] = {
+        "value": value,
+        "name": name
+      };
+      return this;
+    }
+  };
+}
+
 function getIntents() {
   let result = {};
   the_intents.forEach(function (intent) {
@@ -248,6 +323,8 @@ function generateUtterances() {
 module.exports.generate = generateUtterances;
 module.exports.schema = getSchema;
 module.exports.intents = getIntents;
+module.exports.request = request;
+module.exports.intent = intent;
 
 if (!module.parent) {
   console.log(generateUtterances());
