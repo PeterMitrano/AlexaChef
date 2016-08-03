@@ -22,4 +22,4 @@ Run `grunt`. This will run jshint and generate jsdocs.
  - In that folder, run `java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb`
  - Install Nodemon (such as with `npm install -g nodemon`
  - Go to the test folder of this project and run `nodemon server.js`
- - Open up a browser and point it to (http://localhost:3000)[http://localhost:3000]
+ - Open up a browser and point it to (http://localhost:4000)[http://localhost:4000]
