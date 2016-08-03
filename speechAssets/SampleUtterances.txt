@@ -2390,7 +2390,15 @@ AMAZON.NoIntent	find me another one
 AMAZON.NoIntent	not that one
 AMAZON.NoIntent	not that
 AMAZON.NoIntent	No find something else
+AMAZON.YesIntent	yes use that
+AMAZON.YesIntent	yes that one
+AMAZON.YesIntent	yes that
+AMAZON.YesIntent	yes that is good
+AMAZON.YesIntent	yes that is great
+AMAZON.YesIntent	yes that is awesome
+AMAZON.YesIntent	yes that is excellent
 AMAZON.HelpIntent	What can I say next
 AMAZON.NextIntent	go on
 AMAZON.NextIntent	next step
 AMAZON.NextIntent	what's next
+

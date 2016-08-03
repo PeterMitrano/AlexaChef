@@ -168,6 +168,22 @@ let the_intents = [
     ]
   },
   {
+    "name": "AMAZON.YesIntent",
+    "dictionary": {
+      "good_words": ['good', 'great', 'awesome', 'excellent'],
+    },
+    "templates": [
+      'yes use that',
+      'yes that one',
+      'yes that',
+      'yes that is {good_words}',
+    ]
+  },
+  {
+    "name": "AMAZON.StartOverIntent",
+    "templates": []
+  },
+  {
     "name": "AMAZON.HelpIntent",
     "templates": [
       'What can I say next',
@@ -222,7 +238,7 @@ function generateUtterances() {
     intent.templates.forEach(function (template) {
       let samples = utterances(template, intent.slots, intent.dictionary, true);
       samples.forEach(function (utterance) {
-        result += utterance + "\n";
+        result += intent.name + "\t" + utterance + "\n";
       });
     });
   });
