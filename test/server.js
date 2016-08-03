@@ -27,6 +27,7 @@ app.get('/', function(req, res) {
 app.post('/', function(req, res) {
   index.handler(req.body, {}, function(error, data) {
     // send back to webpage
-    res.json(data || error).send();
-  });
+    console.log("callback called");
+    //res.json(data || error).send();
+  }, true);
 });

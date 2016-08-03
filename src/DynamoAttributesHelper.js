@@ -61,7 +61,7 @@ module.exports = (function() {
             });
         },
 
-        set: function(table, userId, data, callback) {
+        set: function(table, userId, data, callback, endpoint_url) {
             if(!table) {
                 callback('DynamoDB Table name is not set.', null);
             }

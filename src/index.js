@@ -55,12 +55,15 @@ var StatelessHandlers = {
  * the function that alexa will call when envoking our skill.
  * The execute method essentially dispatches to on of our session handlers
  */
-exports.handler = function(event, context, callback) {
+exports.handler = function(event, context, callback, local_testing) {
 
   let params = {
-    saveOnEndSession: false,
-    endpoint_url: "http://localhost:8000"
+    saveOnEndSession: false
   };
+
+  if (local_testing){
+    params.endpoint_url = "http://localhost:8000";
+  }
 
   var alexa = Alexa.LambdaHandler(event, context, callback, params);
 

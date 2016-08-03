@@ -99,8 +99,7 @@ module.exports = (function () {
                 return this.emit(':saveState');
             }
 
-            console.log("Full Response :");
-            console.log(this.handler.response);
+            console.log("RESPONSE: " + this.handler.response);
             this.callback(null, this.handler.response);
         },
         ':saveState': function(forceSave) {
@@ -118,10 +117,10 @@ module.exports = (function () {
                         if(err) {
                             return this.emit(':saveStateError', err);
                         }
-                        this.callback(null, this.handler.response);
+                        //this.callback(null, this.handler.response);
                 }, this.params.endpoint_url);
             } else {
-                this.callback(null, this.handler.response);
+                //this.callback(null, this.handler.response);
             }
         },
         ':saveStateError': function(err) {
