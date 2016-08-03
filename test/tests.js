@@ -1,7 +1,7 @@
 'use strict';
 
-//let index = require("../src/index");
-//let generator = require("./generate_utterances");
+let index = require("../src/index");
+let generator = require("../util/generate_utterances");
 
 var chai = require('chai');
 var expect = chai.expect;
