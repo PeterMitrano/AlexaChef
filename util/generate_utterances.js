@@ -231,6 +231,11 @@ function request() {
       //}
     },
 
+    withNew : function() {
+      this.session.new = true;
+      return this;
+    },
+
     withAppId: function(appId) {
       this.session.application.applicationId = appId;
       return this;
