@@ -1,15 +1,6 @@
 from copy import deepcopy
 import json
 
-default_body = {
-  "version": "1.0",
-  "sessionAttributes": {
-  },
-  "response": {
-  }
-}
-
-
 def ask(speech_output, reprompt_speech):
   response = {
     'outputSpeech': outputSpeech(speech_output),
@@ -31,12 +22,35 @@ def ask_with_card(speech_output, reprompt_speech, card_title, card_content, card
   pass
 
 def tell_with_card(speech_output, card_title, card_content, card_img_url):
-  pass
+  response = {
+    'outputSpeech': outputSpeech(speech_output),
+    'card': card(card_title, card_content, card_img_url),
+    'shouldEndSession': True
+  }
+  return fini({}, response)
+
+def card(card_title, card_content, card_img_url):
+  if card_img_url:
+    return {
+      'type': 'Standard',
+      'title': card_title,
+      'text': card_content,
+      'image': {
+        'smallImageUrl': card_img_url,
+        'largeImageUrl': card_img_url
+      }
+    }
+  else:
+    return {
+      'type': 'Simple',
+      'title': card_title,
+      'content': card_content
+    }
 
 def outputSpeech(ssml):
   return {
     "type": "SSML",
-    "ssml": ssml
+    "ssml": "<speak>" + ssml + "</speak>"
   }
 
 def fini(attributes, response):
