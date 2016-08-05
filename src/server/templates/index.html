@@ -32,6 +32,9 @@
         Intent:
         <select id="intent_select">
           <option value=""/>
+          {% for intent in intents: %}
+          <option value="{{intent}}">{{intent}}</option>
+          {% endfor %}
         </select>
       </div>
       <div id="slots">
