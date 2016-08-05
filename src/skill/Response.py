@@ -19,7 +19,15 @@ def tell(speech_output):
   return fini({}, response)
 
 def ask_with_card(speech_output, reprompt_speech, card_title, card_content, card_img_url):
-  pass
+  response = {
+    'outputSpeech': outputSpeech(speech_output),
+    'reprompt': {
+      'outputSpeech': outputSpeech(reprompt_speech)
+    },
+    'card': card(card_title, card_content, card_img_url),
+    'shouldEndSession': False
+  }
+  return fini({}, response)
 
 def tell_with_card(speech_output, card_title, card_content, card_img_url):
   response = {
