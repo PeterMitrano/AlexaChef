@@ -1,28 +1,47 @@
+from copy import deepcopy
 import json
 
-class Response:
+default_body = {
+  "version": "1.0",
+  "sessionAttributes": {
+  },
+  "response": {
+  }
+}
 
-  def __init__(self):
-    self.body = {
-      "version": "1.0",
-      "sessionAttributes": {
-      },
-      "response": {
-        "outputSpeech": {
-          "type": "SSML",
-          "ssml": ""
-        },
-      }
-    }
 
-  def ask(self, speech_output, reprompt_speech):
-    pass
+def ask(speech_output, reprompt_speech):
+  response = {
+    'outputSpeech': outputSpeech(speech_output),
+    'reprompt': {
+      'outputSpeech': outputSpeech(reprompt_speech)
+    },
+    'shouldEndSession': False
+  }
+  return fini({}, response)
 
-  def tell(self, speech_output):
-    pass
+def tell(speech_output):
+  response = {
+    'outputSpeech': outputSpeech(speech_output),
+    'shouldEndSession': True
+  }
+  return fini({}, response)
 
-  def ask_with_card(self, speech_output, reprompt_speech, card_title, card_content, card_img_url):
-    pass
+def ask_with_card(speech_output, reprompt_speech, card_title, card_content, card_img_url):
+  pass
 
-  def tell_with_card(self, speech_output, card_title, card_content, card_img_url):
-    pass
+def tell_with_card(speech_output, card_title, card_content, card_img_url):
+  pass
+
+def outputSpeech(ssml):
+  return {
+    "type": "SSML",
+    "ssml": ssml
+  }
+
+def fini(attributes, response):
+  return {
+    "version": "1.0",
+    "sessionAttributes": attributes,
+    "response": response
+  }

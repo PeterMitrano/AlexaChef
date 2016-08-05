@@ -1,4 +1,5 @@
 *.swp
 *.pyc
 *.zip
+build
 venv

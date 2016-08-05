@@ -1,8 +1,9 @@
-all: zip upload test
+all: zip upload
 
 zip:
 	mkdir -p build
 	cp -r src/* build
+	find build -name *.swp | xargs rm
 	cd build &&	zip -q -r skill.zip *
 
 upload: zip
