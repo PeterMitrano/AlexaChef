@@ -8,5 +8,5 @@ if [ ! -d "db" ]; then
 fi
 
 cd db
-ls db
+ls
 java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
