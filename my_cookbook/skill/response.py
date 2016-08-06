@@ -1,4 +1,3 @@
-from copy import deepcopy
 import json
 
 def ask(speech_output, reprompt_speech):

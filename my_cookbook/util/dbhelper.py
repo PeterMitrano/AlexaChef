@@ -1,5 +1,5 @@
-from my_cookbook.skill import Core
-from my_cookbook.skill import Response
+from my_cookbook.util import core
+from my_cookbook.skill import response
 import boto3
 
 class DBHelper:
@@ -12,7 +12,7 @@ class DBHelper:
       self.client = boto3.client("dynamodb")
 
   def getState(self):
-    return self.get(Core.STATE_KEY, 'S')
+    return self.get(core.STATE_KEY, 'S')
 
   def get(self, attribute, attribute_type):
     key = {
@@ -20,13 +20,13 @@ class DBHelper:
         'S': self.user
       }
     }
-    response = self.client.get_item(TableName=Core.DB_TABLE, Key=key)
+    response = self.client.get_item(TableName=core.DB_TABLE, Key=key)
 
     try:
       if response['ResponseMetadata']['HTTPStatusCode'] != 200:
         # We're willing to silently fail here in hopes of that being
         # the more pleasent user experience
-        return (None, Response.tell("I've forgotten where we were. Please start over"));
+        return (None, response.tell("I've forgotten where we were. Please start over"));
 
       if "Item" not in response:
         # this is fine, it just means we don't have this user yet
@@ -39,14 +39,14 @@ class DBHelper:
             }
           }
         }
-        key['mapAttr']['M'][Core.STATE_KEY] = {
-          'S': Core.States.INITIAL_STATE
+        key['mapAttr']['M'][core.STATE_KEY] = {
+          'S': core.States.INITIAL_STATE
         }
-        self.client.put_item(TableName=Core.DB_TABLE, Item=key)
+        self.client.put_item(TableName=core.DB_TABLE, Item=key)
 
       state = response['Item']['mapAttr']['M'][attribute][attribute_type]
       return (state, None)
     except KeyError:
-      return (None, Response.tell("I've forgotten where we were. Please start over"));
+      return (None, response.tell("I've forgotten where we were. Please start over"));
 
 

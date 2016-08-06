@@ -1,5 +1,4 @@
 import json
-from my_cookbook.bin.lambda_function import lambda_handler
 
 event = {
   "session": {
@@ -26,5 +25,3 @@ event = {
   "version": "1.0"
 }
 
-json = json.dumps(lambda_handler(event, {}), indent=2, sort_keys=True)
-print json

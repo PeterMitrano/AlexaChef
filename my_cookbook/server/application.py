@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request
-import Schema
+import schema
 
 app = Flask(__name__)
 
 @app.route('/')
 def get_root():
-    return render_template('index.html', intents=Schema.intents());
+    return render_template('index.html', intents=schema.intents());
 
 # run the app.
 if __name__ == '__main__':
