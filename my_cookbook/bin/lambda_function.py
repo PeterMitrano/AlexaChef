@@ -1,6 +1,6 @@
-from skill import Response
-from skill import Core
-from util.DBHelper import DBHelper
+from my_cookbook.skill import Response
+from my_cookbook.skill import Core
+from my_cookbook.util.DBHelper import DBHelper
 
 def lambda_handler(event, context):
   # check if we're debuggin locally
@@ -29,7 +29,22 @@ def lambda_handler(event, context):
       if error_response:
         return error_response
 
-  # at this point we either know the state, or we have returned an error
+  # at this point we either know the state, or we have returned an error,
+  # or we know it's the users first time and there is no state
+  # so now we dispatch
+  request_type = event['request']['type']
+  intent = ""
+  if request_type == 'LaunchRequest':
+    pass
+  elif request_type == 'IntentRequest':
+    pass
+  elif request_type == 'SessionEndedRequest':
+    pass
+  else:
+    return Response.tell("I'm not sure what your intent is. Try asking differently")
+
+  stateful_intent = intent + state
+
 
 
 

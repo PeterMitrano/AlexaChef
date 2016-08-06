@@ -1,5 +1,5 @@
-from skill import Core
-from skill import Response
+from my_cookbook.skill import Core
+from my_cookbook.skill import Response
 import boto3
 
 class DBHelper:

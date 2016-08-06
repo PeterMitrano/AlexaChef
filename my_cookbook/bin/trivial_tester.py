@@ -1,5 +1,5 @@
 import json
-from lambda_function import lambda_handler
+from my_cookbook.bin.lambda_function import lambda_handler
 
 event = {
   "session": {
