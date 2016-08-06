@@ -9,14 +9,10 @@ install: "pip install -r requirements.txt"
 
 cache:
   directories:
-    - dynamodb_local_latest.tar.gz
+    - db
 
 before_script:
-  - wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz
-  - mkdir db
-  - tar -xf dynamodb_local_latest.tar.gz -C db
-  - cd db
-  - java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+  - .travis-scripts/download_db
 
 # command to run tests
 script:
