@@ -67,6 +67,10 @@ class DBHelper:
         updateExpr = 'SET mapAttr = :attr'
         exprAttributeValues = {':attr': {attribute: value}}
 
+        if not self.table:
+            logging.getLogger(core.LOGGER).warn("Did you call init_table?")
+            return result(True, 'Did you call init_table')
+
         response = self.table.update_item(
             Key=key,
             UpdateExpression=updateExpr,
