@@ -1,15 +1,20 @@
+import logging
+
 from my_cookbook.util import response
 from my_cookbook.util import core
 from my_cookbook.util import dbhelper
 
 
-def lambda_handler(event, context):
+def handler(event, context):
     # check if we're debuggin locally
     debug = False
     endpoint_url = None
     if "debug" in context:
         debug = True
+        logging.getLogger(core.LOGGER).setLevel(logging.DEBUG)
         endpoint_url = "http://localhost:8000"
+    else:
+        logging.getLogger(core.LOGGER).setLevel(logging.INFO)
 
     # check application id and user
     user = event['session']['user']['userId']

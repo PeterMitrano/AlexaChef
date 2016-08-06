@@ -1,3 +1,14 @@
+def is_valid(response):
+    try:
+        if not response['response']['outputSpeech']['ssml']:
+            return false
+        if response['response']['outputSpeech']['type'] == 'SSML':
+            return false
+    except KeyError:
+        return false
+
+    return true
+
 def ask(speech_output, reprompt_speech):
     response = {
         'outputSpeech': outputSpeech(speech_output),
