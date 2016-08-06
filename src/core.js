@@ -3,7 +3,19 @@
  * @author Peter Mitrano- mitrnanopeter@gmail.com
  */
 
+var Request = require('request');
+
+var api_url = 'https://6peln83v5l.execute-api.us-east-1.amazonaws.com/dev/';
+
 module.exports  = {
+  'api_headers': {
+    "x-api-key": 'JK, LOL'
+  },
+  'api_url': 'https://6peln83v5l.execute-api.us-east-1.amazonaws.com/dev/',
+  'endpoints': {
+    'recipe': 'recipes',
+    'search': 'search'
+  },
   'states': {
       ASK_MAKE_COOKBOOK: '_ASK_MAKE_COOKBOOK',
       ASK_SEARCH: '_ASK_SEARCH',
@@ -15,6 +27,17 @@ module.exports  = {
       PROMPT_FOR_START: '_PROMPT_FOR_START',
       SEARCH_ONLINE: '_SEARCH_ONLINE',
       TELL_TUTORIAL: '_TELL_TUTORIAL'
+  },
+  'makeRequest': function(endpoint, my_callback){
+    var options = {
+        'url': this.api_url + endpoint,
+        'method': 'GET',
+        'headers': this.api_headers
+    };
+    Request(options, function(err, response, body) {
+      console.log(JSON.stringify(body,null,2));
+      my_callback(err, response, body);
+    });
   },
 
   /**
