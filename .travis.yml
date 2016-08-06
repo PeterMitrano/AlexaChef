@@ -11,7 +11,7 @@ cache:
   directories:
     - dynamodb_local_latest.tar.gz
 
-before-script:
+before_script:
   - wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz
   - mkdir db
   - tar -xf dynamodb_local_latest.tar.gz -C db
