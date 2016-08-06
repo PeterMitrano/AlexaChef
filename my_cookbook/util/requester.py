@@ -2,6 +2,7 @@ import logging
 
 from my_cookbook.util import core
 
+
 class Types:
     LAUNCH = 'LaunchRequest'
     INTENT = 'IntentRequest'
@@ -37,7 +38,7 @@ class Request():
             }
         }
 
-    def copy_attributes(response):
+    def copy_attributes(self, response):
         attrs = response['sessionAttributes']
         logging.getLogger(core.LOGGER).debug('attrs: %s' % attrs)
         self.with_attributes(attrs)

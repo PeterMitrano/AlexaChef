@@ -1,26 +1,25 @@
 import unittest
-from my_cookbook.util import request
-from my_cookbook.util import response
+from my_cookbook.util import requester
+from my_cookbook.util import responder
 from my_cookbook.skill import main
 
 CONTEXT = {"debug": True}
 
 
 class IntentTest(unittest.TestCase):
-    def single_launch(self):
-        r = request.Request()
-        event = r.with_type(request.Types.LAUNCH).new().build()
-        response = main.handler(event, CONTEXT)
+    def test_single_launch(self):
+        r = requester.Request()
+        event = r.with_type(requester.Types.LAUNCH).new().build()
+        response_dict = main.handler(event, CONTEXT)
 
-        self.assertTrue(response.is_valid(response))
+        self.assertTrue(responder.is_valid(response_dict))
 
-    def multiple_launch(self):
-        r = request.Request().with_type(request.Types.LAUNCH).new()
+    def test_multiple_launch(self):
+        request = requester.Request().with_type(requester.Types.LAUNCH).new()
 
         for i in range(10):
-            event = r.build()
-            response = main.handler(event, CONTEXT)
-            self.assertTrue(response.is_valid(response))
+            event = request.build()
+            response_dict = main.handler(event, CONTEXT)
+            self.assertTrue(responder.is_valid(response_dict))
 
-            r.copy_attributes(response)
-
+            request.copy_attributes(response_dict)
