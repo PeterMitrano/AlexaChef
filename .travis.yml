@@ -11,8 +11,7 @@ cache:
   directories:
     - db
 
-before_script:
-  - sh .travis-scripts/download_db
+before_script: .travis-scripts/download_db
 
 # command to run tests
 script:
