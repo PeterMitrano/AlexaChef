@@ -9,11 +9,16 @@ CONTEXT = {"debug": True}
 
 
 class IntentTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        utils.delete_table('http://localhost:8000')
+
     @utils.wip
     def test_single_launch(self):
         r = requester.Request()
         event = r.with_type(requester.Types.LAUNCH).new().build()
-        response_dict = main.handler(event, CONTEXT)
+        skill = main.Skill()
+        response_dict = skill.handle_event(event, CONTEXT)
 
         self.assertTrue(responder.is_valid(response_dict))
 
@@ -23,7 +28,8 @@ class IntentTest(unittest.TestCase):
 
         for i in range(10):
             event = request.build()
-            response_dict = main.handler(event, CONTEXT)
+            skill = main.Skill()
+            response_dict = skill.handle_event(event, CONTEXT)
             self.assertTrue(responder.is_valid(response_dict))
 
             request.copy_attributes(response_dict)

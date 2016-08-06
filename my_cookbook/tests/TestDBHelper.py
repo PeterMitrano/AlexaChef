@@ -1,4 +1,3 @@
-import boto3
 import logging
 import random
 import time
@@ -8,18 +7,12 @@ from my_cookbook.tests import utils
 from my_cookbook.util import core
 from my_cookbook.util import dbhelper
 
-def delete_table(endpoint_url):
-    """deletes the table if it already exists"""
-    client = boto3.client("dynamodb", endpoint_url=endpoint_url)
-    tables = client.list_tables()['TableNames']
-    if core.DB_TABLE in tables:
-        client.delete_table(TableName=core.DB_TABLE)
 
 class DBHelperTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.endpoint_url = 'http://localhost:8000'
-        delete_table(cls.endpoint_url)
+        utils.delete_table(cls.endpoint_url)
         cls.db_helper = dbhelper.DBHelper(None, cls.endpoint_url)
         cls.db_helper.init_table()
 

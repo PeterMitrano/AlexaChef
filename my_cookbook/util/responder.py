@@ -2,7 +2,7 @@ def is_valid(response):
     try:
         if not response['response']['outputSpeech']['ssml']:
             return False
-        if response['response']['outputSpeech']['type'] == 'SSML':
+        if response['response']['outputSpeech']['type'] != 'SSML':
             return False
     except KeyError:
         return False

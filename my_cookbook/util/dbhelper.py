@@ -58,7 +58,7 @@ class DBHelper:
         return self.get(core.STATE_KEY)
 
     def set(self, attribute, value):
-        """ Set attribute of an the mapAttrs of an item return tuple of (truthy error, error string)
+        """ Set attribute of an the mapAttr of an item return tuple of (truthy error, error string)
 
         This will also create the user if they don't exist
         """
@@ -90,7 +90,7 @@ class DBHelper:
             return result(True, 'Keyerror')
 
     def get(self, attribute):
-        """ Get values from the mapAttrs attribute of an item return tuple of (truthy error, value, error speech)
+        """ Get values from the mapAttr attribute of an item return tuple of (truthy error, value, error speech)
 
         This will also create the user if they dont exist
         """
@@ -111,7 +111,7 @@ class DBHelper:
                                                     self.user)
                 item = {
                     'userId': self.user,
-                    'mapAttrs': {
+                    'mapAttr': {
                         'invocations': 1,
                         core.STATE_KEY: core.States.INITIAL_STATE
                     }
