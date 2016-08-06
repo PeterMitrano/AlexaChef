@@ -7,11 +7,16 @@ python:
 # command to install dependencies
 install: "pip install -r requirements.txt"
 
-cache:
-  directories:
-    - db
+#cache:
+  #directories:
+    #- db
 
-before_script: source .travis-scripts/download_db
+before_script:
+  - mkdir db;
+  - wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz -o dynamodb_local_latest.tar.gz;
+  - tar -xf dynamodb_local_latest.tar.gz -C db
+  - cd db
+  - java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb &
 
 # command to run tests
 script:
