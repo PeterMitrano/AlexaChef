@@ -10,7 +10,7 @@ def delete_table(endpoint_url):
     """deletes the table if it already exists"""
     client = boto3.client(
         "dynamodb",
-        endpoint_url=self.endpoint_url,
+        endpoint_url=endpoint_url,
         region_name="fake_region",
         aws_access_key_id="fake_id",
         aws_secret_access_key="fake_key")

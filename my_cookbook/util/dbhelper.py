@@ -29,7 +29,7 @@ class DBHelper:
     def init_table(self):
         # check if table exists, and if it doesn't then create it
         # and wait for it to be ready
-        if local:
+        if self.local:
             self.client = boto3.client(
                 "dynamodb",
                 endpoint_url=self.endpoint_url,
@@ -64,7 +64,7 @@ class DBHelper:
                 self.client.get_waiter('table_exists').wait(
                     TableName=core.DB_TABLE)
             else:
-                raise ConnectionError(
+                raise Exception(
                     "Table doesn't exist in production. Skipping create.")
 
         # at this point we know the table is there
