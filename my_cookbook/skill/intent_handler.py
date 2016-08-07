@@ -29,7 +29,8 @@ class Handler:
 
         stateful_intent = intent + state
 
-        #from nose.tools import set_trace; set_trace()
+        from nose.tools import set_trace
+        set_trace()
 
         # now we want to try to find a handler fo this intent
         # we first try the exact intent, then that intent without the state

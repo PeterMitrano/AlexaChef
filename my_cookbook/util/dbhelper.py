@@ -15,6 +15,7 @@ class DBHelper:
         self.endpoint_url = endpoint_url
         self.user = user
         if endpoint_url:
+            self.local = True
             self.dynamodb = boto3.resource(
                 "dynamodb",
                 endpoint_url=endpoint_url,
@@ -22,35 +23,49 @@ class DBHelper:
                 aws_access_key_id="fake_id",
                 aws_secret_access_key="fake_key")
         else:
+            self.local = False
             self.dynamodb = boto3.resource("dynamodb")
 
     def init_table(self):
         # check if table exists, and if it doesn't then create it
         # and wait for it to be ready
-        self.client = boto3.client("dynamodb", endpoint_url=self.endpoint_url)
+        if local:
+            self.client = boto3.client(
+                "dynamodb",
+                endpoint_url=self.endpoint_url,
+                region_name="fake_region",
+                aws_access_key_id="fake_id",
+                aws_secret_access_key="fake_key")
+        else:
+            self.client = boto3.client("dynamodb")
+
         tables = self.client.list_tables()['TableNames']
 
         if core.DB_TABLE not in tables:
-            self.table = self.client.create_table(
-                TableName=core.DB_TABLE,
-                KeySchema=[
-                    {
-                        'AttributeName': 'userId',
-                        'KeyType': 'HASH'
-                    },
-                ],
-                AttributeDefinitions=[
-                    {
-                        'AttributeName': 'userId',
-                        'AttributeType': 'S'
-                    },
-                ],
-                ProvisionedThroughput={
-                    'ReadCapacityUnits': 1,
-                    'WriteCapacityUnits': 1
-                })
-            self.client.get_waiter('table_exists').wait(
-                TableName=core.DB_TABLE)
+            if self.local:
+                self.table = self.client.create_table(
+                    TableName=core.DB_TABLE,
+                    KeySchema=[
+                        {
+                            'AttributeName': 'userId',
+                            'KeyType': 'HASH'
+                        },
+                    ],
+                    AttributeDefinitions=[
+                        {
+                            'AttributeName': 'userId',
+                            'AttributeType': 'S'
+                        },
+                    ],
+                    ProvisionedThroughput={
+                        'ReadCapacityUnits': 1,
+                        'WriteCapacityUnits': 1
+                    })
+                self.client.get_waiter('table_exists').wait(
+                    TableName=core.DB_TABLE)
+            else:
+                raise ConnectionError(
+                    "Table doesn't exist in production. Skipping create.")
 
         # at this point we know the table is there
         self.table = self.dynamodb.Table(core.DB_TABLE)
