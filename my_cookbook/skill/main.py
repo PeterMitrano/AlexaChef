@@ -16,7 +16,6 @@ class Skill:
         self.intent_handler.add(initial.state, initial.handler)
 
     def handle_event(self, event, context):
-        #from nose.tools import set_trace; set_trace()
         # check if we're debuggin locally
         debug = False
         endpoint_url = None
@@ -45,7 +44,7 @@ class Skill:
         result = self.db_helper.getAll()
 
         persistant_attributes = {}
-        if result.value: #user at least exists
+        if result.value:  #user at least exists
             persistant_attributes = result.value
             # but we don't want to pass along the userId so pop that
             persistant_attributes.pop('userId', None)
@@ -69,4 +68,12 @@ class Skill:
         # at this point we either know the state, or we have returned an error,
         # or we know it's the users first time and there is no state
         # so now we dispatch
-        return self.intent_handler.dispatch(state, persistant_attributes, session_attributes, event)
+        response = self.intent_handler.dispatch(state, persistant_attributes,
+                                                session_attributes, event)
+
+        # now that we're done, we need to save
+        # the persistant_attributes dict to our database
+        self.db_helper.setAll(persistant_attributes)
+
+        # ok we're finally done
+        return response

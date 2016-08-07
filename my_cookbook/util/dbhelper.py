@@ -8,9 +8,9 @@ from my_cookbook.util import responder
 logging.getLogger('boto3').setLevel(logging.WARNING)
 logging.getLogger('botocore').setLevel(logging.WARNING)
 logging.getLogger('nose').setLevel(logging.WARNING)
-
 """ This is used for testing. Since everything is single threaded this is fine"""
 _db_hit_count = 0
+
 
 class DBHelper:
     def __init__(self, user, endpoint_url):
@@ -119,23 +119,49 @@ class DBHelper:
         except KeyError:
             return result(True, None,
                           "I've forgotten where we were. Please start over")
-
-    def setState(self, state):
-        return self.set(core.STATE_KEY, state)
-
     def getState(self):
         """ Get values from the attribute of an item return tuple of (truthy error, value, error speech)"""
         return self.get(core.STATE_KEY)
 
-    def set(self, attribute, value):
-        """ Set attribute of an item return tuple of (truthy error, error speech)
+    def get(self, attribute):
+        """ Get values from the attribute of an item return tuple of (truthy error, value, error speech)
+
+        This will also create the user if they dont exist
+        """
+
+        result = namedtuple('result', ['err', 'value', 'error_speech'])
+        get = self.getAll()
+        if isinstance(get.value, dict):
+            if attribute in get.value:
+                return result(False, get.value[attribute], None)
+        else:
+            # this means something really went wrong, or the user is new
+            if get.err:
+                return result(True, None, get.error_speech)
+            else:
+                return result(False, None, get.error_speech)
+
+    def setAll(self, attributes):
+        """ Set many attributes of an item return tuple of (truthy error, error speech)
 
         This will also create the user if they don't exist
         """
         result = namedtuple('result', ['err', 'error_speech'])
-        key = {'userId': self.user}
-        updateExpr = 'SET %s = :attr' % attribute
-        exprAttributeValues = {':attr': value}
+        item_key = {'userId': self.user}
+
+        # ok so this badass python formats the update expression
+        # don't fight it--the tests show it works. Just learn to love it
+        updateExpr = 'SET '
+        exprAttributeValues = {}
+        exprAttributeNames = {}
+        for key in attributes:
+            expr_val_key = ':%s' % key
+            exprAttributeValues[expr_val_key] = attributes[key]
+            expr_name_key = '#_%s' % key
+            exprAttributeNames[expr_name_key] = key
+            updateExpr += '%s = :%s,' % (expr_name_key, key)
+
+        updateExpr = updateExpr[:-1] #strip trailing comma
 
         if not self.table:
             logging.getLogger(core.LOGGER).warn("Did you call init_table?")
@@ -144,8 +170,9 @@ class DBHelper:
                 'I cannot reach my database right now. I would try again later.')
 
         response = self.table.update_item(
-            Key=key,
+            Key=item_key,
             UpdateExpression=updateExpr,
+            ExpressionAttributeNames=exprAttributeNames,
             ExpressionAttributeValues=exprAttributeValues)
         global _db_hit_count
         _db_hit_count += 1
@@ -165,20 +192,12 @@ class DBHelper:
         except KeyError:
             return result(True, 'Keyerror')
 
-    def get(self, attribute):
-        """ Get values from the attribute of an item return tuple of (truthy error, value, error speech)
+    def setState(self, state):
+        return self.set(core.STATE_KEY, state)
 
-        This will also create the user if they dont exist
+    def set(self, attribute, value):
+        """ Set attribute of an item return tuple of (truthy error, error speech)
+
+        This will also create the user if they don't exist
         """
-
-        result = namedtuple('result', ['err', 'value', 'error_speech'])
-        get = self.getAll()
-        if isinstance(get.value, dict):
-            if attribute in get.value:
-                return result(False, get.value[attribute], None)
-        else:
-            # this means something really went wrong, or the user is new
-            if get.err:
-                return result(True, None, get.error_speech)
-            else:
-                return result(False, None, get.error_speech)
+        return self.setAll({attribute: value})

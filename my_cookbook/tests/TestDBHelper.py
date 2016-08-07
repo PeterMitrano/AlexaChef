@@ -9,6 +9,9 @@ from my_cookbook.util import dbhelper
 
 
 class DBHelperTest(unittest.TestCase):
+
+    maxDiff = 2000
+
     @classmethod
     def setUpClass(cls):
         cls.endpoint_url = core.LOCAL_DB_URI
@@ -64,3 +67,43 @@ class DBHelperTest(unittest.TestCase):
         self.assertEqual(result.value['key_c'], False)
 
         self.assertEqual(dbhelper._db_hit_count, 4)
+
+    @utils.wip
+    def test_set_all(self):
+        self.db_helper.user = 'new_user_%i' % random.randint(0, 1000)
+        self.db_helper.init_table()
+
+        persistant_attributes = {
+            "your": "mom",
+            "is": "a lovely women",
+            "she_is_number": 1,
+            "she_is": [
+                "kind",
+                "smart",
+                "beautiful"
+            ],
+            "and_has_the_attribtues": {
+                "hair_color": "brown",
+                "weight": "none of your business",
+                "size": 5,
+                "nicknames": [
+                    "mum",
+                    "mommy"
+                ],
+                "favorite_numbers": [
+                    1,
+                    4,
+                    42
+                ]
+            }
+        }
+
+        result = self.db_helper.setAll(persistant_attributes)
+        self.assertFalse(result.err)
+
+        result = self.db_helper.getAll()
+        self.assertFalse(result.err)
+        # ignore userId
+        result.value.pop('userId', None)
+        self.assertEqual(result.value, persistant_attributes)
+        self.assertEqual(dbhelper._db_hit_count, 2)
