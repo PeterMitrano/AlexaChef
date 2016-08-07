@@ -12,12 +12,11 @@ class DBHelperTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.endpoint_url = 'http://localhost:8000'
-        utils.delete_table(cls.endpoint_url)
         cls.db_helper = dbhelper.DBHelper(None, cls.endpoint_url)
-        cls.db_helper.init_table()
 
     def test_new_user(self):
-        user = 'new_user_' + str(random.randint(0, 1000))
+        utils.delete_table(self.endpoint_url)
+        self.db_helper.init_table()
 
         result = self.db_helper.set("test_attr", 1)
         self.assertFalse(result.err)
@@ -25,15 +24,21 @@ class DBHelperTest(unittest.TestCase):
         result = self.db_helper.get("test_attr")
         self.assertFalse(result.err)
         self.assertEqual(result.value, 1)
+        self.assertEqual(self.db_helper.table.item_count, 1)
 
     def test_many_new_users(self):
-        user = 'new_user_' + str(random.randint(0, 1000))
+        utils.delete_table(self.endpoint_url)
+        self.db_helper.init_table()
+        self.assertEqual(self.db_helper.table.item_count, 0)
 
-        for i in range(100):
-            self.db_helper.user = 'new_user_' + str(random.randint(0, 1000))
+        N_USERS = 100
+        for i in range(N_USERS):
+            self.db_helper.user = 'new_user_%i' % i
             result = self.db_helper.set("test_attr", 1)
             self.assertFalse(result.err)
 
             result = self.db_helper.get("test_attr")
             self.assertFalse(result.err)
             self.assertEqual(result.value, 1)
+
+        self.assertEqual(self.db_helper.table.item_count, N_USERS)

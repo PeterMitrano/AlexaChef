@@ -1,7 +1,6 @@
 import logging
 
 from my_cookbook.skill import intent_handler
-from my_cookbook.util import requester
 from my_cookbook.util import responder
 from my_cookbook.util import core
 from my_cookbook.util import dbhelper
