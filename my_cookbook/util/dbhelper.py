@@ -15,10 +15,12 @@ class DBHelper:
         self.endpoint_url = endpoint_url
         self.user = user
         if endpoint_url:
-            self.dynamodb = boto3.resource("dynamodb",
-                                           endpoint_url=endpoint_url,
-                                           aws_access_key_id="fake_id",
-                                           aws_secret_access_key="fake_key")
+            self.dynamodb = boto3.resource(
+                "dynamodb",
+                endpoint_url=endpoint_url,
+                region_name="fake_region",
+                aws_access_key_id="fake_id",
+                aws_secret_access_key="fake_key")
         else:
             self.dynamodb = boto3.resource("dynamodb")
 
