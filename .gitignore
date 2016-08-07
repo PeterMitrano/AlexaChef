@@ -5,3 +5,5 @@ build
 .venv
 .coverage
 venv
+doc
+html
