@@ -15,8 +15,8 @@ class DBHelper:
         self.endpoint_url = endpoint_url
         self.user = user
         if endpoint_url:
-            self.dynamodb = boto3.resource(
-                "dynamodb", endpoint_url=endpoint_url)
+            self.dynamodb = boto3.resource("dynamodb",
+                                           endpoint_url=endpoint_url)
         else:
             self.dynamodb = boto3.resource("dynamodb")
 

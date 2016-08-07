@@ -2,7 +2,7 @@ APP_ID = "amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05"
 STATE_KEY = "STATE"
 DB_TABLE = 'my_cookbook_users'
 LOGGER = 'my_cookbook'
-LOCAL_DB_URI = 'http://localhost:54321'
+LOCAL_DB_URI = 'http://localhost:8000'
 
 
 class States:

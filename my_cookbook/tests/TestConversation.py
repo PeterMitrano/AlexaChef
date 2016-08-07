@@ -26,8 +26,10 @@ class ConversationTest(unittest.TestCase):
         # first launch on new user should result in a table entry with state set
         # as well as session attributes set correctly
         self.assertTrue(responder.is_valid(response_dict))
-        logging.getLogger(core.LOGGER).debug(response_dict['sessionAttributes'])
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.INITIAL_STATE)
+        logging.getLogger(core.LOGGER).debug(response_dict[
+            'sessionAttributes'])
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INITIAL_STATE)
 
         result = lambda_function._skill.db_helper.getState()
         self.assertEqual(result.value, core.States.INITIAL_STATE)

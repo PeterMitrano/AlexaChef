@@ -16,6 +16,7 @@ class Skill:
         self.intent_handler.add(initial.state, initial.handler)
 
     def handle_event(self, event, context):
+        #from nose.tools import set_trace; set_trace()
         # check if we're debuggin locally
         debug = False
         endpoint_url = None
@@ -34,6 +35,8 @@ class Skill:
                             request_appId)
 
         # check session attributes and load from state DB if needed
+        # this also has the effect of ensuring first time users get
+        # entered into the database
         state = ""
         request_attributes = event['session']['attributes']
         if core.STATE_KEY in request_attributes:
@@ -45,7 +48,9 @@ class Skill:
                 result = self.db_helper.getState()
 
                 if result.err:
-                    return responder.tell(result.error_speech) #TODO: do I need to copy request_attributes here?
+                    return responder.tell(
+                        result.
+                        error_speech)  #TODO: do I need to copy request_attributes here?
                 if not result.value:
                     state = ""
                 else:

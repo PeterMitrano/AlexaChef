@@ -1,3 +1,5 @@
+import logging
+
 from my_cookbook.util import core
 from my_cookbook.util import requester
 from my_cookbook.util import responder
@@ -27,35 +29,42 @@ class Handler:
 
         stateful_intent = intent + state
 
+        #from nose.tools import set_trace; set_trace()
+
         # now we want to try to find a handler fo this intent
         # we first try the exact intent, then that intent without the state
         # then the unhandled intent with the state, and then unhandled without state
         if state in self.handlers:
             if hasattr(self.handlers[state], intent):
                 handler_method = getattr(self.handlers[state], intent)
-                if handler_method:
-                    return handler_method()
+                logging.getLogger(core.LOGGER).info(
+                    "found handler for stateful intent")
+                return handler_method(self.handlers, attributes, slots)
 
         # try intent without state
         elif hasattr(self.handlers[core.States.STATELESS], intent):
             handler_method = getattr(self.handlers[core.States.STATELESS],
                                      intent)
-            if handler_method:
-                return handler_method()
+            logging.getLogger(core.LOGGER).info(
+                "found handler for stateless intent")
+            return handler_method(self.handlers, attributes, slots)
 
         # next try Unhandled for that state
         elif state in self.handlers:
             if hasattr(self.handlers[state], intent):
                 handler_method = getattr(self.handlers[state], 'Unhandled')
-                if handler_method:
-                    return handler_method()
+                logging.getLogger(core.LOGGER).info(
+                    "found handler for stateful unhandled")
+                return handler_method(self.handlers, attributes, slots)
 
         # stateless unhandled is last resort
         elif hasattr(self.handlers[core.States.STATELESS], intent):
             handler_method = getattr(self.handlers[core.States.STATELESS],
                                      'Unhandled')
-            if handler_method:
-                return handler_method()
+            logging.getLogger(core.LOGGER).info(
+                "found handler for stateless unhandled")
+            return handler_method(self.handlers, attributes, slots)
 
+        logging.getLogger(core.LOGGER).info("found no handlers")
         return responder.tell(
             "I'm not sure what you want. Try saying start over.")

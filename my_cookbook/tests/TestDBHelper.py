@@ -44,7 +44,7 @@ class DBHelperTest(unittest.TestCase):
         self.assertEqual(self.db_helper.table.item_count, N_USERS)
 
     def test_get_all(self):
-        self.db_helper.user = 'new_user_%i' % random.randint(0,1000)
+        self.db_helper.user = 'new_user_%i' % random.randint(0, 1000)
         self.db_helper.init_table()
 
         result = self.db_helper.set("key_a", 1)
