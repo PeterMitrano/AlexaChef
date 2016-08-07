@@ -29,7 +29,6 @@ class Handler:
 
         stateful_intent = intent + state
 
-
         # now we want to try to find a handler fo this intent
         # we first try the exact intent, then that intent without the state
         # then the unhandled intent with the state, and then unhandled without state
@@ -41,7 +40,7 @@ class Handler:
                 return handler_method(self.handlers, attributes, slots)
 
         # try intent without state
-        elif hasattr(self.handlers[core.States.STATELESS], intent):
+        if hasattr(self.handlers[core.States.STATELESS], intent):
             handler_method = getattr(self.handlers[core.States.STATELESS],
                                      intent)
             logging.getLogger(core.LOGGER).info(
@@ -49,7 +48,7 @@ class Handler:
             return handler_method(self.handlers, attributes, slots)
 
         # next try Unhandled for that state
-        elif state in self.handlers:
+        if state in self.handlers:
             if hasattr(self.handlers[state], intent):
                 handler_method = getattr(self.handlers[state], 'Unhandled')
                 logging.getLogger(core.LOGGER).info(
@@ -57,7 +56,7 @@ class Handler:
                 return handler_method(self.handlers, attributes, slots)
 
         # stateless unhandled is last resort
-        elif hasattr(self.handlers[core.States.STATELESS], intent):
+        if hasattr(self.handlers[core.States.STATELESS], 'Unhandled'):
             handler_method = getattr(self.handlers[core.States.STATELESS],
                                      'Unhandled')
             logging.getLogger(core.LOGGER).info(
