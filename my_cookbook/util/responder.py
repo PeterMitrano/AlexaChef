@@ -11,6 +11,9 @@ def is_valid(response):
 
 
 def ask(speech_output, reprompt_speech):
+    if not reprompt_speech:
+        reprompt_speech = speech_output
+
     response = {
         'outputSpeech': outputSpeech(speech_output),
         'reprompt': {
@@ -31,6 +34,8 @@ def tell(speech_output):
 
 def ask_with_card(speech_output, reprompt_speech, card_title, card_content,
                   card_img_url):
+    if not reprompt_speech:
+        reprompt_speech = speech_output
     response = {
         'outputSpeech': outputSpeech(speech_output),
         'reprompt': {
