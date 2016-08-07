@@ -58,6 +58,10 @@ class Skill:
                     logging.getLogger(core.LOGGER).debug(
                         "fetched state %s from database" % state)
 
+        if event['session']['new']:
+            # increment invocations in database
+            pass
+
         # at this point we either know the state, or we have returned an error,
         # or we know it's the users first time and there is no state
         # so now we dispatch

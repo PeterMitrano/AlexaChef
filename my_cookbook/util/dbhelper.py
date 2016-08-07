@@ -9,9 +9,13 @@ logging.getLogger('boto3').setLevel(logging.WARNING)
 logging.getLogger('botocore').setLevel(logging.WARNING)
 logging.getLogger('nose').setLevel(logging.WARNING)
 
+""" This is used for testing. Since everything is single threaded this is fine"""
+_db_hit_count = 0
 
 class DBHelper:
     def __init__(self, user, endpoint_url):
+        global _db_hit_count
+        _db_hit_count = 0
         self.endpoint_url = endpoint_url
         self.user = user
         if endpoint_url:
@@ -29,6 +33,9 @@ class DBHelper:
     def init_table(self):
         # check if table exists, and if it doesn't then create it
         # and wait for it to be ready
+        global _db_hit_count
+        _db_hit_count = 0
+
         if self.local:
             self.client = boto3.client(
                 "dynamodb",
@@ -82,6 +89,8 @@ class DBHelper:
                 'I cannot reach my database right now. I would try again later.')
 
         response = self.table.get_item(Key=key)
+        global _db_hit_count
+        _db_hit_count += 1
 
         try:
             if response['ResponseMetadata']['HTTPStatusCode'] != 200:
@@ -100,6 +109,7 @@ class DBHelper:
                     core.STATE_KEY: core.States.INITIAL_STATE
                 }
                 self.table.put_item(Item=item)
+                _db_hit_count += 1
 
                 # this is an not error, so you better check for None as value
                 return result(False, None,
@@ -137,6 +147,8 @@ class DBHelper:
             Key=key,
             UpdateExpression=updateExpr,
             ExpressionAttributeValues=exprAttributeValues)
+        global _db_hit_count
+        _db_hit_count += 1
 
         try:
             if response['ResponseMetadata']['HTTPStatusCode'] != 200:

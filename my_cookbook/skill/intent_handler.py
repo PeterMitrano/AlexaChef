@@ -16,6 +16,7 @@ class Handler:
         request_type = event['request']['type']
         intent = ""
         slots = {}
+
         if request_type == requester.Types.LAUNCH:
             intent = requester.Types.LAUNCH
         elif request_type == requester.Types.INTENT:
@@ -28,6 +29,10 @@ class Handler:
                 "I'm not sure what your intent is. Try asking differently")
 
         stateful_intent = intent + state
+
+        # this dict will be filled & modified by the various intent
+        # handlers, and then we will save it to the database for them
+        presistant_attributes = {}
 
         # now we want to try to find a handler fo this intent
         # we first try the exact intent, then that intent without the state

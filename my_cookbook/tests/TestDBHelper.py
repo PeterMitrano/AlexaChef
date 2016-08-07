@@ -17,6 +17,7 @@ class DBHelperTest(unittest.TestCase):
     def test_new_user(self):
         utils.delete_table(self.endpoint_url)
         self.db_helper.init_table()
+        self.db_helper.user = 'new_user_%i' % random.randint(0, 1000)
 
         result = self.db_helper.set("test_attr", 1)
         self.assertFalse(result.err)
@@ -25,6 +26,7 @@ class DBHelperTest(unittest.TestCase):
         self.assertFalse(result.err)
         self.assertEqual(result.value, 1)
         self.assertEqual(self.db_helper.table.item_count, 1)
+        self.assertEqual(dbhelper._db_hit_count, 2)
 
     def test_many_new_users(self):
         utils.delete_table(self.endpoint_url)
@@ -42,6 +44,7 @@ class DBHelperTest(unittest.TestCase):
             self.assertEqual(result.value, 1)
 
         self.assertEqual(self.db_helper.table.item_count, N_USERS)
+        self.assertEqual(dbhelper._db_hit_count, 2 * N_USERS)
 
     def test_get_all(self):
         self.db_helper.user = 'new_user_%i' % random.randint(0, 1000)
@@ -59,3 +62,5 @@ class DBHelperTest(unittest.TestCase):
         self.assertEqual(result.value['key_a'], 1)
         self.assertEqual(result.value['key_b'], "2")
         self.assertEqual(result.value['key_c'], False)
+
+        self.assertEqual(dbhelper._db_hit_count, 4)
