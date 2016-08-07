@@ -40,9 +40,9 @@ class Skill:
             state = request_attributes[core.STATE_KEY]
         else:
             if core.DB_TABLE:
-                db_helper = dbhelper.DBHelper(user, endpoint_url)
-                db_helper.init_table()
-                result = db_helper.getState()
+                self.db_helper = dbhelper.DBHelper(user, endpoint_url)
+                self.db_helper.init_table()
+                result = self.db_helper.getState()
 
                 if result.err:
                     return responder.tell(result.error_speech)
