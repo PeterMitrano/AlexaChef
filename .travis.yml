@@ -20,4 +20,4 @@ before_script:
 
 # command to run tests
 script:
-  - nosetests -a \!wip
+  - nosetests --verbose -a \!wip
