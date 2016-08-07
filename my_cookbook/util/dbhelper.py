@@ -82,8 +82,8 @@ class DBHelper:
                 }
                 self.table.put_item(Item=item)
 
-                # this is an error
-                return result(True, None,
+                # this is an not error, so you better check for None as value
+                return result(False, None,
                               'This must be your first time. Welcome!')
 
             return result(False, response['Item'], None)
@@ -95,6 +95,7 @@ class DBHelper:
         return self.set(core.STATE_KEY, state)
 
     def getState(self):
+        """ Get values from the attribute of an item return tuple of (truthy error, value, error speech)"""
         return self.get(core.STATE_KEY)
 
     def set(self, attribute, value):
@@ -145,4 +146,8 @@ class DBHelper:
             if attribute in get.value:
                 return result(False, get.value[attribute], None)
         else:
-            return result(True, None, get.error_speech)
+            # this means something really went wrong, or the user is new
+            if get.err:
+                return result(True, None, get.error_speech)
+            else:
+                return result(False, None, get.error_speech)
