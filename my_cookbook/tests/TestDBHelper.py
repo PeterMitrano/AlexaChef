@@ -11,7 +11,7 @@ from my_cookbook.util import dbhelper
 class DBHelperTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.endpoint_url = 'http://localhost:8000'
+        cls.endpoint_url = core.LOCAL_DB_URI
         cls.db_helper = dbhelper.DBHelper(None, cls.endpoint_url)
 
     def test_new_user(self):

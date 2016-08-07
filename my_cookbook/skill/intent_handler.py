@@ -10,7 +10,7 @@ class Handler:
     def add(self, state, handler):
         self.handlers[state] = handler
 
-    def dispatch(self, state, event):
+    def dispatch(self, state, attributes, event):
         request_type = event['request']['type']
         intent = ""
         slots = {}

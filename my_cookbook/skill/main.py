@@ -22,7 +22,7 @@ class Skill:
         if "debug" in context:
             debug = True
             logging.getLogger(core.LOGGER).setLevel(logging.DEBUG)
-            endpoint_url = "http://localhost:8000"
+            endpoint_url = core.LOCAL_DB_URI
         else:
             logging.getLogger(core.LOGGER).setLevel(logging.INFO)
 
@@ -33,7 +33,7 @@ class Skill:
             raise Exception('application id %s does not match.' %
                             request_appId)
 
-        # check session attributes and load from DB if needed
+        # check session attributes and load from state DB if needed
         state = ""
         request_attributes = event['session']['attributes']
         if core.STATE_KEY in request_attributes:
@@ -45,7 +45,7 @@ class Skill:
                 result = self.db_helper.getState()
 
                 if result.err:
-                    return responder.tell(result.error_speech)
+                    return responder.tell(result.error_speech) #TODO: do I need to copy request_attributes here?
                 if not result.value:
                     state = ""
                 else:
@@ -56,4 +56,4 @@ class Skill:
         # at this point we either know the state, or we have returned an error,
         # or we know it's the users first time and there is no state
         # so now we dispatch
-        return self.intent_handler.dispatch(state, event)
+        return self.intent_handler.dispatch(state, request_attributes, event)
