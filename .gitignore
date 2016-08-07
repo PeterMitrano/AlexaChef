@@ -3,4 +3,5 @@
 *.zip
 build
 .venv
+.coverage
 venv

@@ -20,4 +20,5 @@ before_script:
 
 # command to run tests
 script:
-  - nosetests -a \!wip
+  - coverage run --source=my_cookbook -m nose -a \!wip
+  - coverage report --skip-covered

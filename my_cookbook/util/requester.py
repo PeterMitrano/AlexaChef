@@ -17,6 +17,9 @@ class Intent():
         self.intent['slots'][name] = {"name": name, "value": value}
         return self
 
+    def build(self):
+        return self.intent
+
 
 class Request():
     def __init__(self):
