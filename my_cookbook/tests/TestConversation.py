@@ -17,7 +17,6 @@ class ConversationTest(unittest.TestCase):
         # main, we will be using the `default_user_id` for everything
         utils.delete_table(core.LOCAL_DB_URI)
 
-    @utils.wip
     def test_first_time(self):
         utils.delete_table(core.LOCAL_DB_URI)
 
@@ -37,6 +36,8 @@ class ConversationTest(unittest.TestCase):
 
     @utils.wip
     def test_second_time(self):
+        utils.delete_table(core.LOCAL_DB_URI)
+
         r = requester.Request()
         event = r.with_type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(event, CONTEXT)

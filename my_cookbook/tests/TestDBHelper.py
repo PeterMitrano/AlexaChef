@@ -68,7 +68,6 @@ class DBHelperTest(unittest.TestCase):
 
         self.assertEqual(dbhelper._db_hit_count, 4)
 
-    @utils.wip
     def test_set_all(self):
         self.db_helper.user = 'new_user_%i' % random.randint(0, 1000)
         self.db_helper.init_table()
