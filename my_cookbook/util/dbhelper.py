@@ -20,12 +20,11 @@ class DBHelper:
         self.user = user
         if endpoint_url:
             self.local = True
-            self.dynamodb = boto3.resource(
-                "dynamodb",
-                endpoint_url=endpoint_url,
-                region_name="fake_region",
-                aws_access_key_id="fake_id",
-                aws_secret_access_key="fake_key")
+            self.dynamodb = boto3.resource("dynamodb",
+                                           endpoint_url=endpoint_url,
+                                           region_name="fake_region",
+                                           aws_access_key_id="fake_id",
+                                           aws_secret_access_key="fake_key")
         else:
             self.local = False
             self.dynamodb = boto3.resource("dynamodb")
@@ -37,12 +36,11 @@ class DBHelper:
         _db_hit_count = 0
 
         if self.local:
-            self.client = boto3.client(
-                "dynamodb",
-                endpoint_url=self.endpoint_url,
-                region_name="fake_region",
-                aws_access_key_id="fake_id",
-                aws_secret_access_key="fake_key")
+            self.client = boto3.client("dynamodb",
+                                       endpoint_url=self.endpoint_url,
+                                       region_name="fake_region",
+                                       aws_access_key_id="fake_id",
+                                       aws_secret_access_key="fake_key")
         else:
             self.client = boto3.client("dynamodb")
 
@@ -50,24 +48,23 @@ class DBHelper:
 
         if core.DB_TABLE not in tables:
             if self.local:
-                self.table = self.client.create_table(
-                    TableName=core.DB_TABLE,
-                    KeySchema=[
-                        {
-                            'AttributeName': 'userId',
-                            'KeyType': 'HASH'
-                        },
-                    ],
-                    AttributeDefinitions=[
-                        {
-                            'AttributeName': 'userId',
-                            'AttributeType': 'S'
-                        },
-                    ],
-                    ProvisionedThroughput={
-                        'ReadCapacityUnits': 1,
-                        'WriteCapacityUnits': 1
-                    })
+                self.table = self.client.create_table(TableName=core.DB_TABLE,
+                                                      KeySchema=[
+                                                          {
+                                                              'AttributeName': 'userId',
+                                                              'KeyType': 'HASH'
+                                                          },
+                                                      ],
+                                                      AttributeDefinitions=[
+                                                          {
+                                                              'AttributeName': 'userId',
+                                                              'AttributeType': 'S'
+                                                          },
+                                                      ],
+                                                      ProvisionedThroughput={
+                                                          'ReadCapacityUnits': 1,
+                                                          'WriteCapacityUnits': 1
+                                                      })
                 self.client.get_waiter('table_exists').wait(TableName=core.DB_TABLE)
             else:
                 raise Exception("Table doesn't exist in production. Skipping create.")
@@ -161,11 +158,10 @@ class DBHelper:
             logging.getLogger(core.LOGGER).warn("Did you call init_table?")
             return result(True, 'I cannot reach my database right now. I would try again later.')
 
-        response = self.table.update_item(
-            Key=item_key,
-            UpdateExpression=updateExpr,
-            ExpressionAttributeNames=exprAttributeNames,
-            ExpressionAttributeValues=exprAttributeValues)
+        response = self.table.update_item(Key=item_key,
+                                          UpdateExpression=updateExpr,
+                                          ExpressionAttributeNames=exprAttributeNames,
+                                          ExpressionAttributeValues=exprAttributeValues)
         global _db_hit_count
         _db_hit_count += 1
 
