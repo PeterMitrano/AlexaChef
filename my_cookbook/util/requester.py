@@ -6,7 +6,7 @@ from my_cookbook.util import core
 class Types:
     LAUNCH = 'LaunchRequest'
     INTENT = 'IntentRequest'
-    END = 'EndSessionRequest'
+    END = 'SessionEndedRequest'
 
 
 class Intent():

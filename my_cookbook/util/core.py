@@ -17,3 +17,11 @@ class States:
     SEARCH_ONLINE = '_SEARCH_ONLINE'
     STATELESS = ''
     TELL_TUTORIAL = '_TELL_TUTORIAL'
+
+
+def all_states():
+    states = []
+    for var in vars(States):
+        if not var.startswith('_'):
+            states.append(getattr(States, var))
+    return states

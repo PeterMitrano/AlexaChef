@@ -15,8 +15,8 @@ class StatelessHandler():
 
     def AMAZON_StartOverIntent(self, handlers, persistant_attributes, attributes, slots):
         attributes[core.STATE_KEY] = core.States.INITIAL_STATE
-        return responder.ask(
-            ":ask", "Alright, I've reset everything. I'm ready to start a new recipe.", None, attributes)
+        return responder.ask("Alright, I've reset everything. I'm ready to start a new recipe.",
+                             None, attributes)
 
     def SessionEndedRequest(self, handlers, persistant_attributes, attributes, slots):
         persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE

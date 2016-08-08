@@ -8,6 +8,7 @@ from my_cookbook.util import dbhelper
 
 from my_cookbook.skill.handlers import stateless
 from my_cookbook.skill.handlers import initial
+from my_cookbook.skill.handlers import new_recipe
 
 
 class Skill:
@@ -15,6 +16,7 @@ class Skill:
         self.intent_handler = intent_handler.Handler()
         self.intent_handler.add(stateless.state, stateless.handler)
         self.intent_handler.add(initial.state, initial.handler)
+        self.intent_handler.add(new_recipe.state, new_recipe.handler)
 
     def handle_event(self, event, context):
         # check if we're debuggin locally

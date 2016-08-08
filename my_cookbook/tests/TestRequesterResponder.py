@@ -23,5 +23,6 @@ class ResponderTest(unittest.TestCase):
     def test_ask_card(self):
         response = responder.ask_with_card("ask", None, "title", "contents", 'http://im.gy/cLK', {})
         self.assertTrue(responder.is_valid(response))
-        response = responder.ask_with_card("ask", "reprompt", "title", "contents", 'http://im.gy/cLK', {})
+        response = responder.ask_with_card("ask", "reprompt", "title", "contents",
+                                           'http://im.gy/cLK', {})
         self.assertTrue(responder.is_valid(response))

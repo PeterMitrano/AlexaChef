@@ -4,7 +4,7 @@ def is_valid(response):
             return False
         if response['response']['outputSpeech']['type'] != 'SSML':
             return False
-    except KeyError:
+    except Exception:
         return False
 
     return True
@@ -30,11 +30,7 @@ def tell(speech_output):
     return fini({}, response)
 
 
-def ask_with_card(speech_output,
-                  reprompt_speech,
-                  card_title,
-                  card_content,
-                  card_img_url,
+def ask_with_card(speech_output, reprompt_speech, card_title, card_content, card_img_url,
                   attributes):
     if not reprompt_speech:
         reprompt_speech = speech_output
