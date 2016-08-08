@@ -68,11 +68,9 @@ class DBHelper:
                         'ReadCapacityUnits': 1,
                         'WriteCapacityUnits': 1
                     })
-                self.client.get_waiter('table_exists').wait(
-                    TableName=core.DB_TABLE)
+                self.client.get_waiter('table_exists').wait(TableName=core.DB_TABLE)
             else:
-                raise Exception(
-                    "Table doesn't exist in production. Skipping create.")
+                raise Exception("Table doesn't exist in production. Skipping create.")
 
         # at this point we know the table is there
         self.table = self.dynamodb.Table(core.DB_TABLE)
@@ -84,9 +82,8 @@ class DBHelper:
 
         if not self.table:
             logging.getLogger(core.LOGGER).warn("Did you call init_table?")
-            return result(
-                True, None,
-                'I cannot reach my database right now. I would try again later.')
+            return result(True, None,
+                          'I cannot reach my database right now. I would try again later.')
 
         response = self.table.get_item(Key=key)
         global _db_hit_count
@@ -94,15 +91,13 @@ class DBHelper:
 
         try:
             if response['ResponseMetadata']['HTTPStatusCode'] != 200:
-                return result(
-                    True, None,
-                    'I cannot reach my database right now. I would try again later.')
+                return result(True, None,
+                              'I cannot reach my database right now. I would try again later.')
 
             if "Item" not in response:
                 # this is fine, it just means we don't have this user yet
                 # so we mark that they've used the skill and put them in the db
-                logging.getLogger(core.LOGGER).info("Adding new user: %s" %
-                                                    self.user)
+                logging.getLogger(core.LOGGER).info("Adding new user: %s" % self.user)
                 item = {
                     'userId': self.user,
                     'invocations': 1,
@@ -112,13 +107,12 @@ class DBHelper:
                 _db_hit_count += 1
 
                 # this is an not error, so you better check for None as value
-                return result(False, None,
-                              'This must be your first time. Welcome!')
+                return result(False, None, 'This must be your first time. Welcome!')
 
             return result(False, response['Item'], None)
         except KeyError:
-            return result(True, None,
-                          "I've forgotten where we were. Please start over")
+            return result(True, None, "I've forgotten where we were. Please start over")
+
     def getState(self):
         """ Get values from the attribute of an item return tuple of (truthy error, value, error speech)"""
         return self.get(core.STATE_KEY)
@@ -161,13 +155,11 @@ class DBHelper:
             exprAttributeNames[expr_name_key] = key
             updateExpr += '%s = :%s,' % (expr_name_key, key)
 
-        updateExpr = updateExpr[:-1] #strip trailing comma
+        updateExpr = updateExpr[:-1]  #strip trailing comma
 
         if not self.table:
             logging.getLogger(core.LOGGER).warn("Did you call init_table?")
-            return result(
-                True,
-                'I cannot reach my database right now. I would try again later.')
+            return result(True, 'I cannot reach my database right now. I would try again later.')
 
         response = self.table.update_item(
             Key=item_key,
@@ -179,15 +171,13 @@ class DBHelper:
 
         try:
             if response['ResponseMetadata']['HTTPStatusCode'] != 200:
-                return result(
-                    True,
-                    'I cannot reach my database right now. I would try again later.')
+                return result(True,
+                              'I cannot reach my database right now. I would try again later.')
 
             if "Item" not in response:
                 # this isn't actually an error
                 return result(False, 'This must be your first time. Welcome!')
 
-            state = response['Item'][attribute]
             return result(False, None)
         except KeyError:
             return result(True, 'Keyerror')

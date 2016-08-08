@@ -49,14 +49,13 @@ class IntentTest(unittest.TestCase):
         request = requester.Request()
         response = responder.tell("test")
         request.copy_attributes(response)
-        self.assertEqual(request.request['session']['attributes'],
-                         response['sessionAttributes'])
+        self.assertEqual(request.request['session']['attributes'], response['sessionAttributes'])
 
     def test_all_new_intents(self):
         for intent_name in schema.intents():
             intent = requester.Intent(intent_name).build()
-            request = requester.Request().with_type(
-                requester.Types.INTENT).new().with_intent(intent)
+            request = requester.Request().with_type(requester.Types.INTENT).new().with_intent(
+                intent)
             event = request.build()
             response_dict = lambda_function.handle_event(event, CONTEXT)
             self.assertTrue(responder.is_valid(response_dict))

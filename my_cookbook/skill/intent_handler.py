@@ -25,8 +25,7 @@ class Handler:
         elif request_type == requester.Types.END:
             intent = requester.Types.END
         else:
-            return responder.tell(
-                "I'm not sure what your intent is. Try asking differently")
+            return responder.tell("I'm not sure what your intent is. Try asking differently")
 
         stateful_intent = intent + state
 
@@ -36,38 +35,27 @@ class Handler:
         if state in self.handlers:
             if hasattr(self.handlers[state], intent):
                 handler_method = getattr(self.handlers[state], intent)
-                logging.getLogger(core.LOGGER).info(
-                    "found handler for stateful intent")
-                return handler_method(self.handlers, persistant_attributes,
-                                      attributes, slots)
+                logging.getLogger(core.LOGGER).info("found handler for stateful intent")
+                return handler_method(self.handlers, persistant_attributes, attributes, slots)
 
         # try intent without state
         if hasattr(self.handlers[core.States.STATELESS], intent):
-            handler_method = getattr(self.handlers[core.States.STATELESS],
-                                     intent)
-            logging.getLogger(core.LOGGER).info(
-                "found handler for stateless intent")
-            return handler_method(self.handlers, persistant_attributes,
-                                  attributes, slots)
+            handler_method = getattr(self.handlers[core.States.STATELESS], intent)
+            logging.getLogger(core.LOGGER).info("found handler for stateless intent")
+            return handler_method(self.handlers, persistant_attributes, attributes, slots)
 
         # next try Unhandled for that state
         if state in self.handlers:
             if hasattr(self.handlers[state], intent):
                 handler_method = getattr(self.handlers[state], 'Unhandled')
-                logging.getLogger(core.LOGGER).info(
-                    "found handler for stateful unhandled")
-                return handler_method(self.handlers, persistant_attributes,
-                                      attributes, slots)
+                logging.getLogger(core.LOGGER).info("found handler for stateful unhandled")
+                return handler_method(self.handlers, persistant_attributes, attributes, slots)
 
         # stateless unhandled is last resort
         if hasattr(self.handlers[core.States.STATELESS], 'Unhandled'):
-            handler_method = getattr(self.handlers[core.States.STATELESS],
-                                     'Unhandled')
-            logging.getLogger(core.LOGGER).info(
-                "found handler for stateless unhandled")
-            return handler_method(self.handlers, persistant_attributes,
-                                  attributes, slots)
+            handler_method = getattr(self.handlers[core.States.STATELESS], 'Unhandled')
+            logging.getLogger(core.LOGGER).info("found handler for stateless unhandled")
+            return handler_method(self.handlers, persistant_attributes, attributes, slots)
 
         logging.getLogger(core.LOGGER).info("found no handlers")
-        return responder.tell(
-            "I'm not sure what you want. Try saying start over.")
+        return responder.tell("I'm not sure what you want. Try saying start over.")

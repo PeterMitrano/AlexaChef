@@ -17,14 +17,12 @@ class ResponderTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response))
 
     def test_tell_card(self):
-        response = responder.tell_with_card("tell", "title", "contents",
-                                            'http://im.gy/cLK')
+        response = responder.tell_with_card("tell", "title", "contents", 'http://im.gy/cLK')
         self.assertTrue(responder.is_valid(response))
 
     def test_ask_card(self):
-        response = responder.ask_with_card("tell", None, "title", "contents",
-                                           'http://im.gy/cLK')
+        response = responder.ask_with_card("tell", None, "title", "contents", 'http://im.gy/cLK')
         self.assertTrue(responder.is_valid(response))
-        response = responder.ask_with_card("tell", "reprompt", "title",
-                                           "contents", 'http://im.gy/cLK')
+        response = responder.ask_with_card("tell", "reprompt", "title", "contents",
+                                           'http://im.gy/cLK')
         self.assertTrue(responder.is_valid(response))

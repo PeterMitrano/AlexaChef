@@ -1,3 +1,4 @@
+import copy
 import logging
 
 from my_cookbook.skill import intent_handler
@@ -30,8 +31,7 @@ class Skill:
         user = event['session']['user']['userId']
         request_appId = event['session']['application']['applicationId']
         if core.APP_ID != request_appId:
-            raise Exception('application id %s does not match.' %
-                            request_appId)
+            raise Exception('application id %s does not match.' % request_appId)
 
         # store session attributes so the various handlers know what's up
         session_attributes = event['session']['attributes']
@@ -48,6 +48,8 @@ class Skill:
             persistant_attributes = result.value
             # but we don't want to pass along the userId so pop that
             persistant_attributes.pop('userId', None)
+
+        initial_persistant_attributes = copy.deepcopy(persistant_attributes)
 
         # next try to figure out the current state. Look in the event first
         # and if that fails check our database via the persistant_attributes we just got
@@ -68,12 +70,14 @@ class Skill:
         # at this point we either know the state, or we have returned an error,
         # or we know it's the users first time and there is no state
         # so now we dispatch
-        response = self.intent_handler.dispatch(state, persistant_attributes,
-                                                session_attributes, event)
+        response = self.intent_handler.dispatch(state, persistant_attributes, session_attributes,
+                                                event)
 
         # now that we're done, we need to save
         # the persistant_attributes dict to our database
-        self.db_helper.setAll(persistant_attributes)
+        # but only do it if something change
+        if persistant_attributes != initial_persistant_attributes:
+            self.db_helper.setAll(persistant_attributes)
 
         # ok we're finally done
         return response

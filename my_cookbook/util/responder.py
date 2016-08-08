@@ -25,10 +25,7 @@ def ask(speech_output, reprompt_speech, attributes={}):
 
 
 def tell(speech_output, attributes={}):
-    response = {
-        'outputSpeech': outputSpeech(speech_output),
-        'shouldEndSession': True
-    }
+    response = {'outputSpeech': outputSpeech(speech_output), 'shouldEndSession': True}
     return fini(attributes, response)
 
 
@@ -51,11 +48,7 @@ def ask_with_card(speech_output,
     return fini(attributes, response)
 
 
-def tell_with_card(speech_output,
-                   card_title,
-                   card_content,
-                   card_img_url,
-                   attributes={}):
+def tell_with_card(speech_output, card_title, card_content, card_img_url, attributes={}):
     response = {
         'outputSpeech': outputSpeech(speech_output),
         'card': card(card_title, card_content, card_img_url),
@@ -84,8 +77,4 @@ def outputSpeech(ssml):
 
 
 def fini(attributes, response):
-    return {
-        "version": "1.0",
-        "sessionAttributes": attributes,
-        "response": response
-    }
+    return {"version": "1.0", "sessionAttributes": attributes, "response": response}

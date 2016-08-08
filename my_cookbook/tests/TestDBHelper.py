@@ -77,22 +77,17 @@ class DBHelperTest(unittest.TestCase):
             "is": "a lovely women",
             "she_is_number": 1,
             "she_is": [
-                "kind",
-                "smart",
-                "beautiful"
+                "kind", "smart", "beautiful"
             ],
             "and_has_the_attribtues": {
                 "hair_color": "brown",
                 "weight": "none of your business",
                 "size": 5,
                 "nicknames": [
-                    "mum",
-                    "mommy"
+                    "mum", "mommy"
                 ],
                 "favorite_numbers": [
-                    1,
-                    4,
-                    42
+                    1, 4, 42
                 ]
             }
         }
