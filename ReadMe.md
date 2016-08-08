@@ -11,6 +11,7 @@ This project uses the local dyanmodb jar which you can download from aws, as wel
  - In that folder, run `java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb`
  - run tests
 
+
     nosetest -v
 
 or for no work-in-progress tests
