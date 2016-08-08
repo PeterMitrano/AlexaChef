@@ -51,7 +51,6 @@ class IntentTest(unittest.TestCase):
         request.copy_attributes(response)
         self.assertEqual(request.request['session']['attributes'], response['sessionAttributes'])
 
-    @utils.wip
     def test_all_new_intents_in_all_states(self):
         for state in core.all_states():
             for intent_name in schema.intents():
