@@ -11,9 +11,9 @@ class ResponderTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response))
 
     def test_ask(self):
-        response = responder.ask("ask", None)
+        response = responder.ask("ask", None, {})
         self.assertTrue(responder.is_valid(response))
-        response = responder.ask("ask", "reprompt")
+        response = responder.ask("ask", "reprompt", {})
         self.assertTrue(responder.is_valid(response))
 
     def test_tell_card(self):
@@ -21,8 +21,7 @@ class ResponderTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response))
 
     def test_ask_card(self):
-        response = responder.ask_with_card("tell", None, "title", "contents", 'http://im.gy/cLK')
+        response = responder.ask_with_card("ask", None, "title", "contents", 'http://im.gy/cLK', {})
         self.assertTrue(responder.is_valid(response))
-        response = responder.ask_with_card("tell", "reprompt", "title", "contents",
-                                           'http://im.gy/cLK')
+        response = responder.ask_with_card("ask", "reprompt", "title", "contents", 'http://im.gy/cLK', {})
         self.assertTrue(responder.is_valid(response))

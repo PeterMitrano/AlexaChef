@@ -3,10 +3,28 @@ from my_cookbook.util import core
 from my_cookbook.util import responder
 
 
-class Handler():
-    def handle(self, intent, slots):
-        logging.getLogger(core.LOGGER).debug("initial: %r", slots)
+class InitialHandler():
+    def SessionEndedRequest(self, handlers, persistant_attributes, attributes, slots):
+        persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
+        return responder.tell("Goodbye.")
 
+    def LaunchRequest(self, handlers, persistant_attributes, attributes, slots):
+        if persistant_attributes['invocations'] == 1: # first time! Say hello!
+            attributes[core.STATE_KEY] = core.States.ASK_TUTORIAL
+            return responder.ask("Hi, I'm your new cookbook. Would you like start off with a tutorial?", None, attributes)
+        else:
+            if attributes['new']:
+                persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
+                return responder.tell("Welcome back. You can ask for help, or ask to make something.")
+            else:
+                persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
+                return responder.tell("I've already been launched.")
 
-handler = Handler()
+    def Unhandled(self, handlers, persistant_attributes, attributes, slots):
+        persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
+        return responder.tell("We've already been talking" \
+            " but I have no idea what about, so I will exit this session. Please" \
+            " start over by saying, Alexa launch my cookbok.")
+
+handler = InitialHandler()
 state = core.States.INITIAL_STATE

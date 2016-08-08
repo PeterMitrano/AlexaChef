@@ -10,7 +10,7 @@ def is_valid(response):
     return True
 
 
-def ask(speech_output, reprompt_speech, attributes={}):
+def ask(speech_output, reprompt_speech, attributes):
     if not reprompt_speech:
         reprompt_speech = speech_output
 
@@ -24,9 +24,10 @@ def ask(speech_output, reprompt_speech, attributes={}):
     return fini(attributes, response)
 
 
-def tell(speech_output, attributes={}):
+def tell(speech_output):
     response = {'outputSpeech': outputSpeech(speech_output), 'shouldEndSession': True}
-    return fini(attributes, response)
+    # session attributes don't me anything for tell's
+    return fini({}, response)
 
 
 def ask_with_card(speech_output,
@@ -34,7 +35,7 @@ def ask_with_card(speech_output,
                   card_title,
                   card_content,
                   card_img_url,
-                  attributes={}):
+                  attributes):
     if not reprompt_speech:
         reprompt_speech = speech_output
     response = {
@@ -48,16 +49,17 @@ def ask_with_card(speech_output,
     return fini(attributes, response)
 
 
-def tell_with_card(speech_output, card_title, card_content, card_img_url, attributes={}):
+def tell_with_card(speech_output, card_title, card_content, card_img_url):
     response = {
         'outputSpeech': outputSpeech(speech_output),
         'card': card(card_title, card_content, card_img_url),
         'shouldEndSession': True
     }
-    return fini(attributes, response)
+    # session attributes don't me anything for tell's
+    return fini({}, response)
 
 
-def card(card_title, card_content, card_img_url, attributes={}):
+def card(card_title, card_content, card_img_url):
     if card_img_url:
         return {
             'type': 'Standard',

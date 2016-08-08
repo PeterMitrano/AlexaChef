@@ -44,7 +44,7 @@ class Request():
     def copy_attributes(self, response):
         attrs = response['sessionAttributes']
         logging.getLogger(core.LOGGER).debug('attrs: %s' % attrs)
-        self.with_attributes(attrs)
+        return self.with_attributes(attrs)
 
     def with_app_id(self, app_id):
         self.request['session']['application']['applicationId'] = app_id
