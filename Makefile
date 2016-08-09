@@ -7,4 +7,4 @@ zip:
 	cd build &&	zip -q -r skill.zip *
 
 upload: zip
-	aws lambda update-function-code --function-name MyCookbookPy --zip-file fileb://build/skill.zip
+	aws lambda update-function-code --function-name MyCookbook --zip-file fileb://build/skill.zip
