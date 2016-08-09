@@ -1,4 +1,3 @@
-import logging
 import random
 from my_cookbook.util import core
 from my_cookbook.util import responder

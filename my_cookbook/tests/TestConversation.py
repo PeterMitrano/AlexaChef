@@ -48,7 +48,8 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(inv_result.value, 1)
 
         # end the session and make sure database state is good
-        event = requester.Request().with_type(requester.Types.END).build()
+        event = requester.Request().with_type(requester.Types.END).copy_attributes(
+            response_dict).build()
         response_dict = lambda_function.handle_event(event, CONTEXT)
         inv_result = lambda_function._skill.db_helper.get('invocations')
         state_result = lambda_function._skill.db_helper.getState()
@@ -70,3 +71,30 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(inv_result.value, 2)
         self.assertEqual(state_result.value, core.States.INITIAL_STATE)
         self.assertEqual(lambda_function._skill.db_helper.table.item_count, 1)
+
+    @utils.wip
+    def test_tutorial_conversation(self):
+        utils.delete_table(core.LOCAL_DB_URI)
+
+        req = requester.Request().with_type(requester.Types.LAUNCH).new().build()
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_TUTORIAL)
+
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            requester.Intent("AMAZON_YesIntent").build()).copy_attributes(response_dict).build()
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+        state_result = lambda_function._skill.db_helper.getState()
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(state_result.value, core.States.INITIAL_STATE)
+
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            requester.Intent("AMAZON_HelpIntent").build()).copy_attributes(response_dict).build()
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+        state_result = lambda_function._skill.db_helper.getState()
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(state_result.value, core.States.INITIAL_STATE)
