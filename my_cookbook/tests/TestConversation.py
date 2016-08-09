@@ -107,20 +107,3 @@ class ConversationTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response_dict))
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.PROMPT_FOR_START)
-
-    def test_help_intent(self):
-        # test that help command works in all states
-        for state in core.all_states():
-            req = requester.Request().with_type(requester.Types.INTENT).with_attributes(
-                {core.STATE_KEY: state}).with_intent(requester.Intent("AMAZON_HelpIntent").build(
-                )).build()
-            response_dict = lambda_function.handle_event(req, CONTEXT)
-            state_result = lambda_function._skill.db_helper.getState()
-
-            self.assertTrue(responder.is_valid(response_dict))
-            self.assertEqual(state_result.value, core.States.INITIAL_STATE)
-
-            # make sure the end the conversation
-            event = requester.Request().with_type(requester.Types.END).build()
-            response_dict = lambda_function.handle_event(event, CONTEXT)
-            self.assertTrue(responder.is_valid(response_dict))
