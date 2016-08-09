@@ -9,6 +9,7 @@ from my_cookbook.util import dbhelper
 from my_cookbook.skill.handlers import ask_tutorial
 from my_cookbook.skill.handlers import initial
 from my_cookbook.skill.handlers import new_recipe
+from my_cookbook.skill.handlers import prompt_for_start
 from my_cookbook.skill.handlers import stateless
 
 
@@ -18,6 +19,7 @@ class Skill:
         self.intent_handler.add(ask_tutorial.state, ask_tutorial.handler)
         self.intent_handler.add(initial.state, initial.handler)
         self.intent_handler.add(new_recipe.state, new_recipe.handler)
+        self.intent_handler.add(prompt_for_start.state, prompt_for_start.handler)
         self.intent_handler.add(stateless.state, stateless.handler)
 
     def handle_event(self, event, context):

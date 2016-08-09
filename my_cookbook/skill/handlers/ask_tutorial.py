@@ -2,7 +2,7 @@ from my_cookbook.util import core
 from my_cookbook.util import responder
 
 
-class AskTutorialHandler():
+class AskTutorialHandler:
     def AMAZON_YesIntent(self, handlers, persistant_attributes, attributes, slots):
         return responder.tell(
             "I am capable of finding recipes and walking you through making them. Try asking how to make pancakes")
