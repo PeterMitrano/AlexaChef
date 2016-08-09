@@ -10,8 +10,7 @@ class StatelessHandler():
         return other_handler(handlers, persistant_attributes, attributes, slots)
 
     def AMAZON_HelpIntent(self, handlers, persistant_attributes, attributes, slots):
-        attributes[core.STATE_KEY] = core.States.ASK_TUTORIAL
-        return responder.ask("AMAZON.YesIntent" + core.States.ASK_TUTORIAL, None, attributes)
+        return responder.tell("I don't know how to help you yet. Stay tuned for a future update.")
 
     def AMAZON_StartOverIntent(self, handlers, persistant_attributes, attributes, slots):
         attributes[core.STATE_KEY] = core.States.INITIAL_STATE

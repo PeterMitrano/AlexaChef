@@ -72,10 +72,10 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(state_result.value, core.States.INITIAL_STATE)
         self.assertEqual(lambda_function._skill.db_helper.table.item_count, 1)
 
-    @utils.wip
     def test_tutorial_conversation(self):
         utils.delete_table(core.LOCAL_DB_URI)
 
+        # lauch as new user, check out session attributes are in ASK_TUTORIAL
         req = requester.Request().with_type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(req, CONTEXT)
 
@@ -83,6 +83,7 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_TUTORIAL)
 
+        # response with "Yes" to to tutorial, check that we saved state in db
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(
             requester.Intent("AMAZON_YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, CONTEXT)
@@ -91,10 +92,35 @@ class ConversationTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response_dict))
         self.assertEqual(state_result.value, core.States.INITIAL_STATE)
 
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-            requester.Intent("AMAZON_HelpIntent").build()).copy_attributes(response_dict).build()
+        # delete user so we are prompted again, this time respond no.
+        utils.delete_table(core.LOCAL_DB_URI)
+
+        # lauch as new user again
+        req = requester.Request().with_type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(req, CONTEXT)
-        state_result = lambda_function._skill.db_helper.getState()
+
+        # response with "No" to to tutorial, check that we saved state in db
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            requester.Intent("AMAZON_NoIntent").build()).copy_attributes(response_dict).build()
+        response_dict = lambda_function.handle_event(req, CONTEXT)
 
         self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(state_result.value, core.States.INITIAL_STATE)
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.PROMPT_FOR_START)
+
+    def test_help_intent(self):
+        # test that help command works in all states
+        for state in core.all_states():
+            req = requester.Request().with_type(requester.Types.INTENT).with_attributes(
+                {core.STATE_KEY: state}).with_intent(requester.Intent("AMAZON_HelpIntent").build(
+                )).build()
+            response_dict = lambda_function.handle_event(req, CONTEXT)
+            state_result = lambda_function._skill.db_helper.getState()
+
+            self.assertTrue(responder.is_valid(response_dict))
+            self.assertEqual(state_result.value, core.States.INITIAL_STATE)
+
+            # make sure the end the conversation
+            event = requester.Request().with_type(requester.Types.END).build()
+            response_dict = lambda_function.handle_event(event, CONTEXT)
+            self.assertTrue(responder.is_valid(response_dict))

@@ -72,6 +72,7 @@ class Skill:
                 persistant_attributes['invocations'] = 1
 
         # add whether the request is 'new' into the attributes for conveneince
+        # and make sure state is in session_attributes, not persistant attributes
         session_attributes['new'] = event['session']['new']
 
         # at this point we either know the state, or we have returned an error,

@@ -4,7 +4,6 @@ from my_cookbook.util import responder
 
 class AskTutorialHandler():
     def AMAZON_YesIntent(self, handlers, persistant_attributes, attributes, slots):
-        attributes[core.STATE_KEY] = core.States.INITIAL_STATE
         return responder.tell(
             "I am capable of finding recipes and walking you through making them. Try asking how to make pancakes")
 
