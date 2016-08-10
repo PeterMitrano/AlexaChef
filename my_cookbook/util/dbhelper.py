@@ -36,21 +36,10 @@ class DBHelper:
         global _db_hit_count
         _db_hit_count = 0
 
-        if self.local:
-            self.client = boto3.client(
-                "dynamodb",
-                endpoint_url=self.endpoint_url,
-                region_name="fake_region",
-                aws_access_key_id="fake_id",
-                aws_secret_access_key="fake_key")
-        else:
-            self.client = boto3.client("dynamodb")
-
-        tables = self.client.list_tables()['TableNames']
-
+        tables = [table.name for table in self.dynamodb.tables.all()]
         if core.DB_TABLE not in tables:
             if self.local:
-                self.table = self.client.create_table(
+                self.table = self.dynamodb.create_table(
                     TableName=core.DB_TABLE,
                     KeySchema=[
                         {
@@ -68,7 +57,7 @@ class DBHelper:
                         'ReadCapacityUnits': 1,
                         'WriteCapacityUnits': 1
                     })
-                self.client.get_waiter('table_exists').wait(TableName=core.DB_TABLE)
+                self.table.wait_until_exists()
             else:
                 raise Exception("Table doesn't exist in production. Skipping create.")
 
