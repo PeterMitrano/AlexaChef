@@ -11,12 +11,6 @@ CONTEXT = {"debug": True}
 
 
 class ConversationTest(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        # remember since we're using the lambda_function, which goes through
-        # main, we will be using the `default_user_id` for everything
-        utils.delete_table(core.LOCAL_DB_URI)
-
     def test_first_time(self):
         utils.delete_table(core.LOCAL_DB_URI)
 
