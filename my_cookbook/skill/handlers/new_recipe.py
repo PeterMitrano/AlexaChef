@@ -8,11 +8,12 @@ from my_cookbook.util import recipes_helper
 class NewRecipeHandler():
     def StartNewRecipeIntent(self, handlers, persistant_attributes, attributes, slots):
         if 'RecipeName' not in slots:
+            attributes[core.STATE_KEY] = core.States.NEW_RECIPE
             return responder.ask(
                 "I couldn't figure what recipe you wanted. Try saying, How do I make pancakes?",
                 'Try saying, How do I make pancakes?', attributes)
         else:
-            recipe_name = slots['RecipeName']
+            recipe_name = slots['RecipeName']['value']
 
             # search the users recipes to find appropriate recipes.
             # the value here is a (possibly empty) list of recipes in order
@@ -39,7 +40,8 @@ class NewRecipeHandler():
                     None, attributes)
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
-        return responder.ask("I'm confused. Try asking me what you want to make.", None, attributes)
+        persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]
+        return responder.tell("I'm confused. Try asking me what you want to make.")
 
 
 handler = NewRecipeHandler()
