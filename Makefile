@@ -2,8 +2,9 @@ all: zip upload
 
 zip:
 	mkdir -p build
-	cp -r src/* build
-	find build -name *.swp | xargs rm
+	cp -r ./venv/lib/python2.7/site-packages/* build
+	cp -r ./my_cookbook/* build
+	find build -name *.swp | xargs rm -f
 	cd build &&	zip -q -r skill.zip *
 
 upload: zip
