@@ -4,6 +4,13 @@ import requests
 API = 'https://6peln83v5l.execute-api.us-east-1.amazonaws.com/dev'
 
 
+def add_recipe(persistant_attributes, recipe):
+    if 'recipes' in persistant_attributes:
+        persistant_attributes['recipes'].append(recipe)
+    else:
+        persistant_attributes['recipes'] = [recipe]
+
+
 def get_online_recipe(recipe_id):
     response = requests.get(API + '/recipes', params={"id": recipe_id})
     if not response.ok:
@@ -41,14 +48,11 @@ def search_my_recipes(persistant_attributes, recipe_name):
         return []
 
     recipes = persistant_attributes['recipes']
+
+    if len(recipes) == 0:
+        return []
+
     # some rank/search algorithm goes here, but it needs to be shared code with
     # how we search online
-    # for now we just pick a random number of them
-
-    num_recipes = len(recipes)
-    fake_num_recipes = random.randint(0, num_recipes)
-    relavent_recipes = []
-    for i in range(fake_num_recipes):
-        relavent_recipes.append(recipes[random.randint(0, num_recipes)])
-
-    return relavent_recipes
+    # for now we just send them all
+    return recipes

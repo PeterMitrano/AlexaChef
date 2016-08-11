@@ -28,16 +28,22 @@ class NewRecipeHandler():
             elif len(recipes) == 1:
                 attributes[core.STATE_KEY] = core.States.ASK_MAKE_COOKBOOK
                 best_guess_recipe_name = recipes[0]['name']
+                attributes['current_recipe'] = recipes[0]
                 return responder.ask("I found a recipe for " + best_guess_recipe_name +
                                      ", In your cookbook. Do you want to use that?", None,
                                      attributes)
             elif len(recipes) < 3:
-                attributes[core.STATE_KEY] = core.States.ASK_MAKE_COOKBOOK
+                attributes[core.STATE_KEY] = core.States.ASK_WHICH_RECIPE
                 recipe_names = ','.join([recipe['name'] for recipe in recipes])
                 return responder.ask(
                     "I found a recipes for " + recipe_names +
                     ", In your cookbook. Do you want the first one, the second one, or the third one?",
                     None, attributes)
+            else:
+                # here would be a good spot to ask questions to narrow down
+                # which recipe the user wants to make
+                # for now just say how many we found I guess
+                return responder.tell("I found " + len(recipes) + " recipes")
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]

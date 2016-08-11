@@ -4,6 +4,7 @@ import logging
 
 from my_cookbook.util import core
 from my_cookbook.util import responder
+from my_cookbook.util import decimilify
 
 logging.getLogger('boto3').setLevel(logging.WARNING)
 logging.getLogger('botocore').setLevel(logging.WARNING)
@@ -131,6 +132,9 @@ class DBHelper:
         """
         result = namedtuple('result', ['err', 'error_speech'])
         item_key = {'userId': self.user}
+
+        # first decimilify everything
+        attributes = decimilify.decimilify(attributes)
 
         # ok so this badass python formats the update expression
         # don't fight it--the tests show it works. Just learn to love it
