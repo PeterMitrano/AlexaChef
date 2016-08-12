@@ -11,10 +11,10 @@ class Types:
 
 class Intent():
     def __init__(self, name):
-        self.intent = {"name": name, "slots": {}}
+        self.intent = {"name": name}
 
     def with_slot(self, name, value):
-        self.intent['slots'][name] = {"name": name, "value": value}
+        self.intent['slots'] = {name: {"name": name, "value": value}}
         return self
 
     def build(self):

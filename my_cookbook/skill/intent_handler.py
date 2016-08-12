@@ -20,7 +20,10 @@ class Handler:
         if request_type == requester.Types.LAUNCH:
             intent = requester.Types.LAUNCH
         elif request_type == requester.Types.INTENT:
-            slots = event['request']['intent']['slots']
+            if 'slots' in event['request']['intent']:
+                slots = event['request']['intent']['slots']
+            else:
+                slots = {}
             intent = event['request']['intent']['name']
         elif request_type == requester.Types.END:
             intent = requester.Types.END
