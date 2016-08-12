@@ -102,7 +102,6 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.PROMPT_FOR_START)
 
-    @utils.wip
     def test_recipe_conversation(self):
         utils.delete_table(core.LOCAL_DB_URI)
 

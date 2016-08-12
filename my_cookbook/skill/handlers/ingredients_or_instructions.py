@@ -5,6 +5,10 @@ from my_cookbook.util import recipe_reader
 
 class IngredientsOrInstructionsHandler():
     def IngredientsIntent(self, handlers, persistant_attributes, attributes, slots):
+        # check we've got a working recipe at the moment
+        if 'current_recipe' not in attributes:
+            return responder.tell("I can't list ingredients because you haven't picked a recipe.")
+
         # because it's a tell, we save attributes
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]
         persistant_attributes['current_recipe'] = attributes['current_recipe']
@@ -16,6 +20,10 @@ class IngredientsOrInstructionsHandler():
                                         card, None)
 
     def InstructionsIntent(self, handlers, persistant_attributes, attributes, slots):
+        # check we've got a working recipe at the moment
+        if 'current_recipe' not in attributes:
+            return responder.tell("I can't start instructions because you haven't picked a recipe.")
+
         # because it's a tell, we save attributes
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]
         persistant_attributes['current_recipe'] = attributes['current_recipe']
