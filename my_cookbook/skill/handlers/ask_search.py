@@ -7,7 +7,8 @@ class AskSearchHandler():
     def AMAZON_YesIntent(self, handlers, persistant_attributes, attributes, slots):
         # search for recipe
         if 'current_recipe_name' not in attributes:
-            return responder.tell("I'm not sure what recipe you are searching for. Please start over")
+            return responder.tell(
+                "I'm not sure what recipe you are searching for. Please start over")
 
         recipe_name = attributes['current_recipe_name']
         recipes = recipes_helper.search_online_recipes(recipe_name)
@@ -21,15 +22,13 @@ class AskSearchHandler():
             best_guess_recipe_name = recipes[0]['name']
             attributes['current_recipe'] = recipes[0]
             return responder.ask("I found a recipe for " + best_guess_recipe_name +
-                                 ", In your cookbook. Do you want to use that?", None,
-                                 attributes)
+                                 ", In your cookbook. Do you want to use that?", None, attributes)
         elif len(recipes) < 3:
             attributes[core.STATE_KEY] = core.States.ASK_WHICH_RECIPE
             recipe_names = ','.join([recipe['name'] for recipe in recipes])
-            return responder.ask(
-                "I found a recipes for " + recipe_names +
-                ". Do you want the first one, the second one, or the third one?",
-                None, attributes)
+            return responder.ask("I found a recipes for " + recipe_names +
+                                 ". Do you want the first one, the second one, or the third one?",
+                                 None, attributes)
 
     def AMAZON_NoIntent(self, handlers, persistant_attributes, attributes, slots):
         attributes[core.STATE_KEY] = core.States.ASK_SEARCH

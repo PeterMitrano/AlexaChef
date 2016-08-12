@@ -13,8 +13,7 @@ class IngredientsOrInstructionsHandler():
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]
         persistant_attributes['current_recipe'] = attributes['current_recipe']
 
-        ingredients_speech = recipe_reader.ingredients_speech(attributes[
-            'current_recipe'])
+        ingredients_speech = recipe_reader.ingredients_speech(attributes['current_recipe'])
         card = recipe_reader.ingredients_card(attributes['current_recipe'])
         return responder.tell_with_card("The ingredients are. " + ingredients_speech, "Ingredients",
                                         card, None)
@@ -28,8 +27,7 @@ class IngredientsOrInstructionsHandler():
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]
         persistant_attributes['current_recipe'] = attributes['current_recipe']
 
-        instructions_speech = recipe_reader.instructions_speech(attributes[
-            'current_recipe'])
+        instructions_speech = recipe_reader.instructions_speech(attributes['current_recipe'])
         card = recipe_reader.instructions_card(attributes['current_recipe'])
         return responder.tell_with_card("The ingredients are. " + instructions_speech,
                                         "Instructions", card, None)
