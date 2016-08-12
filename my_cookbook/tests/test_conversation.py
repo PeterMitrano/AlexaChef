@@ -5,7 +5,7 @@ from my_cookbook.util import core
 from my_cookbook.tests import utils
 from my_cookbook.util import requester
 from my_cookbook.util import responder
-from my_cookbook import lambda_function
+import lambda_function
 
 CONTEXT = {"debug": True}
 

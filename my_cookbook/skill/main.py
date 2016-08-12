@@ -32,10 +32,10 @@ class Skill:
         self.intent_handler.add(stateless.state, stateless.handler)
 
     def handle_event(self, event, context):
-        # check if we're debuggin locally
+        # check if we're debugging locally
         debug = False
         endpoint_url = None
-        if "debug" in context:
+        if isinstance(context, dict) and "debug" in context:
             debug = True
             logging.getLogger(core.LOGGER).setLevel(logging.DEBUG)
             endpoint_url = core.LOCAL_DB_URI

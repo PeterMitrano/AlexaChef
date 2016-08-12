@@ -5,7 +5,7 @@ from nose.plugins.skip import SkipTest
 
 from my_cookbook.util import core
 from my_cookbook.util import requester
-from my_cookbook import lambda_function
+import lambda_function
 
 CONTEXT = {"debug": True}
 
