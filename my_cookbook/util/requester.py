@@ -26,8 +26,6 @@ class Request():
         self.request = {
             "version": "1.0",
             "session": {
-                "attributes" : {
-                },
                 "application": {
                     "applicationId": core.APP_ID
                 },

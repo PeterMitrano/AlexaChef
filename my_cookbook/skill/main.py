@@ -49,7 +49,10 @@ class Skill:
             raise Exception('application id %s does not match.' % request_appId)
 
         # store session attributes so the various handlers know what's up
-        session_attributes = event['session']['attributes']
+        if 'attributes' in event['session']:
+            session_attributes = event['session']['attributes']
+        else:
+            session_attributes = {}
 
         # try to pull the current values from the database so we can initialize
         # the persistant_attributes dict. This will also create the user if they
