@@ -57,8 +57,8 @@ class IntentTest(unittest.TestCase):
                 intent = requester.Intent(intent_name).build()
                 event = requester.Request().with_type(requester.Types.INTENT).new().with_intent(
                     intent).with_attributes({core.STATE_KEY: state}).build()
-
                 response_dict = lambda_function.handle_event(event, CONTEXT)
+
                 self.assertTrue(responder.is_valid(response_dict))
 
                 # make sure the end the conversation

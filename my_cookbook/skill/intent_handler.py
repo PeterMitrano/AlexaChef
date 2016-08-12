@@ -55,7 +55,7 @@ class Handler:
 
         # next try Unhandled for that state
         if state in self.handlers:
-            if hasattr(self.handlers[state], intent):
+            if hasattr(self.handlers[state], 'Unhandled'):
                 handler_method = getattr(self.handlers[state], 'Unhandled')
                 logging.getLogger(core.LOGGER).info("found handler for stateful unhandled")
                 return handler_method(self.handlers, persistant_attributes, attributes, slots)

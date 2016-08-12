@@ -66,7 +66,6 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(state_result.value, core.States.INITIAL_STATE)
         self.assertEqual(lambda_function._skill.db_helper.table.item_count, 1)
 
-    @utils.wip
     def test_tutorial_conversation(self):
         utils.delete_table(core.LOCAL_DB_URI)
 
