@@ -9,9 +9,7 @@ class AskTutorialHandler:
 
     def AMAZON_NoIntent(self, handlers, persistant_attributes, attributes, slots):
         attributes[core.STATE_KEY] = core.States.PROMPT_FOR_START
-        return responder.ask(
-            "Are you ready to start making something? You can say yes, or ask me something else.",
-            None, attributes)
+        return responder.ask("Are you ready to start making something?", None, attributes)
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
         return responder.ask(

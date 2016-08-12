@@ -22,6 +22,7 @@ class NewRecipeHandler():
 
             if len(recipes) == 0:
                 attributes[core.STATE_KEY] = core.States.ASK_SEARCH
+                attributes['current_recipe_name'] = recipe_name
                 return responder.ask("I didn't find any recipe for " + recipe_name +
                                      ", In your cookbook. Should I find one online?",
                                      "Do you want to find another recipe?", attributes)
