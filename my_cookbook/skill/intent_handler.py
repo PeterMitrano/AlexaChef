@@ -1,4 +1,5 @@
 import logging
+import re
 
 from my_cookbook.util import core
 from my_cookbook.util import requester
@@ -30,7 +31,12 @@ class Handler:
         else:
             return responder.tell("I'm not sure what your intent is. Try asking differently")
 
+        # translate AMAZON\.(.+) into AMAZON_$1
+        intent = re.sub(r'AMAZON\.(.+)', r'AMAZON_\1', intent)
+
         stateful_intent = intent + state
+
+        logging.getLogger(core.LOGGER).warn(stateful_intent)
 
         # now we want to try to find a handler fo this intent
         # we first try the exact intent, then that intent without the state

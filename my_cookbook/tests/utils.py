@@ -101,7 +101,7 @@ test_recipe = {
 def insert_recipes():
     # insert a recipe into the users cookbook
     attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': test_recipe}
-    intent = requester.Intent('AMAZON_YesIntent').build()
+    intent = requester.Intent('AMAZON.YesIntent').build()
     req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
     ).with_attributes(attrs).build()
     return lambda_function.handle_event(req, CONTEXT)

@@ -5,6 +5,10 @@ from my_cookbook.util import recipes_helper
 
 class AskSaveHandler():
     def AMAZON_YesIntent(self, handlers, persistant_attributes, attributes, slots):
+        if 'current_recipe' not in attributes:
+            # TODO: ask "which recipe do you want to save
+            return responder.tell("I don't know which recipe you want me to save.")
+
         recipe = attributes['current_recipe']
         recipes_helper.add_recipe(persistant_attributes, recipe)
         return responder.tell("Recipe saved.")

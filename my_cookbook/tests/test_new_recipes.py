@@ -40,7 +40,7 @@ class NewRecipeTest(unittest.TestCase):
 
         # insert a recipe into the users cookbook
         attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': utils.test_recipe}
-        intent = requester.Intent('AMAZON_YesIntent').build()
+        intent = requester.Intent('AMAZON.YesIntent').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
         ).with_attributes(attrs).build()
         response_dict = lambda_function.handle_event(req, CONTEXT)

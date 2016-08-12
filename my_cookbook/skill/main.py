@@ -99,7 +99,14 @@ class Skill:
         # the persistant_attributes dict to our database
         # but only do it if something change
         if persistant_attributes != initial_persistant_attributes:
+            # but we don't want to save 'new'
+            persistant_attributes.pop('new', None)
             self.db_helper.setAll(persistant_attributes)
 
         # ok we're finally done
+        response['sessionAttributes'].pop('new', None)
+
+        # don't delete this or you can't debug production
+        logging.getLogger(core.LOGGER).warn(response)
+
         return response

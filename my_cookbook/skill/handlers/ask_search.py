@@ -18,5 +18,5 @@ class AskSearchHandler():
             attributes)
 
 
-handler = AskSearchHandler
+handler = AskSearchHandler()
 state = core.States.ASK_SEARCH
