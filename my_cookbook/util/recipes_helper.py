@@ -35,7 +35,7 @@ def get_online_recipe(recipe_id):
 
 def search_online_recipes(recipe_name):
     # some rank/search algorithm goes here, but it needs to be shared code with
-    # how we search online
+    # how we search cookbook
     return []
 
 

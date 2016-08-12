@@ -126,7 +126,7 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_MAKE_COOKBOOK)
 
-        # response with "Yes" to to tutorial, check that we saved state in db
+        # response with "Yes" to make recipe from cookbook, check that we saved state in db
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(
             requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, CONTEXT)
@@ -153,3 +153,44 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(len(recipes_result.value), 1)
         self.assertEqual(state_result.value, core.States.INGREDIENTS_OR_INSTRUCTIONS)
         self.assertEqual(current_recipe_result.value, current_recipe)
+
+    @utils.wip
+    def test_search_one_match_conversation(self):
+        utils.delete_table(core.LOCAL_DB_URI)
+
+        # lauch as new user, check out session attributes afterwards
+        # since there are no recipes in our cookbook it should search
+        # but we expect "pancakes" to be one of the recipes in the online database
+        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
+                                                                    'Pancakes').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
+        )
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertIn('current_recipe_name', response_dict['sessionAttributes'])
+        # save current recipe for later in test
+        current_recipe_named = response_dict['sessionAttributes']['current_recipe_name']
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_SEARCH)
+
+        # response with "Yes" to make recipe from cookbook, check that we saved state in db
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertIn('current_recipe', response_dict['sessionAttributes'])
+        self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
+        self.assertEqual(current_recipe_name, 'Pancakes')
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_MAKE_ONLINE)
+
+        intent = requester.Intent('InstructionsIntent').build()
+        req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
+            response_dict).with_intent(intent).new().build()
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(current_recipe_name, 'Pancakes')
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_MAKE_ONLINE)
