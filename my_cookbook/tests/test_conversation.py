@@ -101,3 +101,56 @@ class ConversationTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response_dict))
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.PROMPT_FOR_START)
+
+    @utils.wip
+    def test_recipe_conversation(self):
+        utils.delete_table(core.LOCAL_DB_URI)
+
+        # insert recipes
+        response_dict = utils.insert_recipes()
+        recipes_result = lambda_function._skill.db_helper.get('recipes')
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(len(recipes_result.value), 1)
+
+        # lauch as new user, check out session attributes afterwards
+        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
+                                                                    'Pancakes').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
+        )
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+        recipes_result = lambda_function._skill.db_helper.get('recipes')
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(len(recipes_result.value), 1)
+        self.assertIn('current_recipe', response_dict['sessionAttributes'])
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_MAKE_COOKBOOK)
+
+        # response with "Yes" to to tutorial, check that we saved state in db
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            requester.Intent("AMAZON_YesIntent").build()).copy_attributes(response_dict).build()
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+        recipes_result = lambda_function._skill.db_helper.get('recipes')
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(len(recipes_result.value), 1)
+        self.assertIn('current_recipe', response_dict['sessionAttributes'])
+        self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
+        # save current recipe for later in test
+        current_recipe = response_dict['sessionAttributes']['current_recipe']
+
+        intent = requester.Intent('IngredientsIntent').build()
+        req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
+            response_dict).with_intent(intent).new().build()
+        response_dict = lambda_function.handle_event(req, CONTEXT)
+        state_result = lambda_function._skill.db_helper.getState()
+        recipes_result = lambda_function._skill.db_helper.get('recipes')
+        current_recipe_result = lambda_function._skill.db_helper.get('current_recipe')
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(len(recipes_result.value), 1)
+        self.assertEqual(state_result.value, core.States.INGREDIENTS_OR_INSTRUCTIONS)
+        self.assertEqual(current_recipe_result.value, current_recipe)

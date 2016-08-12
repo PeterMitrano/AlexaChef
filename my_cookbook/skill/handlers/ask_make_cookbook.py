@@ -17,5 +17,5 @@ class AskMakeCookbookHandler():
                              None, attributes)
 
 
-handler = AskMakeCookbookHandler
+handler = AskMakeCookbookHandler()
 state = core.States.ASK_MAKE_COOKBOOK

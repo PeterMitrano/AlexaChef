@@ -4,6 +4,10 @@ from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
 
 from my_cookbook.util import core
+from my_cookbook.util import requester
+from my_cookbook import lambda_function
+
+CONTEXT = {"debug": True}
 
 test_recipe = {
     "category": {
@@ -92,6 +96,15 @@ test_recipe = {
     ],
     "total_time": "20 minutes"
 }
+
+
+def insert_recipes():
+    # insert a recipe into the users cookbook
+    attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': test_recipe}
+    intent = requester.Intent('AMAZON_YesIntent').build()
+    req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
+    ).with_attributes(attrs).build()
+    return lambda_function.handle_event(req, CONTEXT)
 
 
 def delete_table(endpoint_url):

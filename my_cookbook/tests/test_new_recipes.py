@@ -44,9 +44,9 @@ class NewRecipeTest(unittest.TestCase):
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
         ).with_attributes(attrs).build()
         response_dict = lambda_function.handle_event(req, CONTEXT)
+        recipes_result = lambda_function._skill.db_helper.get('recipes')
 
         self.assertTrue(responder.is_valid(response_dict))
-        recipes_result = lambda_function._skill.db_helper.get('recipes')
         self.assertEqual(len(recipes_result.value), 1)
 
         # now ask to make that recipe
@@ -57,4 +57,5 @@ class NewRecipeTest(unittest.TestCase):
         response_dict = lambda_function.handle_event(req, CONTEXT)
 
         self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_MAKE_COOKBOOK)
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_MAKE_COOKBOOK)
