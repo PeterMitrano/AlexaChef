@@ -7,8 +7,6 @@ from my_cookbook.util import core
 from my_cookbook.util import requester
 import lambda_function
 
-CONTEXT = {"debug": True}
-
 test_recipe = {
     "category": {
         "name": "breakfast",
@@ -104,7 +102,7 @@ def insert_recipes():
     intent = requester.Intent('AMAZON.YesIntent').build()
     req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
     ).with_attributes(attrs).build()
-    return lambda_function.handle_event(req, CONTEXT)
+    return lambda_function.handle_event(req, None)
 
 
 def delete_table(endpoint_url):

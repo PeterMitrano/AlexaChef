@@ -1,5 +1,6 @@
 import copy
 import logging
+import os
 
 from my_cookbook.skill import intent_handler
 from my_cookbook.util import responder
@@ -33,13 +34,13 @@ class Skill:
 
     def handle_event(self, event, context):
         # check if we're debugging locally
-        debug = False
-        endpoint_url = None
-        if isinstance(context, dict) and "debug" in context:
+        if 'DEBUG' in os.environ:
             debug = True
             logging.getLogger(core.LOGGER).setLevel(logging.DEBUG)
             endpoint_url = core.LOCAL_DB_URI
         else:
+            debug = False
+            endpoint_url = None
             logging.getLogger(core.LOGGER).setLevel(logging.INFO)
 
         # check application id and user

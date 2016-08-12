@@ -7,8 +7,6 @@ from my_cookbook.util import requester
 from my_cookbook.util import responder
 import lambda_function
 
-CONTEXT = {"debug": True}
-
 
 class IntentTest(unittest.TestCase):
     @classmethod
@@ -18,7 +16,7 @@ class IntentTest(unittest.TestCase):
     def test_single_launch(self):
         r = requester.Request()
         event = r.with_type(requester.Types.LAUNCH).new().build()
-        response_dict = lambda_function.handle_event(event, CONTEXT)
+        response_dict = lambda_function.handle_event(event, None)
 
         self.assertTrue(responder.is_valid(response_dict))
 
@@ -27,13 +25,13 @@ class IntentTest(unittest.TestCase):
 
         for i in range(10):
             event = request.build()
-            response_dict = lambda_function.handle_event(event, CONTEXT)
+            response_dict = lambda_function.handle_event(event, None)
             self.assertTrue(responder.is_valid(response_dict))
 
     def test_single_end(self):
         r = requester.Request()
         event = r.with_type(requester.Types.END).new().build()
-        response_dict = lambda_function.handle_event(event, CONTEXT)
+        response_dict = lambda_function.handle_event(event, None)
 
         self.assertTrue(responder.is_valid(response_dict))
 
@@ -42,7 +40,7 @@ class IntentTest(unittest.TestCase):
 
         for i in range(10):
             event = request.build()
-            response_dict = lambda_function.handle_event(event, CONTEXT)
+            response_dict = lambda_function.handle_event(event, None)
             self.assertTrue(responder.is_valid(response_dict))
 
     def test_copy_attributes(self):
@@ -57,11 +55,11 @@ class IntentTest(unittest.TestCase):
                 intent = requester.Intent(intent_name).build()
                 event = requester.Request().with_type(requester.Types.INTENT).new().with_intent(
                     intent).with_attributes({core.STATE_KEY: state}).build()
-                response_dict = lambda_function.handle_event(event, CONTEXT)
+                response_dict = lambda_function.handle_event(event, None)
 
                 self.assertTrue(responder.is_valid(response_dict))
 
                 # make sure the end the conversation
                 event = requester.Request().with_type(requester.Types.END).build()
-                response_dict = lambda_function.handle_event(event, CONTEXT)
+                response_dict = lambda_function.handle_event(event, None)
                 self.assertTrue(responder.is_valid(response_dict))
