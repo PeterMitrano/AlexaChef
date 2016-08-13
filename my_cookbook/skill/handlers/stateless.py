@@ -26,9 +26,12 @@ class StatelessHandler():
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
         persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
-        return responder.tell("We've already been talking" \
-            " but I have no idea what about, so I will exit this session. Please" \
-            " start over by saying, Alexa launch my cookbook.")
+        if session_attributes['new']:
+            return responder.tell("We've already been talking" \
+                " but I have no idea what about, so I will exit this session. Please" \
+                " start over by saying, Alexa launch my cookbook.")
+        else:
+            return responder.tell("Hey, what's up.")
 
 
 handler = StatelessHandler()
