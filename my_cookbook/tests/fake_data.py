@@ -87,8 +87,8 @@ test_recipe = {
     "total_time": "20 minutes"
 }
 
-test_online_recipes = {
-    '0': test_recipe,  # all we know how to make is pancakes
-}
+test_online_recipes = [
+    test_recipe,  # all we know how to make is pancakes
+]
 
 

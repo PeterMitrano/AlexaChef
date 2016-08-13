@@ -2,7 +2,7 @@ import logging
 import unittest
 
 from my_cookbook.util import core
-from my_cookbook.tests import utils
+from my_cookbook.tests import test_util
 from my_cookbook.util import requester
 from my_cookbook.util import responder
 import lambda_function
@@ -10,7 +10,7 @@ import lambda_function
 
 class ConversationTest(unittest.TestCase):
     def test_first_time(self):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         event = requester.Request().with_type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(event, None)
@@ -28,7 +28,7 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(lambda_function._skill.db_helper.table.item_count, 1)
 
     def test_returning_user(self):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         # first launch on new user should result in a table entry with state set
         # as well as session attributes set correctly
@@ -65,7 +65,7 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(lambda_function._skill.db_helper.table.item_count, 1)
 
     def test_tutorial_conversation(self):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         # lauch as new user, check out session attributes are in ASK_TUTORIAL
         req = requester.Request().with_type(requester.Types.LAUNCH).new().build()
@@ -85,7 +85,7 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(state_result.value, core.States.INITIAL_STATE)
 
         # delete user so we are prompted again, this time respond no.
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         # lauch as new user again
         req = requester.Request().with_type(requester.Types.LAUNCH).new().build()
@@ -101,10 +101,10 @@ class ConversationTest(unittest.TestCase):
                          core.States.PROMPT_FOR_START)
 
     def test_recipe_conversation(self):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         # insert recipes
-        response_dict = utils.insert_recipes()
+        response_dict = test_util.insert_recipes()
         recipes_result = lambda_function._skill.db_helper.get('recipes')
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -152,9 +152,9 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(state_result.value, core.States.INGREDIENTS_OR_INSTRUCTIONS)
         self.assertEqual(current_recipe_result.value, current_recipe)
 
-    @utils.wip
+    @test_util.wip
     def test_search_one_match_conversation(self):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         # lauch as new user, check out session attributes afterwards
         # since there are no recipes in our cookbook it should search
@@ -168,14 +168,12 @@ class ConversationTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response_dict))
         self.assertIn('current_recipe_name', response_dict['sessionAttributes'])
         # save current recipe for later in test
-        current_recipe_named = response_dict['sessionAttributes']['current_recipe_name']
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
-                         core.States.ASK_SEARCH)
+        current_recipe_name = response_dict['sessionAttributes']['current_recipe_name']
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_SEARCH)
 
-        # response with "Yes" to make recipe from cookbook, check that we saved state in db
+        # response with "Yes" to search
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(
             requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
-        from nose.tools import set_trace; set_trace()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -185,11 +183,25 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_MAKE_ONLINE)
 
-        intent = requester.Intent('InstructionsIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
-            response_dict).with_intent(intent).new().build()
+        # response with "Yes" to use the recipe we found
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
+        self.assertIn('current_recipe', response_dict['sessionAttributes'])
+        self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
         self.assertEqual(current_recipe_name, 'Pancakes')
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_MAKE_ONLINE)
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
+
+        #intent = requester.Intent('InstructionsIntent').build()
+        #req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
+            #response_dict).with_intent(intent).new().build()
+        #from nose.tools import set_trace; set_trace()
+        #response_dict = lambda_function.handle_event(req, None)
+
+        #self.assertTrue(responder.is_valid(response_dict))
+        #self.assertEqual(current_recipe_name, 'Pancakes')
+        #self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         #core.States.ASK_MAKE_ONLINE)
