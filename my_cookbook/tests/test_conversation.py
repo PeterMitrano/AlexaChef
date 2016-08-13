@@ -152,7 +152,6 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(state_result.value, core.States.INGREDIENTS_OR_INSTRUCTIONS)
         self.assertEqual(current_recipe_result.value, current_recipe)
 
-    @test_util.wip
     def test_search_one_match_conversation(self):
         test_util.delete_table(core.LOCAL_DB_URI)
 
@@ -194,14 +193,3 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(current_recipe_name, 'Pancakes')
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.INGREDIENTS_OR_INSTRUCTIONS)
-
-        #intent = requester.Intent('InstructionsIntent').build()
-        #req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
-            #response_dict).with_intent(intent).new().build()
-        #from nose.tools import set_trace; set_trace()
-        #response_dict = lambda_function.handle_event(req, None)
-
-        #self.assertTrue(responder.is_valid(response_dict))
-        #self.assertEqual(current_recipe_name, 'Pancakes')
-        #self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
-                         #core.States.ASK_MAKE_ONLINE)
