@@ -14,11 +14,10 @@ class DBHelperTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.endpoint_url = core.LOCAL_DB_URI
-        cls.db_helper = dbhelper.DBHelper(None, cls.endpoint_url)
+        cls.db_helper = dbhelper.DBHelper(None, core.LOCAL_DB_URI)
 
     def test_new_user(self):
-        test_util.delete_table(self.endpoint_url)
+        test_util.delete_table(core.LOCAL_DB_URI)
         self.db_helper.init_table()
         self.db_helper.user = 'new_user_%i' % random.randint(0, 1000)
 
@@ -32,7 +31,7 @@ class DBHelperTest(unittest.TestCase):
         self.assertEqual(dbhelper._db_hit_count, 2)
 
     def test_many_new_users(self):
-        test_util.delete_table(self.endpoint_url)
+        test_util.delete_table(core.LOCAL_DB_URI)
         self.db_helper.init_table()
         self.assertEqual(self.db_helper.table.item_count, 0)
 
