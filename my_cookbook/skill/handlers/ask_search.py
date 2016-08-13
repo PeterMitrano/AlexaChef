@@ -29,6 +29,8 @@ class AskSearchHandler():
             return responder.ask("I found a recipes for " + recipe_names +
                                  ". Do you want the first one, the second one, or the third one?",
                                  None, attributes)
+        else:
+            return responder.tell("ahhh to many recipes. I give up")
 
     def AMAZON_NoIntent(self, handlers, persistant_attributes, attributes, slots):
         attributes[core.STATE_KEY] = core.States.ASK_SEARCH

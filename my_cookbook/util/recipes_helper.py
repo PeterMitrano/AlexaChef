@@ -1,7 +1,9 @@
+import logging
+import os
 import random
 import requests
-import os
 
+from my_cookbook.util import core
 from my_cookbook.tests import fake_data
 
 API = 'https://6peln83v5l.execute-api.us-east-1.amazonaws.com/dev'
