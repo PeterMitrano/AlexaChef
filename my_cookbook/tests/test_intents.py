@@ -1,7 +1,7 @@
 import unittest
 
 from my_cookbook.util import schema
-from my_cookbook.tests import utils
+from my_cookbook.tests import test_util
 from my_cookbook.util import core
 from my_cookbook.util import requester
 from my_cookbook.util import responder
@@ -11,7 +11,7 @@ import lambda_function
 class IntentTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
     def test_single_launch(self):
         r = requester.Request()

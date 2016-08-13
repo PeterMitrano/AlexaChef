@@ -70,6 +70,7 @@ def get_online_recipe(recipe_id):
 
 
 def search_online_recipes(recipe_name):
+    """ returns a list of recipe dicts """
     if 'DEBUG' in os.environ:
         # fake it
         return fake_data.test_online_recipes

@@ -1,6 +1,6 @@
 import unittest
 
-from my_cookbook.tests import utils
+from my_cookbook.tests import test_util
 from my_cookbook.util import requester
 from my_cookbook.util import responder
 

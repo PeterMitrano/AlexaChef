@@ -3,14 +3,14 @@ import random
 import unittest
 
 from my_cookbook.util import core
-from my_cookbook.tests import utils
+from my_cookbook.tests import test_util
 from my_cookbook.util import requester
 from my_cookbook.util import responder
 import lambda_function
 
 class NewRecipeTest(unittest.TestCase):
     def test_recipe_in_empty_cookbook(self):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         intent = requester.Intent('StartNewRecipeIntent').with_slot(
             'RecipeName', 'Chicken and black bean burritos').build()
@@ -22,7 +22,7 @@ class NewRecipeTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_SEARCH)
 
     def test_unheard_recipe(self):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         intent = requester.Intent('StartNewRecipeIntent').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
@@ -33,10 +33,10 @@ class NewRecipeTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.NEW_RECIPE)
 
     def test_recipe_in_cookbook(self):
-        utils.delete_table(core.LOCAL_DB_URI)
+        test_util.delete_table(core.LOCAL_DB_URI)
 
         # insert a recipe into the users cookbook
-        attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': utils.test_recipe}
+        attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': test_util.test_recipe}
         intent = requester.Intent('AMAZON.YesIntent').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
         ).with_attributes(attrs).build()

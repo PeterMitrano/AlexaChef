@@ -1,5 +1,4 @@
 import boto3
-from functools import wraps
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
 

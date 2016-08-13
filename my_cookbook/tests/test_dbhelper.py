@@ -3,7 +3,7 @@ import random
 import time
 import unittest
 
-from my_cookbook.tests import utils
+from my_cookbook.tests import test_util
 from my_cookbook.util import core
 from my_cookbook.util import dbhelper
 
@@ -18,7 +18,7 @@ class DBHelperTest(unittest.TestCase):
         cls.db_helper = dbhelper.DBHelper(None, cls.endpoint_url)
 
     def test_new_user(self):
-        utils.delete_table(self.endpoint_url)
+        test_util.delete_table(self.endpoint_url)
         self.db_helper.init_table()
         self.db_helper.user = 'new_user_%i' % random.randint(0, 1000)
 
@@ -32,7 +32,7 @@ class DBHelperTest(unittest.TestCase):
         self.assertEqual(dbhelper._db_hit_count, 2)
 
     def test_many_new_users(self):
-        utils.delete_table(self.endpoint_url)
+        test_util.delete_table(self.endpoint_url)
         self.db_helper.init_table()
         self.assertEqual(self.db_helper.table.item_count, 0)
 
