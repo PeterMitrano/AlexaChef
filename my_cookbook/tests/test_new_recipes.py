@@ -4,6 +4,7 @@ import unittest
 
 from my_cookbook.util import core
 from my_cookbook.tests import test_util
+from my_cookbook.tests import fake_data
 from my_cookbook.util import requester
 from my_cookbook.util import responder
 import lambda_function
@@ -36,7 +37,7 @@ class NewRecipeTest(unittest.TestCase):
         test_util.delete_table(core.LOCAL_DB_URI)
 
         # insert a recipe into the users cookbook
-        attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': test_util.test_recipe}
+        attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': fake_data.test_recipe}
         intent = requester.Intent('AMAZON.YesIntent').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
         ).with_attributes(attrs).build()
