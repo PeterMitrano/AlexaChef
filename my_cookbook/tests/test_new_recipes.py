@@ -9,6 +9,7 @@ from my_cookbook.util import requester
 from my_cookbook.util import responder
 import lambda_function
 
+
 class NewRecipeTest(unittest.TestCase):
     def test_recipe_in_empty_cookbook(self):
         test_util.delete_table(core.LOCAL_DB_URI)

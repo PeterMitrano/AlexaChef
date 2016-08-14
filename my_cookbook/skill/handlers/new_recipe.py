@@ -38,8 +38,8 @@ class NewRecipeHandler():
                 recipe_names = recipes[0]['name'] + ',' + recipes[1]['name']
                 return responder.ask(
                     "I found a recipes for " + recipe_names +
-                    ", In your cookbook. Do you want the first one or the second one",
-                    None, attributes)
+                    ", In your cookbook. Do you want the first one or the second one", None,
+                    attributes)
             else:
                 # here would be a good spot to ask questions to narrow down
                 # which recipe the user wants to make

@@ -12,7 +12,8 @@ class AskMakeOnlineHandler():
         # search for another recipe online?
         # for now, just give up and reset.
         persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
-        return responder.tell("Well that's all the recipes I know about. Try asking to make something different.")
+        return responder.tell(
+            "Well that's all the recipes I know about. Try asking to make something different.")
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
         return responder.ask("I'm confused, Do you want to make the recipe from your cookbook?",

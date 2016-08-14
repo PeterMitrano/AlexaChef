@@ -11,6 +11,7 @@ import my_cookbook.skill.handlers as handlers
 
 import pkgutil
 
+
 class Skill:
     def __init__(self):
         self.intent_handler = intent_handler.Handler()

@@ -7,6 +7,7 @@ from my_cookbook.util import requester
 from my_cookbook.tests import fake_data
 import lambda_function
 
+
 def insert_recipes():
     # insert a recipe into the users cookbook
     attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': fake_data.test_recipe}
