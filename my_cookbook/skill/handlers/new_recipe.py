@@ -44,7 +44,7 @@ class NewRecipeHandler():
                 # here would be a good spot to ask questions to narrow down
                 # which recipe the user wants to make
                 # for now just say how many we found I guess
-                return responder.tell("I found " + len(recipes) + " recipes. too many! I give up.")
+                return responder.tell("I found %i recipes. too many! I give up." % len(recipes))
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]

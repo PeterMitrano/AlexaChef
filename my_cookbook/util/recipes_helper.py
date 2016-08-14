@@ -3,6 +3,7 @@ import os
 import random
 import requests
 
+from my_cookbook import stage
 from my_cookbook.util import core
 from my_cookbook.tests import fake_data
 
@@ -41,13 +42,7 @@ def search_my_recipes(persistant_attributes, recipe_name):
 
 
 def get_online_recipe(recipe_id):
-    if 'DEBUG' in os.environ:
-        # fake it till ya make it (to production)
-        if recipe_id in fake_data.test_online_recipes:
-            return fake_data.test_online_recipes[recipe_id]
-        else:
-            return None
-    else:
+    if stage.PROD:
         response = requests.get(API + '/recipes', params={"id": recipe_id})
 
         if not response.ok:
@@ -69,14 +64,17 @@ def get_online_recipe(recipe_id):
             return recipe
         else:
             return None
+    else:
+        # fake it till ya make it (to production)
+        if recipe_id in fake_data.test_online_recipes:
+            return fake_data.test_online_recipes[recipe_id]
+        else:
+            return None
 
 
 def search_online_recipes(recipe_name):
     """ returns a list of recipe dicts """
-    if 'DEBUG' in os.environ:
-        # fake it
-        return fake_data.test_online_recipes
-    else:
+    if stage.PROD:
         # first make a GET request to the /search endpoint
         response = requests.get(API + '/search', params={'keywords': recipe_name})
         if not response.ok:
@@ -93,6 +91,9 @@ def search_online_recipes(recipe_name):
             return []
 
         recipes = json['data']
+    else:
+        # fake it
+        return fake_data.test_online_recipes
 
     # some rank/search algorithm goes here, but it needs to be shared code with
     # how we search cookbook. but for now we just return everything

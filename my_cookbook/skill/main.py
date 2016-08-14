@@ -2,6 +2,7 @@ import copy
 import logging
 import os
 
+from my_cookbook import stage
 from my_cookbook.skill import intent_handler
 from my_cookbook.util import responder
 from my_cookbook.util import core
@@ -21,14 +22,14 @@ class Skill:
 
     def handle_event(self, event, context):
         # check if we're debugging locally
-        if 'DEBUG' in os.environ:
-            debug = True
-            logging.getLogger(core.LOGGER).setLevel(logging.DEBUG)
-            endpoint_url = core.LOCAL_DB_URI
-        else:
+        if stage.PROD:
             debug = False
             endpoint_url = None
             logging.getLogger(core.LOGGER).setLevel(logging.INFO)
+        else:
+            debug = True
+            logging.getLogger(core.LOGGER).setLevel(logging.DEBUG)
+            endpoint_url = core.LOCAL_DB_URI
 
         # check application id and user
         user = event['session']['user']['userId']
