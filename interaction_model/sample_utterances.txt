@@ -2386,6 +2386,21 @@ IngredientsIntent Ingredients
 IngredientsIntent The ingredients
 IngredientsIntent Ingredients please
 IngredientsIntent Ingredients first
+SaveIntent keep the current recipe
+SaveIntent keep this recipe
+SaveIntent keep the recipe
+SaveIntent keep this
+SaveIntent keep
+SaveIntent store the current recipe
+SaveIntent store this recipe
+SaveIntent store the recipe
+SaveIntent store this
+SaveIntent store
+SaveIntent save the current recipe
+SaveIntent save this recipe
+SaveIntent save the recipe
+SaveIntent save this
+SaveIntent save
 AMAZON.NoIntent find me another one
 AMAZON.NoIntent not that one
 AMAZON.NoIntent not that
