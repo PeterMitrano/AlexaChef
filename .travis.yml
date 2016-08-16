@@ -26,6 +26,5 @@ before_script:
   - python initialize_recipes_table.py
   - cd ../../..
 
-# command to run tests
 script:
   - nosetests --verbose -a \!wip
