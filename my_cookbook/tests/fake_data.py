@@ -1,4 +1,4 @@
-test_recipe = {
+pancakes = {
     'id': 0,
     "category": {
         "name": "breakfast",
@@ -86,7 +86,20 @@ test_recipe = {
     ],
     "total_time": "20 minutes"
 }
+biscuits = {
+    "id": 1,
+    "name": "southern buscuits"
+}
+
+chicken_pot_pie = {
+    "id": 2,
+    "name": "hearthy chicken pot pie"
+}
 
 test_online_recipes = [
-    test_recipe,  # all we know how to make is pancakes
+    pancakes,  # all we know how to make is pancakes
+    biscuits,
+    chicken_pot_pie
 ]
+
+test_recipe = pancakes
