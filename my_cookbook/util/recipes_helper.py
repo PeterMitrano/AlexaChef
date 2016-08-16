@@ -2,6 +2,7 @@ import logging
 import os
 import random
 import requests
+from recipe_ranker import ranker
 
 from my_cookbook import stage
 from my_cookbook.util import core
@@ -35,10 +36,7 @@ def search_my_recipes(persistant_attributes, recipe_name):
     if len(recipes) == 0:
         return []
 
-    # some rank/search algorithm goes here, but it needs to be shared code with
-    # how we search online
-    # for now we just send them all
-    return recipes
+    return ranker.search(recipe_name, recipes)
 
 
 def get_online_recipe(recipe_id):
@@ -95,6 +93,4 @@ def search_online_recipes(recipe_name):
         # fake it
         return fake_data.test_online_recipes
 
-    # some rank/search algorithm goes here, but it needs to be shared code with
-    # how we search cookbook. but for now we just return everything
-    return recipes
+    return ranker.search(recipe_name, recipes)

@@ -15,8 +15,7 @@ class StatelessHandler():
                     return responder.ask("This recipe is already in your cookbook. \
                             If you want to overwrite the existing recipe with this one, \
                             say yes. Say no to cancel and leave the existing recipe.",
-                            "Do you want to overwrite with this recipe?",
-                            attributes)
+                                         "Do you want to overwrite with this recipe?", attributes)
                 else:
                     # it's new, so add it
                     persistant_attributes['recipes'].append(current_recipe)
