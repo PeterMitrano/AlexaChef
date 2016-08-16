@@ -8,8 +8,8 @@ install: "pip install -r requirements.txt"
 env:
   - DEBUG=1
 
-cache: pip
 cache:
+  pip: True
   directories:
     - db
 
@@ -19,7 +19,7 @@ before_script:
   #- wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz -O dynamodb_local_latest.tar.gz;
   #- tar -xf dynamodb_local_latest.tar.gz -C db
   - cd db
-  - java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -port 8080 &
+  - java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -port 8000 &
   - cd ..
   - git clone https://github.com/petermitrano/my_cookbook_recipes
   - cd my_cookbook_recipes/recipes_api/tests
