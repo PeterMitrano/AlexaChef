@@ -46,8 +46,8 @@ class CookbookRecipeTest(unittest.TestCase):
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
         ).with_attributes(attrs).build()
         response_dict = lambda_function.handle_event(req, None)
-        recipes_result = lambda_function._skill.db_helper.get('recipes')
 
+    @test_util.wip
     def test_recipe_not_in_cookbook(self):
         # ask to make something else
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
@@ -58,6 +58,34 @@ class CookbookRecipeTest(unittest.TestCase):
 
         self.assertTrue(responder.is_valid(response_dict))
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_SEARCH)
+
+        # agree to search online
+        intent = requester.Intent('AMAZON.YesIntent').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            intent).copy_attributes(response_dict).new().build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_MAKE_ONLINE)
+
+        # agree to make the one recipe it found
+        intent = requester.Intent('AMAZON.YesIntent').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            intent).copy_attributes(response_dict).new().build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
+
+        # ask to go right to instructions
+        intent = requester.Intent('InstructionsIntent').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            intent).copy_attributes(response_dict).new().build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
 
     def test_recipe_in_cookbook(self):
         # ask to make the recipe we had

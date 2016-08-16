@@ -139,18 +139,17 @@ class ConversationTest(unittest.TestCase):
         # save current recipe for later in test
         current_recipe = response_dict['sessionAttributes']['current_recipe']
 
+        # continue after saving and ask for ingredients
         intent = requester.Intent('IngredientsIntent').build()
         req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
             response_dict).with_intent(intent).new().build()
         response_dict = lambda_function.handle_event(req, None)
-        state_result = lambda_function._skill.db_helper.getState()
         recipes_result = lambda_function._skill.db_helper.get('recipes')
-        current_recipe_result = lambda_function._skill.db_helper.get('current_recipe')
 
         self.assertTrue(responder.is_valid(response_dict))
         self.assertEqual(len(recipes_result.value), 1)
-        self.assertEqual(state_result.value, core.States.INGREDIENTS_OR_INSTRUCTIONS)
-        self.assertEqual(current_recipe_result.value, current_recipe)
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.INGREDIENTS_OR_INSTRUCTIONS)
+        self.assertEqual(response_dict['sessionAttributes']['current_recipe'], current_recipe)
 
     def test_search_one_match_conversation(self):
         test_util.delete_table(core.LOCAL_DB_URI)

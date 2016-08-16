@@ -91,6 +91,6 @@ def search_online_recipes(recipe_name):
         recipes = json['data']
     else:
         # fake it
-        return fake_data.test_online_recipes
+        recipes = fake_data.test_online_recipes
 
     return ranker.search(recipe_name, recipes)

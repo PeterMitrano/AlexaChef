@@ -86,15 +86,9 @@ pancakes = {
     ],
     "total_time": "20 minutes"
 }
-biscuits = {
-    "id": 1,
-    "name": "southern buscuits"
-}
+biscuits = {"id": 1, "name": "southern buscuits", "instructions": [], "ingredients": []}
 
-chicken_pot_pie = {
-    "id": 2,
-    "name": "hearthy chicken pot pie"
-}
+chicken_pot_pie = {"id": 2, "name": "hearthy chicken pot pie", "instructions": [], "ingredients": []}
 
 test_online_recipes = [
     pancakes,  # all we know how to make is pancakes
