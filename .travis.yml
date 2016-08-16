@@ -8,6 +8,7 @@ install: "pip install -r requirements.txt"
 env:
   - DEBUG=1
 
+cache: pip
 cache:
   directories:
     - db
