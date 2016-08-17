@@ -63,4 +63,7 @@ def search(recipe_name, only_user=True, username=None, password=None):
 
         return response.json()
     else:
-        return ranker.search(recipe_name, fake_data.user_recipes)
+        if only_user:
+            return ranker.search(recipe_name, fake_data.user_recipes)
+        else:
+            return ranker.search(recipe_name, fake_data.test_online_recipes)
