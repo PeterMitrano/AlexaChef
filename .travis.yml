@@ -27,4 +27,4 @@ before_script:
   - cd ../../..
 
 script:
-  - nosetests --verbose -a \!wip
+  - nosetests --verbose -a \!wip,\!bigoven
