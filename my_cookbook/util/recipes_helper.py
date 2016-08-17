@@ -8,7 +8,7 @@ from my_cookbook import stage
 from my_cookbook.util import core
 from my_cookbook.tests import fake_data
 
-API = 'https://ap2.bigoven.com/'
+API = 'https://api2.bigoven.com/'
 BIGOVEN_API_KEY = core.load_key()
 API_HEADER = {"X-BigOven-API-Key": BIGOVEN_API_KEY}
 
@@ -61,7 +61,7 @@ def search(recipe_name, only_user=True, username=None, password=None):
         if not response.ok:
             return []
 
-        return response.json()
+        return response.json()['Results']
     else:
         if only_user:
             return ranker.search(recipe_name, fake_data.user_recipes)
