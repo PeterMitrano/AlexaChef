@@ -23,3 +23,7 @@ def delete_table(endpoint_url):
 
 def wip(f):
     return attr('wip')(f)
+
+
+def bigoven(f):
+    return attr('bigoven')(f)

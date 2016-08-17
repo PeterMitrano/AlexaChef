@@ -104,10 +104,10 @@ class ConversationTest(unittest.TestCase):
         test_util.delete_table(core.LOCAL_DB_URI)
 
         # lauch as new user, check out session attributes afterwards
-        intent = requester.Intent('StartNewRecipeIntent').with_slot(
-                'RecipeName', 'Pancakes').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-                intent).new().build()
+        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
+                                                                    'Pancakes').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
+        )
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))

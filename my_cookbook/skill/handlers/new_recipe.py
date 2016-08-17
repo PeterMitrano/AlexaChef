@@ -18,7 +18,7 @@ class NewRecipeHandler():
             # search the users recipes to find appropriate recipes.
             # the value here is a (possibly empty) list of recipes in order
             # of some ranking I have yet to devise.
-            recipes = recipes_helper.search_my_recipes(recipe_name)
+            recipes = recipes_helper.search_my_recipes(recipe_name, None, None)
 
             if len(recipes) == 0:
                 attributes[core.STATE_KEY] = core.States.ASK_SEARCH

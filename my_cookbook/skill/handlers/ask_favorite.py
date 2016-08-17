@@ -20,7 +20,8 @@ class AskFavoriteHandler():
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]
-        return responder.tell("Sorry, I'm not sure what you mean. Do you want to favorite this recipe?")
+        return responder.tell(
+            "Sorry, I'm not sure what you mean. Do you want to favorite this recipe?")
 
 
 handler = AskFavoriteHandler()

@@ -94,7 +94,8 @@ class CookbookRecipeTest(unittest.TestCase):
 
         #agree to make it
         intent = requester.Intent('AMAZON.YesIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).copy_attributes(response_dict).new().build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            intent).copy_attributes(response_dict).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
