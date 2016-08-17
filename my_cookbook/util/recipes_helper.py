@@ -8,60 +8,26 @@ from my_cookbook import stage
 from my_cookbook.util import core
 from my_cookbook.tests import fake_data
 
-API = 'https://6peln83v5l.execute-api.us-east-1.amazonaws.com/dev'
+API = 'https://ap2.bigoven.com/'
+BIGOVEN_API_KEY = core.load_key()
 
 
-def add_recipe(persistant_attributes, recipe):
-    if 'recipes' in persistant_attributes:
-        persistant_attributes['recipes'].append(recipe)
-    else:
-        persistant_attributes['recipes'] = [recipe]
+def favorite_recipe(recipe):
+    """ favorites are just a folder """
+    raise NotImplementedError("untested")
 
 
-def get_my_recipe(persistant_attributes, recipe_id):
-    if 'recipes' in persistant_attributes:
-        if recipe_id in persistant_attributes['recipe']:
-            return persistant_attributes['recipes'][recipe_id]
-
-    # recipe doesn't exist
-    return None
-
-
-def search_my_recipes(persistant_attributes, recipe_name):
-    if 'recipes' not in persistant_attributes:
-        return []
-
-    recipes = persistant_attributes['recipes']
-
-    if len(recipes) == 0:
-        return []
-
-    return ranker.search(recipe_name, recipes)
-
-
-def get_online_recipe(recipe_id):
+def get_recipe_by_id(recipe_id):
+    raise NotImplementedError("untested")
     if stage.PROD:
-        response = requests.get(API + '/recipes', params={"id": recipe_id})
+        response = requests.get(API + '/recipe/' + recipe_id)
 
         if not response.ok:
-            return None
-        if response.headers['Content-Type'] != 'application/json':
             return None
 
         # we've probably got a valid response at this point
         json = response.json()
-
-        if json['code'] < 0:
-            # error
-            return None
-        elif json['code'] == 1:
-            # wrong id
-            return None
-        elif json['code'] == 0:
-            recipe = json['data']
-            return recipe
-        else:
-            return None
+        return json
     else:
         # fake it till ya make it (to production)
         if recipe_id in fake_data.test_online_recipes:
@@ -70,11 +36,22 @@ def get_online_recipe(recipe_id):
             return None
 
 
+def search_my_recipes(recipe_name):
+    if stage.PROD:
+        response = requests.get(API + '/recipes',
+                                headers=headers,
+                                params={'any_kw': recipe_name},
+                                auth=HTTPDigestAuth(username, password))
+    else:
+        return ranker.search(recipe_name, fake_data.user_recipes)
+
+
 def search_online_recipes(recipe_name):
     """ returns a list of recipe dicts """
     if stage.PROD:
         # first make a GET request to the /search endpoint
-        response = requests.get(API + '/search', params={'keywords': recipe_name})
+        header = {"X-BigOven-API-Key": BIGOVEN_API_KEY}
+        response = requests.get(API + '/recipes', headers=headers, params={'any_kw': recipe_name})
         if not response.ok:
             return []
         if response.headers['Content-Type'] != 'application/json':

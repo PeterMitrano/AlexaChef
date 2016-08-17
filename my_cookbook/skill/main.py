@@ -85,7 +85,7 @@ class Skill:
         response = self.intent_handler.dispatch(state, persistant_attributes, session_attributes,
                                                 event)
 
-        # now that we're done, we need to save
+        # now that we're done, we need to favorite the recipe
         # the persistant_attributes dict to our database
         # but only do it if something change
         if persistant_attributes != initial_persistant_attributes:

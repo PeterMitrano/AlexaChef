@@ -5,7 +5,7 @@ from my_cookbook.util import responder
 
 
 class StatelessHandler():
-    def SaveIntent(self, handlers, persistant_attributes, attributes, slots):
+    def FavoriteIntent(self, handlers, persistant_attributes, attributes, slots):
         if 'current_recipe' in attributes:
             current_recipe = attributes['current_recipe']
             if 'recipes' in persistant_attributes:
@@ -24,7 +24,7 @@ class StatelessHandler():
                 persistant_attributes['recipes'] = [current_recipe]
 
         else:
-            return responder.tell("I can't save a recipe because we're not working on one. \
+            return responder.tell("I can't favorite a recipe because we're not working on one. \
                     Try searching for a recipe first")
 
     def StartNewRecipeIntent(self, handlers, persistant_attributes, attributes, slots):

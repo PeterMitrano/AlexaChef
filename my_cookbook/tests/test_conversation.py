@@ -103,23 +103,14 @@ class ConversationTest(unittest.TestCase):
     def test_recipe_conversation(self):
         test_util.delete_table(core.LOCAL_DB_URI)
 
-        # insert recipes
-        response_dict = test_util.insert_recipes()
-        recipes_result = lambda_function._skill.db_helper.get('recipes')
-
-        self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(len(recipes_result.value), 1)
-
         # lauch as new user, check out session attributes afterwards
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'Pancakes').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
-        )
+        intent = requester.Intent('StartNewRecipeIntent').with_slot(
+                'RecipeName', 'Pancakes').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+                intent).new().build()
         response_dict = lambda_function.handle_event(req, None)
-        recipes_result = lambda_function._skill.db_helper.get('recipes')
 
         self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(len(recipes_result.value), 1)
         self.assertIn('current_recipe', response_dict['sessionAttributes'])
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_MAKE_COOKBOOK)
@@ -128,10 +119,8 @@ class ConversationTest(unittest.TestCase):
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(
             requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
-        recipes_result = lambda_function._skill.db_helper.get('recipes')
 
         self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(len(recipes_result.value), 1)
         self.assertIn('current_recipe', response_dict['sessionAttributes'])
         self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
@@ -139,16 +128,15 @@ class ConversationTest(unittest.TestCase):
         # save current recipe for later in test
         current_recipe = response_dict['sessionAttributes']['current_recipe']
 
-        # continue after saving and ask for ingredients
+        # ask for ingredients
         intent = requester.Intent('IngredientsIntent').build()
         req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
             response_dict).with_intent(intent).new().build()
         response_dict = lambda_function.handle_event(req, None)
-        recipes_result = lambda_function._skill.db_helper.get('recipes')
 
         self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(len(recipes_result.value), 1)
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.INGREDIENTS_OR_INSTRUCTIONS)
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
         self.assertEqual(response_dict['sessionAttributes']['current_recipe'], current_recipe)
 
     def test_search_one_match_conversation(self):
@@ -158,7 +146,7 @@ class ConversationTest(unittest.TestCase):
         # since there are no recipes in our cookbook it should search
         # but we expect "pancakes" to be one of the recipes in the online database
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'Pancakes').build()
+                                                                    'chicken pie').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
         )
         response_dict = lambda_function.handle_event(req, None)
@@ -177,7 +165,7 @@ class ConversationTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response_dict))
         self.assertIn('current_recipe', response_dict['sessionAttributes'])
         self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
-        self.assertEqual(current_recipe_name, 'Pancakes')
+        self.assertEqual(current_recipe_name, 'chicken pie')
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_MAKE_ONLINE)
 
@@ -189,6 +177,6 @@ class ConversationTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response_dict))
         self.assertIn('current_recipe', response_dict['sessionAttributes'])
         self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
-        self.assertEqual(current_recipe_name, 'Pancakes')
+        self.assertEqual(current_recipe_name, 'chicken pie')
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.INGREDIENTS_OR_INSTRUCTIONS)

@@ -40,13 +40,6 @@ class CookbookRecipeTest(unittest.TestCase):
     def setUpClass(cls):
         test_util.delete_table(core.LOCAL_DB_URI)
 
-        # insert a recipe into the users cookbook
-        attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': fake_data.test_recipe}
-        intent = requester.Intent('AMAZON.YesIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
-        ).with_attributes(attrs).build()
-        response_dict = lambda_function.handle_event(req, None)
-
     @test_util.wip
     def test_recipe_not_in_cookbook(self):
         # ask to make something else
@@ -99,30 +92,9 @@ class CookbookRecipeTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_MAKE_COOKBOOK)
 
-        #then test saving it
-        intent = requester.Intent('SaveIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
-        ).copy_attributes(response_dict).build()
-        response_dict = lambda_function.handle_event(req, None)
-
-        self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(response_dict['sessionAttributes']['tmp_state'],
-                         core.States.ASK_MAKE_COOKBOOK)
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
-                         core.States.CONFIRM_OVERWRITE_RECIPE)
-
-        # confirm yes to overwrite
+        #agree to make it
         intent = requester.Intent('AMAZON.YesIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
-        ).copy_attributes(response_dict).build()
-        response_dict = lambda_function.handle_event(req, None)
-
-        self.assertTrue(responder.is_valid(response_dict))
-
-        #then make sure we can pick up where we left off
-        intent = requester.Intent('AMAZON.YesIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
-        ).copy_attributes(response_dict).build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).copy_attributes(response_dict).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))

@@ -8,15 +8,6 @@ from my_cookbook.tests import fake_data
 import lambda_function
 
 
-def insert_recipes():
-    # insert a recipe into the users cookbook
-    attrs = {core.STATE_KEY: core.States.ASK_SAVE, 'current_recipe': fake_data.test_recipe}
-    intent = requester.Intent('AMAZON.YesIntent').build()
-    req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
-    ).with_attributes(attrs).build()
-    return lambda_function.handle_event(req, None)
-
-
 def delete_table(endpoint_url):
     """deletes the table if it already exists"""
     client = boto3.client(

@@ -88,7 +88,10 @@ pancakes = {
 }
 biscuits = {"id": 1, "name": "southern buscuits", "instructions": [], "ingredients": []}
 
-chicken_pot_pie = {"id": 2, "name": "hearthy chicken pot pie", "instructions": [], "ingredients": []}
+chicken_pot_pie = {"id": 2,
+                   "name": "hearthy chicken pot pie",
+                   "instructions": [],
+                   "ingredients": []}
 
 test_online_recipes = [
     pancakes,  # all we know how to make is pancakes
@@ -97,3 +100,4 @@ test_online_recipes = [
 ]
 
 test_recipe = pancakes
+user_recipes = [pancakes, biscuits]

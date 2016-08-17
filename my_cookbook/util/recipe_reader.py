@@ -9,22 +9,20 @@ def instruct(step_number, attributes):
     if len(instructions) <= step_number:
         return responder.tell("this recipe doesn't have any instructions.")
 
-
     instruction = instructions[step_number]
     instruction[-1]
     card = instructions_card(attributes['current_recipe'])
 
     return responder.ask_with_card(
-        instructions_speech + ". <break time=2/> would you like to hear the next step?",
-        None,
+        instructions_speech + ". <break time=2/> would you like to hear the next step?", None,
         "Instructions", card, None, attributes)
 
 
 def ingredients(attributes):
     speech = ingredients_speech(attributes['current_recipe'])
     card = ingredients_card(attributes['current_recipe'])
-    return responder.ask_with_card("The ingredients are. " + speech, None, "Ingredients", card, None,
-                                   attributes)
+    return responder.ask_with_card("The ingredients are. " + speech, None, "Ingredients", card,
+                                   None, attributes)
 
 
 def ingredients_speech(recipe):

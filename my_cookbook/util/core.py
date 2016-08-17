@@ -1,3 +1,5 @@
+import os
+
 APP_ID = "amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05"
 STATE_KEY = "STATE"
 DB_TABLE = 'my_cookbook_users'
@@ -8,7 +10,7 @@ LOCAL_DB_URI = 'http://localhost:8000'
 class States:
     ASK_MAKE_COOKBOOK = '_ASK_MAKE_COOKBOOK'
     ASK_MAKE_ONLINE = '_ASK_MAKE_ONLINE'
-    ASK_SAVE = '_ASK_SAVE'
+    ASK_FAVORITE = '_ASK_FAVORITE'
     ASK_SEARCH = '_ASK_SEARCH'
     ASK_TUTORIAL = '_ASK_TUTORIAL'
     ASK_MAKE_SOMETHING = '_ASK_MAKE_SOMETHING'
@@ -29,3 +31,10 @@ def all_states():
         if not var.startswith('_'):
             states.append(getattr(States, var))
     return states
+
+
+def load_key():
+    filename = os.path.expanduser("~/.bigoven_key")
+    with open(filename) as f:
+        return f.readline()
+    raise RuntimeError("bigoven api key not found in %s" % filename)
