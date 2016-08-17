@@ -34,7 +34,7 @@ def all_states():
 
 
 def load_key():
-    filename = os.path.expanduser("~/.bigoven_key")
-    with open(filename) as f:
-        return f.readline().rstrip("\n")
-    raise RuntimeError("bigoven api key not found in %s" % filename)
+    try:
+        return os.environ['BIG_OVEN_API_KEY']
+    except KeyError as e:
+        raise RuntimeError("bigoven api key not found: %s" % e.message)

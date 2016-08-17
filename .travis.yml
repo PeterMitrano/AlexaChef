@@ -1,30 +1,26 @@
 language: python
 python:
-  - "2.7"
-
-# command to install dependencies
-install: "pip install -r requirements.txt"
+- '2.7'
+install: pip install -r requirements.txt
 
 env:
-  - DEBUG=1
+  global:
+    secure: LxfeGCbGmO0+tpLT10mNJkYZACGMET7hdZqTLQZFoI4czvu8IwjdPFiBKVlgBIzc+MB5rhcnr4Uvfgx1Wv9Oj3mVAyCpDD+vja7GVtejqB6ZIg4rDX7x9yiACmkUP1XkoEFXgUgw4siw91borEfT6IHlZq4DQpr5NfBi5EphlJ2Gc26V745g8fBRLbKb0Rh3EQMA9oi/fprK3c2iX8xjOsgq4kfcNXNznzKLhKCbNUQx4QH3ekAS/IcqrWGEV6uaXDMT97s6RzZcI4BDxccLqCi+iemngNXIZJH1MzHnGQZB1FO2Wix8CR5qNxRd7MQNa5fhMiRsb/CZI2nvBuCFc2PH9cVOuMG6NFEvFHDiVtbfHG5yOQP+JFAXmJcv2uss0AoqTMreKDRNQO0i1iYnYRbgG1FCyDtn8yFBOM8w36llji0velBa+tq/BDbfxVxkFNH8gAOW2st8B/AieU+v5EN+rpPywEt7DBvdx6ig2kqk4b5E25PAS51M/+dW8jPM6KJVfCUAgwl1fdHUipUTSGHp9CGd6SyZA57s6yGXbmr9LUykw1vvXKoBy+PCI/W/WmePiKZx8UlqVxhVuiLtF5Nc8zsXkqwq5/zr7C2Vk++UsTxwGG7V3fRSpswZU4RUUoL3oXs92re0iXL3l5YWuxWnyMl5xzetf0J4ku87yQQ=
 
 cache:
-  pip: True
+  pip: true
   directories:
-    - db
-
+  - db
 
 before_script:
-  #- mkdir -p db;
-  #- wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz -O dynamodb_local_latest.tar.gz;
-  #- tar -xf dynamodb_local_latest.tar.gz -C db
-  - cd db
-  - java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -port 8000 &
-  - cd ..
-  - git clone https://github.com/petermitrano/my_cookbook_recipes
-  - cd my_cookbook_recipes/recipes_api/tests
-  - python initialize_recipes_table.py
-  - cd ../../..
+- cd db
+- java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -port
+  8000 &
+- cd ..
+- git clone https://github.com/petermitrano/my_cookbook_recipes
+- cd my_cookbook_recipes/recipes_api/tests
+- python initialize_recipes_table.py
+- cd ../../..
 
 script:
-  - nosetests --verbose -a \!wip,\!bigoven
+- nosetests --verbose -a \!wip,\!bigoven
