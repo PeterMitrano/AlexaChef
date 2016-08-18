@@ -8,6 +8,8 @@ from my_cookbook import stage
 from my_cookbook.util import core
 from my_cookbook.tests import fake_data
 
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+
 API = 'https://api2.bigoven.com/'
 BIGOVEN_API_KEY = core.load_key()
 API_HEADER = {"X-BigOven-API-Key": BIGOVEN_API_KEY}
@@ -37,26 +39,23 @@ def get_recipe_by_id(recipe_id):
             return None
 
 
-def search_my_recipes(recipe_name, username, password):
-    return search(recipe_name, only_user=True, username=username, password=password)
+def search_my_recipes(recipe_name, username):
+    return search(recipe_name, only_user=True, username=username)
 
 
 def search_online_recipes(recipe_name):
     return search(recipe_name, only_user=False)
 
 
-def search(recipe_name, only_user=True, username=None, password=None):
+def search(recipe_name, only_user=True, username=None):
     """ searches recipes in all folders for a given user"""
     if stage.PROD:
         params = {'any_kw': recipe_name}
-        if only_user and username and password:
+
+        if only_user:
             params['username'] = username
-            response = requests.get(API + '/recipes',
-                                    headers=API_HEADER,
-                                    params=params,
-                                    auth=requests.auth.HTTPDigestAuth(username, password))
-        else:
-            response = requests.get(API + '/recipes', headers=API_HEADER, params=params)
+
+        response = requests.get(API + '/recipes', headers=API_HEADER, params=params)
 
         if not response.ok:
             return []

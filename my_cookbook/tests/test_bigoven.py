@@ -22,14 +22,17 @@ class APITest(unittest.TestCase):
 
     @test_util.bigoven
     def test_search_recipes(self):
-        recipes = recipes_helper.search_online_recipes("buttermilk pancakes")
-        self.assertGreater(len(recipes), 10)
-
-        recipes = recipes_helper.search_online_recipes("soft shell chicken tacos")
-        self.assertGreater(len(recipes), 10)
-
         recipes = recipes_helper.search_online_recipes("chocolate fondue")
         self.assertGreater(len(recipes), 10)
 
         recipes = recipes_helper.search_online_recipes("kentucky fried chicken")
         self.assertGreater(len(recipes), 10)
+
+    @test_util.bigoven
+    @test_util.wip
+    def test_search_user_recipes(self):
+        recipes = recipes_helper.search_my_recipes("pancakes", '_test')
+        self.assertEqual(len(recipes), 4)
+
+        recipes = recipes_helper.search_my_recipes("jalapeno poppers", '_test')
+        self.assertEqual(len(recipes), 1)
