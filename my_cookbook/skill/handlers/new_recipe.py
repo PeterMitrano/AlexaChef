@@ -1,5 +1,3 @@
-import random
-
 from my_cookbook.util import core
 from my_cookbook.util import responder
 from my_cookbook.util import recipes_helper
@@ -15,10 +13,20 @@ class NewRecipeHandler():
         else:
             recipe_name = slots['RecipeName']['value']
 
+            username = persistant_attributes.get('bigoven_name', None)
+            if not username:
+                persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
+                responder.tell_with_card("I was unable to find your bigoven username. \
+                        Use the link I sent you to connect your bigoven account.",
+                        "Link BigOven Account",
+                        "https://...",
+                        None)
+
+
             # search the users recipes to find appropriate recipes.
             # the value here is a (possibly empty) list of recipes in order
             # of some ranking I have yet to devise.
-            recipes = recipes_helper.search_my_recipes(recipe_name)
+            recipes = recipes_helper.search_my_recipes(recipe_name, username)
 
             if len(recipes) == 0:
                 attributes[core.STATE_KEY] = core.States.ASK_SEARCH

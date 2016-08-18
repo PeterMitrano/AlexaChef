@@ -105,7 +105,7 @@ class ConversationTest(unittest.TestCase):
 
         # lauch as new user, check out session attributes afterwards
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'Pancakes').build()
+                                                                    'chicken pot pie').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
         )
         response_dict = lambda_function.handle_event(req, None)
@@ -146,7 +146,7 @@ class ConversationTest(unittest.TestCase):
         # since there are no recipes in our cookbook it should search
         # but we expect "pancakes" to be one of the recipes in the online database
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'chicken pie').build()
+                                                                    'pizza').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
         )
         response_dict = lambda_function.handle_event(req, None)
@@ -165,7 +165,7 @@ class ConversationTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response_dict))
         self.assertIn('current_recipe', response_dict['sessionAttributes'])
         self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
-        self.assertEqual(current_recipe_name, 'chicken pie')
+        self.assertEqual(current_recipe_name, 'pizza')
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_MAKE_ONLINE)
 
@@ -177,6 +177,6 @@ class ConversationTest(unittest.TestCase):
         self.assertTrue(responder.is_valid(response_dict))
         self.assertIn('current_recipe', response_dict['sessionAttributes'])
         self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
-        self.assertEqual(current_recipe_name, 'chicken pie')
+        self.assertEqual(current_recipe_name, 'pizza')
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.INGREDIENTS_OR_INSTRUCTIONS)

@@ -11,18 +11,6 @@ import lambda_function
 
 
 class NoRecipesTest(unittest.TestCase):
-    def test_recipe_in_empty_cookbook(self):
-        test_util.delete_table(core.LOCAL_DB_URI)
-
-        intent = requester.Intent('StartNewRecipeIntent').with_slot(
-            'RecipeName', 'Chicken and black bean burritos').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
-        ).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).build()
-        response_dict = lambda_function.handle_event(req, None)
-
-        self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_SEARCH)
-
     def test_unheard_recipe(self):
         test_util.delete_table(core.LOCAL_DB_URI)
 
@@ -44,7 +32,7 @@ class CookbookRecipeTest(unittest.TestCase):
     def test_recipe_not_in_cookbook(self):
         # ask to make something else
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'Chicken Pot Pie').build()
+                                                                    'pizza').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(
             intent).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).new().build()
         response_dict = lambda_function.handle_event(req, None)
@@ -80,10 +68,32 @@ class CookbookRecipeTest(unittest.TestCase):
 
         self.assertTrue(responder.is_valid(response_dict))
 
-    def test_recipe_in_cookbook(self):
-        # ask to make the recipe we had
+    def test_unique_recipe_in_cookbook(self):
+        # ask to make the recipe we have one of
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
                                                                     'Pancakes').build()
+        req = requester.Request().new().with_type(requester.Types.INTENT).with_intent(
+            intent).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_MAKE_COOKBOOK)
+
+        #agree to make it
+        intent = requester.Intent('AMAZON.YesIntent').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            intent).copy_attributes(response_dict).new().build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
+
+    def test_unique_recipe_in_cookbook(self):
+        # ask to make the recipe we have one of
+        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
+                                                                    'chicken pot pie').build()
         req = requester.Request().new().with_type(requester.Types.INTENT).with_intent(
             intent).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).build()
         response_dict = lambda_function.handle_event(req, None)

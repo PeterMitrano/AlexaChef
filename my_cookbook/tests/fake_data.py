@@ -86,18 +86,22 @@ pancakes = {
     ],
     "total_time": "20 minutes"
 }
-biscuits = {"id": 1, "name": "southern buscuits", "instructions": [], "ingredients": []}
-
-chicken_pot_pie = {"id": 2,
-                   "name": "hearthy chicken pot pie",
-                   "instructions": [],
-                   "ingredients": []}
+pancakes2 = {"id": 1, "name": "best pancakes ever", "instructions": [], "ingredients": []}
+pancakes3 = {"id": 2, "name": "real shitty pancakes", "instructions": [], "ingredients": []}
+biscuits = {"id": 3, "name": "southern buscuits", "instructions": [], "ingredients": []}
+biscuits2 = {"id": 4, "name": "non-existant buscuits", "instructions": [], "ingredients": []}
+chicken_pot_pie = {"id": 5, "name": "hearthy chicken pot pie", "instructions": [], "ingredients": []}
+pizza= {"id": 6, "name": "pizza", "instructions": [], "ingredients": []}
 
 test_online_recipes = [
-    pancakes,  # all we know how to make is pancakes
+    pancakes,
+    pancakes2,
+    pancakes3,
     biscuits,
-    chicken_pot_pie
+    biscuits2,
+    chicken_pot_pie,
+    pizza
 ]
 
 test_recipe = pancakes
-user_recipes = [pancakes, biscuits]
+user_recipes = [pancakes, pancakes2, pancakes3, biscuits, biscuits2, chicken_pot_pie]
