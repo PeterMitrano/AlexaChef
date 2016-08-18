@@ -23,7 +23,7 @@ class IntentTest(unittest.TestCase):
     def test_multiple_launch(self):
         request = requester.Request().with_type(requester.Types.LAUNCH).new()
 
-        for i in range(10):
+        for i in range(5):
             event = request.build()
             response_dict = lambda_function.handle_event(event, None)
             self.assertTrue(responder.is_valid(response_dict))
@@ -38,7 +38,7 @@ class IntentTest(unittest.TestCase):
     def test_multiple_end(self):
         request = requester.Request().with_type(requester.Types.END).new()
 
-        for i in range(10):
+        for i in range(5):
             event = request.build()
             response_dict = lambda_function.handle_event(event, None)
             self.assertTrue(responder.is_valid(response_dict))
