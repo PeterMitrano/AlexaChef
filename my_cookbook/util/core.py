@@ -1,4 +1,9 @@
 import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 APP_ID = "amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05"
 STATE_KEY = "STATE"
@@ -34,13 +39,4 @@ def all_states():
 
 
 def load_key():
-    try:
-        return os.environ['BIG_OVEN_API_KEY']
-    except KeyError:
-        pass
-    # try a file next, this is used with lambda.
-    try:
-        with open('bigoven_key','r') as f:
-            return f.readline().rstrip('\n')
-    except IOError:
-        raise RuntimeError("bigoven api key not found")
+    return os.environ['BIG_OVEN_API_KEY']
