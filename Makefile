@@ -3,10 +3,12 @@ all: zip upload
 zip:
 	mkdir -p build
 	rm -f ./build/skill.zip
+	cp -r ./venv/lib/python2.7/site-packages/dotenv build
+	cp -r ./venv/lib/python2.7/site-packages/click build
+	cp -r ./venv/lib/python2.7/site-packages/ordereddict.py build
 	cp -r ./venv/lib/python2.7/site-packages/requests build
 	cp -r ./venv/lib/python2.7/site-packages/fuzzywuzzy build
 	cp -r ./venv/lib/python2.7/site-packages/Levenshtein build
-	cp -r ./venv/lib/python2.7/site-packages/python_Levenshtein-0.12.0.dist-info build
 	cp -r ../recipe_ranker/recipe_ranker build
 	cp -r ./lambda_function.py ./my_cookbook build
 	cp ~/.bigoven_key build/bigoven_key
