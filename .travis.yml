@@ -8,7 +8,8 @@ env:
     secure: LxfeGCbGmO0+tpLT10mNJkYZACGMET7hdZqTLQZFoI4czvu8IwjdPFiBKVlgBIzc+MB5rhcnr4Uvfgx1Wv9Oj3mVAyCpDD+vja7GVtejqB6ZIg4rDX7x9yiACmkUP1XkoEFXgUgw4siw91borEfT6IHlZq4DQpr5NfBi5EphlJ2Gc26V745g8fBRLbKb0Rh3EQMA9oi/fprK3c2iX8xjOsgq4kfcNXNznzKLhKCbNUQx4QH3ekAS/IcqrWGEV6uaXDMT97s6RzZcI4BDxccLqCi+iemngNXIZJH1MzHnGQZB1FO2Wix8CR5qNxRd7MQNa5fhMiRsb/CZI2nvBuCFc2PH9cVOuMG6NFEvFHDiVtbfHG5yOQP+JFAXmJcv2uss0AoqTMreKDRNQO0i1iYnYRbgG1FCyDtn8yFBOM8w36llji0velBa+tq/BDbfxVxkFNH8gAOW2st8B/AieU+v5EN+rpPywEt7DBvdx6ig2kqk4b5E25PAS51M/+dW8jPM6KJVfCUAgwl1fdHUipUTSGHp9CGd6SyZA57s6yGXbmr9LUykw1vvXKoBy+PCI/W/WmePiKZx8UlqVxhVuiLtF5Nc8zsXkqwq5/zr7C2Vk++UsTxwGG7V3fRSpswZU4RUUoL3oXs92re0iXL3l5YWuxWnyMl5xzetf0J4ku87yQQ=
 
 cache:
-  pip: true
+  directories:
+  - /home/travis/virtualenv/python2.7/lib/python2.7/site-packages
 
 before_script:
 - mkdir -p db;
@@ -24,4 +25,4 @@ before_script:
 - cd ../../..
 
 script:
-- nosetests --verbose -a \!wip,\!bigoven
+- nosetests -x -v -a \!wip,\!bigoven
