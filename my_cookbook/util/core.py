@@ -36,5 +36,11 @@ def all_states():
 def load_key():
     try:
         return os.environ['BIG_OVEN_API_KEY']
-    except KeyError as e:
-        raise RuntimeError("bigoven api key not found: %s" % e.message)
+    except KeyError:
+        pass
+    # try a file next, this is used with lambda.
+    try:
+        with open('bigoven_key','r') as f:
+            return f.readline().rstrip('\n')
+    except IOError:
+        raise RuntimeError("bigoven api key not found")
