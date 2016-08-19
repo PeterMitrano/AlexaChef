@@ -16,7 +16,9 @@ class NewRecipeHandler():
         else:
             recipe_name = slots['RecipeName']['value']
 
-            username = persistant_attributes.get('bigoven_name', None)
+            username = persistant_attributes.get('bigoven_username', None)
+            logging.getLogger(core.LOGGER).info("amazonId: %s bigoven: %s" % (attributes['user'], username))
+
             if not username:
                 # set url for linking accounts--not very secure.
                 if stage.PROD:
@@ -25,7 +27,7 @@ class NewRecipeHandler():
                     link_url = 'http://localhost:5000/'
                 # user has to start over here, sorry.
                 persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
-                responder.tell_with_card("I was unable to find your bigoven username. \
+                return responder.tell_with_card("I was unable to find your bigoven username. \
                         Use the link I sent you to connect your bigoven account.",
                         "Link BigOven Account",
                         "%s?amazonId=%s" % (link_url, attributes['user']),
