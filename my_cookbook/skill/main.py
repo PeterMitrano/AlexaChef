@@ -54,8 +54,9 @@ class Skill:
         persistant_attributes = {}
         if result.value:  #user at least exists
             persistant_attributes = result.value
-            # but we don't want to pass along the userId so pop that
+            # but we don't want to save the userId so pop that
             persistant_attributes.pop('userId', None)
+
 
         initial_persistant_attributes = copy.deepcopy(persistant_attributes)
 
@@ -78,6 +79,7 @@ class Skill:
         # add whether the request is 'new' into the attributes for conveneince
         # and make sure state is in session_attributes, not persistant attributes
         session_attributes['new'] = event['session']['new']
+        session_attributes['user'] = user
 
         # at this point we either know the state, or we have returned an error,
         # or we know it's the users first time and there is no state

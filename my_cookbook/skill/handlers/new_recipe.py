@@ -1,6 +1,9 @@
+import logging
+
 from my_cookbook.util import core
 from my_cookbook.util import responder
 from my_cookbook.util import recipes_helper
+from my_cookbook import stage
 
 
 class NewRecipeHandler():
@@ -15,11 +18,17 @@ class NewRecipeHandler():
 
             username = persistant_attributes.get('bigoven_name', None)
             if not username:
+                # set url for linking accounts--not very secure.
+                if stage.PROD:
+                    link_url = 'https://petermitrano.pythonanywhere.com/'
+                else:
+                    link_url = 'http://localhost:5000/'
+                # user has to start over here, sorry.
                 persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
                 responder.tell_with_card("I was unable to find your bigoven username. \
                         Use the link I sent you to connect your bigoven account.",
                         "Link BigOven Account",
-                        "https://...",
+                        "%s?amazonId=%s" % (link_url, attributes['user']),
                         None)
 
 

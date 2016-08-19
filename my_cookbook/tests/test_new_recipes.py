@@ -28,7 +28,6 @@ class CookbookRecipeTest(unittest.TestCase):
     def setUpClass(cls):
         test_util.delete_table(core.LOCAL_DB_URI)
 
-    @test_util.wip
     def test_recipe_not_in_cookbook(self):
         # ask to make something else
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
@@ -94,8 +93,7 @@ class CookbookRecipeTest(unittest.TestCase):
         # ask to make the recipe we have one of
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
                                                                     'chicken pot pie').build()
-        req = requester.Request().new().with_type(requester.Types.INTENT).with_intent(
-            intent).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).build()
+        req = requester.Request().new().with_type(requester.Types.INTENT).with_intent(intent).build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
