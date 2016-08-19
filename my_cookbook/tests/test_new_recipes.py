@@ -90,23 +90,9 @@ class CookbookRecipeTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.INGREDIENTS_OR_INSTRUCTIONS)
 
-    def test_unique_recipe_in_cookbook(self):
-        # ask to make the recipe we have one of
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'chicken pot pie').build()
-        req = requester.Request().new().with_type(requester.Types.INTENT).with_intent(intent).build()
-        response_dict = lambda_function.handle_event(req, None)
-
-        self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
-                         core.States.ASK_MAKE_COOKBOOK)
-
-        #agree to make it
-        intent = requester.Intent('AMAZON.YesIntent').build()
+        intent = requester.Intent('IngredientsIntent').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(
             intent).copy_attributes(response_dict).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
-        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
-                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
