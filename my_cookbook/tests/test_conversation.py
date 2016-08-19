@@ -102,12 +102,13 @@ class ConversationTest(unittest.TestCase):
 
     def test_recipe_conversation(self):
         test_util.delete_table(core.LOCAL_DB_URI)
+        test_util.set_bigoven_username()
 
         # lauch as new user, check out session attributes afterwards
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
                                                                     'chicken pot pie').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
-        )
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+                intent).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -141,6 +142,7 @@ class ConversationTest(unittest.TestCase):
 
     def test_search_one_match_conversation(self):
         test_util.delete_table(core.LOCAL_DB_URI)
+        test_util.set_bigoven_username()
 
         # lauch as new user, check out session attributes afterwards
         # since there are no recipes in our cookbook it should search

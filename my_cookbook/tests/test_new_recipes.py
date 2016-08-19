@@ -27,6 +27,7 @@ class CookbookRecipeTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         test_util.delete_table(core.LOCAL_DB_URI)
+        test_util.set_bigoven_username()
 
     def test_recipe_not_in_cookbook(self):
         # ask to make something else

@@ -20,6 +20,43 @@ def delete_table(endpoint_url):
     if core.DB_TABLE in tables:
         client.delete_table(TableName=core.DB_TABLE)
 
+def set_bigoven_username():
+    client = boto3.client(
+        "dynamodb",
+        endpoint_url=core.LOCAL_DB_URI,
+        region_name="fake_region",
+        aws_access_key_id="fake_id",
+        aws_secret_access_key="fake_key")
+    client.create_table(
+        TableName=core.DB_TABLE,
+        KeySchema=[
+            {
+                'AttributeName': 'userId',
+                'KeyType': 'HASH'
+            },
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'userId',
+                'AttributeType': 'S'
+            },
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 1,
+            'WriteCapacityUnits': 1
+        })
+    resource = boto3.resource('dynamodb',
+            endpoint_url=core.LOCAL_DB_URI,
+            region_name="fake_region",
+            aws_access_key_id="fake_id",
+            aws_secret_access_key="fake_key")
+    table = resource.Table('my_cookbook_users')
+    table.wait_until_exists()
+    item = {
+        "userId": "default_user_id",
+        "bigoven_username": "default_bigoven_username"
+    }
+    table.put_item(Item=item)
 
 def wip(f):
     return attr('wip')(f)

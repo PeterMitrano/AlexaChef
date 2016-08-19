@@ -14,10 +14,7 @@ class NewRecipeHandler():
                 "I couldn't figure what recipe you wanted. Try saying, How do I make pancakes?",
                 'Try saying, How do I make pancakes?', attributes)
         else:
-            recipe_name = slots['RecipeName']['value']
-
             username = persistant_attributes.get('bigoven_username', None)
-            logging.getLogger(core.LOGGER).info("amazonId: %s bigoven: %s" % (attributes['user'], username))
 
             if not username:
                 # set url for linking accounts--not very secure.
@@ -34,37 +31,28 @@ class NewRecipeHandler():
                         None)
 
 
+            recipe_name = slots['RecipeName']['value']
+
             # search the users recipes to find appropriate recipes.
             # the value here is a (possibly empty) list of recipes in order
             # of some ranking I have yet to devise.
             recipes = recipes_helper.search_my_recipes(recipe_name, username)
 
+            # TODO: here would be a good spot to ask questions to narrow down
+            # which recipe the user wants to make. for now just pick the first one.
             if len(recipes) == 0:
                 attributes[core.STATE_KEY] = core.States.ASK_SEARCH
                 attributes['current_recipe_name'] = recipe_name
                 return responder.ask("I didn't find any recipe for " + recipe_name +
                                      ", In your cookbook. Should I find one online?",
                                      "Do you want to find another recipe?", attributes)
-            elif len(recipes) == 1:
+            else:
                 attributes[core.STATE_KEY] = core.States.ASK_MAKE_COOKBOOK
                 best_guess_recipe_name = recipes[0]['name']
                 attributes['current_recipe'] = recipes[0]
                 return responder.ask("I found a recipe for " + best_guess_recipe_name +
                                      ", In your cookbook. Do you want to use that?", None,
                                      attributes)
-            elif len(recipes) == 2:
-                attributes[core.STATE_KEY] = core.States.ASK_WHICH_RECIPE
-                recipe_names = recipes[0]['name'] + ',' + recipes[1]['name']
-                return responder.ask(
-                    "I found a recipes for " + recipe_names +
-                    ", In your cookbook. Do you want the first one or the second one", None,
-                    attributes)
-            else:
-                # here would be a good spot to ask questions to narrow down
-                # which recipe the user wants to make
-                # for now just say how many we found I guess
-                return responder.tell("I found %i recipes. I'm picking the most relavent one. \
-                        In the future I will ask questions to narrow down your options." % len(recipes))
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]
