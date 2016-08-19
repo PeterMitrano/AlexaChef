@@ -19,7 +19,7 @@ class AskSearchHandler():
 
         elif len(recipes) == 1:
             attributes[core.STATE_KEY] = core.States.ASK_MAKE_ONLINE
-            best_guess_recipe_name = recipes[0]['name']
+            best_guess_recipe_name = recipes[0]['Title']
             attributes['current_recipe'] = recipes[0]
             return responder.ask(
                 "I found a recipe for " + best_guess_recipe_name + ". Do you want to use that?",
