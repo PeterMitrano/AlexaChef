@@ -41,7 +41,7 @@ class APITest(unittest.TestCase):
         self.assertEqual(len(recipes), 1)
 
 class LinkTest(unittest.TestCase):
-    @test_util.wip
+    @test_util.bigoven
     def test_make_link(self):
         test_util.delete_table(core.LOCAL_DB_URI)
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName', 'chicken pot pie').build()
