@@ -10,7 +10,6 @@ STATE_KEY = "STATE"
 DB_TABLE = 'my_cookbook_users'
 LOGGER = 'my_cookbook'
 LOCAL_DB_URI = 'http://localhost:8000'
-BIGOVEN = False
 
 
 class States:

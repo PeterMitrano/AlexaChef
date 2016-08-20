@@ -19,11 +19,11 @@ class KeyTest(unittest.TestCase):
 class APITest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        core.BIGOVEN = True
+        stage.BIGOVEN = True
 
     @classmethod
     def tearDownClass(cls):
-        core.BIGOVEN = False
+        stage.BIGOVEN = False
 
     @test_util.bigoven
     def test_search_recipes(self):
@@ -68,11 +68,11 @@ class LinkTest(unittest.TestCase):
 class RealRecipeTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        core.BIGOVEN = True
+        stage.BIGOVEN = True
 
     @classmethod
     def tearDownClass(cls):
-        core.BIGOVEN = False
+        stage.BIGOVEN = False
 
     @test_util.bigoven
     @test_util.wip
