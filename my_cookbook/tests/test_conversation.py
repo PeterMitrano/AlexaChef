@@ -164,8 +164,8 @@ class ConversationTest(unittest.TestCase):
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
-        self.assertIn('current_recipe', response_dict['sessionAttributes'])
-        self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
+        self.assertIn('search_recipe_result', response_dict['sessionAttributes'])
+        self.assertNotEqual(response_dict['sessionAttributes']['search_recipe_result']['Title'], None)
         self.assertEqual(current_recipe_name, 'pizza')
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_MAKE_ONLINE)
