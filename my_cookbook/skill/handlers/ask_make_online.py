@@ -10,7 +10,7 @@ class AskMakeOnlineHandler():
             return responder.tell("I've forgotten which recipe you wanted to make. Please start over")
 
         name = attributes['search_recipe_result']['Title']
-        recipe_id = attributes['search_recipe_result']['RecipeId']
+        recipe_id = attributes['search_recipe_result']['RecipeID']
         recipe = recipes_helper.get_online_recipe(attributes['search_recipe_result'])
 
         if not recipe:
