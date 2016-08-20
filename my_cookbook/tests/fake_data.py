@@ -1,4 +1,7 @@
-pancakes = {'RecipeID': 0, "Title": "classic buttermilk pancakes", "Ingredients": [], "Instructions": []}
+pancakes = {'RecipeID': 0,
+            "Title": "classic buttermilk pancakes",
+            "Ingredients": [],
+            "Instructions": []}
 pancakes2 = {"RecipeID": 1, "Title": "best pancakes ever", "Instructions": [], "Ingredients": []}
 pancakes3 = {"RecipeID": 2, "Title": "real shitty pancakes", "Instructions": [], "Ingredients": []}
 biscuits = {"RecipeID": 3, "Title": "southern buscuits", "Instructions": [], "Ingredients": []}

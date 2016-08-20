@@ -14,20 +14,22 @@ API = 'https://api2.bigoven.com/'
 BIGOVEN_API_KEY = core.load_key()
 API_HEADER = {"X-BigOven-API-Key": BIGOVEN_API_KEY}
 
+
 def get_online_recipe(recipe):
-    recipe_id = recipe['RecipeID'] # bigoven specific
-    if stage.PROD:
-        response = requests.get(API + '/recipe/' + recipe_id, headers=API_HEADER)
+    recipe_id = recipe['RecipeID']  # bigoven specific
+    if core.BIGOVEN:
+        response = requests.get(API + '/recipe/' + str(recipe_id), headers=API_HEADER)
         if not response.ok:
             return {}
 
-        recipe = reponse.json()
+        recipe = response.json()
         return recipe
     else:
         for online_recipe in fake_data.test_online_recipes:
             if recipe_id == online_recipe['RecipeID']:
                 return online_recipe
     return {}
+
 
 def search_my_recipes(recipe_name, username):
     return search(recipe_name, only_user=True, username=username)
@@ -39,7 +41,7 @@ def search_online_recipes(recipe_name):
 
 def search(recipe_name, only_user=True, username=None):
     """ searches recipes in all folders for a given user"""
-    if stage.PROD:
+    if core.BIGOVEN:
         params = {'any_kw': recipe_name}
 
         if only_user:

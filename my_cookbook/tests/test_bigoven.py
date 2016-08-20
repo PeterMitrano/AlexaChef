@@ -19,11 +19,11 @@ class KeyTest(unittest.TestCase):
 class APITest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        stage.PROD = True
+        core.BIGOVEN = True
 
     @classmethod
     def tearDownClass(cls):
-        stage.PROD = False
+        core.BIGOVEN = False
 
     @test_util.bigoven
     def test_search_recipes(self):
@@ -63,3 +63,75 @@ class LinkTest(unittest.TestCase):
 
         link_result = lambda_function._skill.db_helper.get('bigoven_username')
         self.assertEqual(link_result.value, fake_bigoven_username)
+
+
+class RealRecipeTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        core.BIGOVEN = True
+
+    @classmethod
+    def tearDownClass(cls):
+        core.BIGOVEN = False
+
+    @test_util.bigoven
+    @test_util.wip
+    def test_brownies(self):
+        test_util.delete_table(core.LOCAL_DB_URI)
+        test_util.set_bigoven_username()
+
+        # search for something not in our cookbook
+        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
+                                                                    'brownies').build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
+        )
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertIn('current_recipe_name', response_dict['sessionAttributes'])
+        self.assertEqual(response_dict['sessionAttributes']['current_recipe_name'], 'brownies')
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_SEARCH)
+
+        # response with "Yes" to search online
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertIn('search_recipe_result', response_dict['sessionAttributes'])
+        self.assertIn('Title', response_dict['sessionAttributes']['search_recipe_result'])
+        self.assertIn('RecipeID', response_dict['sessionAttributes']['search_recipe_result'])
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_MAKE_ONLINE)
+
+        # response with "Yes" to make the recipe it found
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+            requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertIn('current_recipe', response_dict['sessionAttributes'])
+        self.assertIn('Title', response_dict['sessionAttributes']['current_recipe'])
+        self.assertIn('RecipeID', response_dict['sessionAttributes']['current_recipe'])
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
+
+        # ask for ingredients
+        intent = requester.Intent('IngredientsIntent').build()
+        req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
+            response_dict).with_intent(intent).build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
+
+        # now ask for instructions
+        intent = requester.Intent('InstructionsIntent').build()
+        req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
+            response_dict).with_intent(intent).build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)

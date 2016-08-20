@@ -165,7 +165,8 @@ class ConversationTest(unittest.TestCase):
 
         self.assertTrue(responder.is_valid(response_dict))
         self.assertIn('search_recipe_result', response_dict['sessionAttributes'])
-        self.assertNotEqual(response_dict['sessionAttributes']['search_recipe_result']['Title'], None)
+        self.assertNotEqual(response_dict['sessionAttributes']['search_recipe_result']['Title'],
+                            None)
         self.assertEqual(current_recipe_name, 'pizza')
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.ASK_MAKE_ONLINE)

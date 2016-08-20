@@ -19,6 +19,7 @@ def ingredients_card(recipe):
     separator = '\n - '
     return separator.join(ingredients)
 
+
 def instructions_card(instructions):
     separator = '\n - '
     return separator.join(instructions)
