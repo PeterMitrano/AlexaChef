@@ -18,8 +18,10 @@ API_HEADER = {"X-BigOven-API-Key": BIGOVEN_API_KEY}
 def search_my_recipes(recipe_name, username):
     return search(recipe_name, only_user=True, username=username)
 
+
 def search_online_recipes(recipe_name):
     return search(recipe_name, only_user=False)
+
 
 def search(recipe_name, only_user=True, username=None):
     """ searches recipes in all folders for a given user"""

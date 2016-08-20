@@ -31,8 +31,7 @@ class CookbookRecipeTest(unittest.TestCase):
 
     def test_recipe_not_in_cookbook(self):
         # ask to make something else
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'pizza').build()
+        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName', 'pizza').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(
             intent).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).new().build()
         response_dict = lambda_function.handle_event(req, None)

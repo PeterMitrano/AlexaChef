@@ -26,10 +26,8 @@ class NewRecipeHandler():
                 persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
                 return responder.tell_with_card("I was unable to find your bigoven username. \
                         Use the link I sent you to connect your bigoven account.",
-                        "Link BigOven Account",
-                        "%s?amazonId=%s" % (link_url, attributes['user']),
-                        None)
-
+                                                "Link BigOven Account", "%s?amazonId=%s" %
+                                                (link_url, attributes['user']), None)
 
             recipe_name = slots['RecipeName']['value']
 

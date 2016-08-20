@@ -107,8 +107,8 @@ class ConversationTest(unittest.TestCase):
         # lauch as new user, check out session attributes afterwards
         intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
                                                                     'chicken pot pie').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-                intent).new().build()
+        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
+        )
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -147,8 +147,7 @@ class ConversationTest(unittest.TestCase):
         # lauch as new user, check out session attributes afterwards
         # since there are no recipes in our cookbook it should search
         # but we expect "pancakes" to be one of the recipes in the online database
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'pizza').build()
+        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName', 'pizza').build()
         req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
         )
         response_dict = lambda_function.handle_event(req, None)

@@ -57,7 +57,6 @@ class Skill:
             # but we don't want to save the userId so pop that
             persistant_attributes.pop('userId', None)
 
-
         initial_persistant_attributes = copy.deepcopy(persistant_attributes)
 
         # next try to figure out the current state. Look in the event first

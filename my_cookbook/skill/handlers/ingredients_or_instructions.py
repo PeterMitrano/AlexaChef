@@ -9,7 +9,10 @@ class IngredientsOrInstructionsHandler():
         if 'current_recipe' not in attributes:
             return responder.tell("I can't list ingredients because you haven't picked a recipe.")
 
-        return recipe_reader.ingredients(attributes)
+        speech = recipe_reader.ingredients_speech(attributes['current_recipe'])
+        card = recipe_reader.ingredients_card(attributes['current_recipe'])
+        return responder.ask_with_card("The ingredients are. " + speech + ". Do you want to hear \
+                instructions, or ingredients again?", None, "Ingredients", card, None, attributes)
 
     def InstructionsIntent(self, handlers, persistant_attributes, attributes, slots):
         # check we've got a working recipe at the moment
@@ -18,7 +21,16 @@ class IngredientsOrInstructionsHandler():
 
         step_number = attributes.get('step_number', 0)
 
-        return recipe_reader.instruct(step_number, attributes)
+        instructions = attributes['current_recipe']['Instructions']
+        if len(instructions) <= step_number:
+            return responder.tell("this recipe doesn't have any instructions.")
+
+        instruction = instructions[step_number]
+        card = recipe_reader.instructions_card(attributes['current_recipe'])
+
+        return responder.ask_with_card(
+            instruction + ". <break time=2/> would you like to hear the next step?", None,
+            "Instructions", card, None, attributes)
 
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
         return responder.ask("I'm confused. Do you want to start with ingredients or instructions?",
