@@ -1,4 +1,5 @@
 import copy
+import json
 import logging
 import os
 
@@ -93,7 +94,7 @@ class Skill:
             self.db_helper.setAll(persistant_attributes)
 
         # don't delete this or you can't debug production
-        logging.getLogger(core.LOGGER).warn(response)
+        logging.getLogger(core.LOGGER).warn(json.dumps(response, indent=2))
 
         # ok we're finally done
         return response

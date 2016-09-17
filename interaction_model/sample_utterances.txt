@@ -2409,3 +2409,5 @@ AMAZON.HelpIntent What can I say next
 AMAZON.NextIntent go on
 AMAZON.NextIntent next step
 AMAZON.NextIntent what's next
+RecipeNameIntent {apple pie|RecipeName}
+RecipeNameIntent {fried chicken with beans and rice|RecipeName}

@@ -53,14 +53,12 @@ class NewRecipeHandler():
 
             return self.start_recipe_search(recipe_name, username, attributes)
 
+    def RecipeNameIntent(self, handlers, persistant_attributes, attributes, slots):
+        other_handler = getattr(handlers[core.States.NEW_RECIPE], "StartNewRecipeIntent")
+        return other_handler(handlers, persistant_attributes, attributes, slots)
+
+
     def Unhandled(self, handlers, persistant_attributes, attributes, slots):
-        asking_recipe = attributes.get('asking_recipe_name', False)
-
-        if asking_recipe:
-            logging.getLogger(core.LOGGER).warn("asking recipe:")
-            logging.getLogger(core.LOGGER).warn(attributes)
-            logging.getLogger(core.LOGGER).warn(slots)
-
         # presist current state and end interaction
         persistant_attributes[core.STATE_KEY] = attributes[core.STATE_KEY]
         return responder.tell("I'm confused. Try asking me what you want to make.")

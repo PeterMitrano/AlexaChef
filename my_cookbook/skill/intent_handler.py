@@ -56,12 +56,14 @@ class Handler:
             if hasattr(self.handlers[state], 'Unhandled'):
                 handler_method = getattr(self.handlers[state], 'Unhandled')
                 logging.getLogger(core.LOGGER).info("found handler for stateful unhandled")
+                attributes['INTENT'] = intent
                 return handler_method(self.handlers, persistant_attributes, attributes, slots)
 
         # stateless unhandled is last resort
         if hasattr(self.handlers[core.States.STATELESS], 'Unhandled'):
             handler_method = getattr(self.handlers[core.States.STATELESS], 'Unhandled')
             logging.getLogger(core.LOGGER).info("found handler for stateless unhandled")
+            attributes['INTENT'] = intent
             return handler_method(self.handlers, persistant_attributes, attributes, slots)
 
         logging.getLogger(core.LOGGER).info("found no handlers")

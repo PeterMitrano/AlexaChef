@@ -4,6 +4,7 @@ from nose.plugins.skip import SkipTest
 
 from my_cookbook.util import core
 from my_cookbook.util import requester
+from my_cookbook.util import dbhelper
 from my_cookbook.tests import fake_data
 import lambda_function
 
@@ -20,6 +21,11 @@ def delete_table(endpoint_url):
     if core.DB_TABLE in tables:
         client.delete_table(TableName=core.DB_TABLE)
 
+def no_firt_time():
+    # add a few invocations
+    db_helper = dbhelper.DBHelper('default_user_id', core.LOCAL_DB_URI)
+    db_helper.init_table()
+    db_helper.setAll({'invocations': 1})
 
 def set_bigoven_username():
     client = boto3.client(

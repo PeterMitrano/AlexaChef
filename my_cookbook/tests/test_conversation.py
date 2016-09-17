@@ -5,6 +5,7 @@ from my_cookbook.util import core
 from my_cookbook.tests import test_util
 from my_cookbook.util import requester
 from my_cookbook.util import responder
+from my_cookbook.util import dbhelper
 import lambda_function
 
 
@@ -103,6 +104,7 @@ class ConversationTest(unittest.TestCase):
     def test_launch_recipe_conversation(self):
         test_util.delete_table(core.LOCAL_DB_URI)
         test_util.set_bigoven_username()
+        test_util.no_firt_time()
 
         event = requester.Request().type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(event, None)
@@ -110,12 +112,10 @@ class ConversationTest(unittest.TestCase):
 
         self.assertTrue(responder.is_valid(response_dict))
         self.assertFalse(response_dict['response']['shouldEndSession'])
-        self.assertEqual(inv_result.value, 1)
+        self.assertEqual(inv_result.value, 2)
 
-        # lauch as new user, check out session attributes afterwards
-        intent = requester.Intent('StartNewRecipeIntent').slot('RecipeName',
-                                                               'chicken pot pie').build()
-        req = requester.Request().type(requester.Types.INTENT).intent(intent).new().build()
+        intent = requester.Intent('RecipeNameIntent').slot('RecipeName', 'southern biscuits').build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).new().copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -146,6 +146,9 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.INGREDIENTS_OR_INSTRUCTIONS)
         self.assertEqual(response_dict['sessionAttributes']['current_recipe'], current_recipe)
+        self.assertFalse(response_dict['response']['shouldEndSession'])
+        # here are left with my_cookbook asking if we want to hear the ingredients again
+        # this is good for now
 
     def test_recipe_conversation(self):
         test_util.delete_table(core.LOCAL_DB_URI)
