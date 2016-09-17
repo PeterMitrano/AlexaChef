@@ -57,11 +57,11 @@ class ConversationTest(unittest.TestCase):
         event = r.with_type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(event, None)
         inv_result = lambda_function._skill.db_helper.get('invocations')
-        state_result = lambda_function._skill.db_helper.getState()
 
         self.assertTrue(responder.is_valid(response_dict))
         self.assertEqual(inv_result.value, 2)
-        self.assertEqual(state_result.value, core.States.INITIAL_STATE)
+        self.assertFalse(response_dict['response']['shouldEndSession'])
+        self.assertEqual(response_dict['sessionAttributes']['STATE'], core.States.NEW_RECIPE)
         self.assertEqual(lambda_function._skill.db_helper.table.item_count, 1)
 
     def test_tutorial_conversation(self):

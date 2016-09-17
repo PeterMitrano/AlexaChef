@@ -10,8 +10,9 @@ class AskFavoriteHandler():
             return responder.tell("I don't know which recipe you want me to favorite.")
 
         recipe = attributes['current_recipe']
-        recipes_helper.favorite_recipe(recipe)
-        return responder.tell("Recipe favorited.")
+        #recipes_helper.favorite_recipe(recipe)
+        #return responder.tell("Recipe favorited.")
+        raise NotImplementedError()
 
     def AMAZON_NoIntent(self, handlers, persistant_attributes, attributes, slots):
         # not sure what to do here...? I'm starting to reach the limits of my currentb
