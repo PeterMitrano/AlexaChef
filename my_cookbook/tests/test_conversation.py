@@ -12,7 +12,7 @@ class ConversationTest(unittest.TestCase):
     def test_first_time(self):
         test_util.delete_table(core.LOCAL_DB_URI)
 
-        event = requester.Request().with_type(requester.Types.LAUNCH).new().build()
+        event = requester.Request().type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(event, None)
 
         # first launch on new user should result in a table entry with state set
@@ -32,7 +32,7 @@ class ConversationTest(unittest.TestCase):
 
         # first launch on new user should result in a table entry with state set
         # as well as session attributes set correctly
-        event = requester.Request().with_type(requester.Types.LAUNCH).new().build()
+        event = requester.Request().type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(event, None)
         inv_result = lambda_function._skill.db_helper.get('invocations')
 
@@ -40,8 +40,7 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(inv_result.value, 1)
 
         # end the session and make sure database state is good
-        event = requester.Request().with_type(requester.Types.END).copy_attributes(
-            response_dict).build()
+        event = requester.Request().type(requester.Types.END).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(event, None)
         inv_result = lambda_function._skill.db_helper.get('invocations')
         state_result = lambda_function._skill.db_helper.getState()
@@ -54,7 +53,7 @@ class ConversationTest(unittest.TestCase):
         # on the next request we expect the have the right state
         # last response was a tell, so we don't need to call copy_attributes
         r = requester.Request()
-        event = r.with_type(requester.Types.LAUNCH).new().build()
+        event = r.type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(event, None)
         inv_result = lambda_function._skill.db_helper.get('invocations')
 
@@ -68,7 +67,7 @@ class ConversationTest(unittest.TestCase):
         test_util.delete_table(core.LOCAL_DB_URI)
 
         # lauch as new user, check out session attributes are in ASK_TUTORIAL
-        req = requester.Request().with_type(requester.Types.LAUNCH).new().build()
+        req = requester.Request().type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -76,7 +75,7 @@ class ConversationTest(unittest.TestCase):
                          core.States.ASK_TUTORIAL)
 
         # response with "Yes" to to tutorial, check that we saved state in db
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+        req = requester.Request().type(requester.Types.INTENT).intent(
             requester.Intent("_MAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
         state_result = lambda_function._skill.db_helper.getState()
@@ -88,11 +87,11 @@ class ConversationTest(unittest.TestCase):
         test_util.delete_table(core.LOCAL_DB_URI)
 
         # lauch as new user again
-        req = requester.Request().with_type(requester.Types.LAUNCH).new().build()
+        req = requester.Request().type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         # response with "No" to to tutorial, check that we saved state in db
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+        req = requester.Request().type(requester.Types.INTENT).intent(
             requester.Intent("AMAZON.NoIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
 
@@ -100,15 +99,23 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
                          core.States.PROMPT_FOR_START)
 
-    def test_recipe_conversation(self):
+    @test_util.wip
+    def test_launch_recipe_conversation(self):
         test_util.delete_table(core.LOCAL_DB_URI)
         test_util.set_bigoven_username()
 
+        event = requester.Request().type(requester.Types.LAUNCH).new().build()
+        response_dict = lambda_function.handle_event(event, None)
+        inv_result = lambda_function._skill.db_helper.get('invocations')
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertFalse(response_dict['response']['shouldEndSession'])
+        self.assertEqual(inv_result.value, 1)
+
         # lauch as new user, check out session attributes afterwards
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'chicken pot pie').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
-        )
+        intent = requester.Intent('StartNewRecipeIntent').slot('RecipeName',
+                                                               'chicken pot pie').build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -117,7 +124,7 @@ class ConversationTest(unittest.TestCase):
                          core.States.ASK_MAKE_COOKBOOK)
 
         # response with "Yes" to make recipe from cookbook, check that we saved state in db
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+        req = requester.Request().type(requester.Types.INTENT).intent(
             requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
 
@@ -131,8 +138,47 @@ class ConversationTest(unittest.TestCase):
 
         # ask for ingredients
         intent = requester.Intent('IngredientsIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
-            response_dict).with_intent(intent).new().build()
+        req = requester.Request().type(requester.Types.INTENT).copy_attributes(
+            response_dict).intent(intent).new().build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
+        self.assertEqual(response_dict['sessionAttributes']['current_recipe'], current_recipe)
+
+    def test_recipe_conversation(self):
+        test_util.delete_table(core.LOCAL_DB_URI)
+        test_util.set_bigoven_username()
+
+        # lauch as new user, check out session attributes afterwards
+        intent = requester.Intent('StartNewRecipeIntent').slot('RecipeName',
+                                                               'chicken pot pie').build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).new().build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertIn('current_recipe', response_dict['sessionAttributes'])
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.ASK_MAKE_COOKBOOK)
+
+        # response with "Yes" to make recipe from cookbook, check that we saved state in db
+        req = requester.Request().type(requester.Types.INTENT).intent(
+            requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
+        response_dict = lambda_function.handle_event(req, None)
+
+        self.assertTrue(responder.is_valid(response_dict))
+        self.assertIn('current_recipe', response_dict['sessionAttributes'])
+        self.assertNotEqual(response_dict['sessionAttributes']['current_recipe'], None)
+        self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY],
+                         core.States.INGREDIENTS_OR_INSTRUCTIONS)
+        # save current recipe for later in test
+        current_recipe = response_dict['sessionAttributes']['current_recipe']
+
+        # ask for ingredients
+        intent = requester.Intent('IngredientsIntent').build()
+        req = requester.Request().type(requester.Types.INTENT).copy_attributes(
+            response_dict).intent(intent).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -147,9 +193,8 @@ class ConversationTest(unittest.TestCase):
         # lauch as new user, check out session attributes afterwards
         # since there are no recipes in our cookbook it should search
         # but we expect "pancakes" to be one of the recipes in the online database
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName', 'pizza').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
-        )
+        intent = requester.Intent('StartNewRecipeIntent').slot('RecipeName', 'pizza').build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -159,7 +204,7 @@ class ConversationTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_SEARCH)
 
         # response with "Yes" to search
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+        req = requester.Request().type(requester.Types.INTENT).intent(
             requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
 
@@ -172,7 +217,7 @@ class ConversationTest(unittest.TestCase):
                          core.States.ASK_MAKE_ONLINE)
 
         # response with "Yes" to use the recipe we found
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+        req = requester.Request().type(requester.Types.INTENT).intent(
             requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
 

@@ -15,13 +15,13 @@ class IntentTest(unittest.TestCase):
 
     def test_single_launch(self):
         r = requester.Request()
-        event = r.with_type(requester.Types.LAUNCH).new().build()
+        event = r.type(requester.Types.LAUNCH).new().build()
         response_dict = lambda_function.handle_event(event, None)
 
         self.assertTrue(responder.is_valid(response_dict))
 
     def test_multiple_launch(self):
-        request = requester.Request().with_type(requester.Types.LAUNCH).new()
+        request = requester.Request().type(requester.Types.LAUNCH).new()
 
         for i in range(5):
             event = request.build()
@@ -30,13 +30,13 @@ class IntentTest(unittest.TestCase):
 
     def test_single_end(self):
         r = requester.Request()
-        event = r.with_type(requester.Types.END).new().build()
+        event = r.type(requester.Types.END).new().build()
         response_dict = lambda_function.handle_event(event, None)
 
         self.assertTrue(responder.is_valid(response_dict))
 
     def test_multiple_end(self):
-        request = requester.Request().with_type(requester.Types.END).new()
+        request = requester.Request().type(requester.Types.END).new()
 
         for i in range(5):
             event = request.build()
@@ -53,13 +53,13 @@ class IntentTest(unittest.TestCase):
         for state in core.all_states():
             for intent_name in schema.intents():
                 intent = requester.Intent(intent_name).build()
-                event = requester.Request().with_type(requester.Types.INTENT).new().with_intent(
-                    intent).with_attributes({core.STATE_KEY: state}).build()
+                event = requester.Request().type(requester.Types.INTENT).new().intent(
+                    intent).attributes({core.STATE_KEY: state}).build()
                 response_dict = lambda_function.handle_event(event, None)
 
                 self.assertTrue(responder.is_valid(response_dict))
 
                 # make sure the end the conversation
-                event = requester.Request().with_type(requester.Types.END).build()
+                event = requester.Request().type(requester.Types.END).build()
                 response_dict = lambda_function.handle_event(event, None)
                 self.assertTrue(responder.is_valid(response_dict))

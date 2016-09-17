@@ -46,10 +46,9 @@ class LinkTest(unittest.TestCase):
     @test_util.bigoven
     def test_make_link(self):
         test_util.delete_table(core.LOCAL_DB_URI)
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'chicken pot pie').build()
-        req = requester.Request().new().with_type(requester.Types.INTENT).with_intent(intent).build(
-        )
+        intent = requester.Intent('StartNewRecipeIntent').slot('RecipeName',
+                                                               'chicken pot pie').build()
+        req = requester.Request().new().type(requester.Types.INTENT).intent(intent).build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -75,16 +74,13 @@ class RealRecipeTest(unittest.TestCase):
         stage.BIGOVEN = False
 
     @test_util.bigoven
-    @test_util.wip
     def test_brownies(self):
         test_util.delete_table(core.LOCAL_DB_URI)
         test_util.set_bigoven_username()
 
         # search for something not in our cookbook
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'brownies').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new().build(
-        )
+        intent = requester.Intent('StartNewRecipeIntent').slot('RecipeName', 'brownies').build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -93,7 +89,7 @@ class RealRecipeTest(unittest.TestCase):
         self.assertEqual(response_dict['sessionAttributes'][core.STATE_KEY], core.States.ASK_SEARCH)
 
         # response with "Yes" to search online
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+        req = requester.Request().type(requester.Types.INTENT).intent(
             requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
 
@@ -105,7 +101,7 @@ class RealRecipeTest(unittest.TestCase):
                          core.States.ASK_MAKE_ONLINE)
 
         # response with "Yes" to make the recipe it found
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
+        req = requester.Request().type(requester.Types.INTENT).intent(
             requester.Intent("AMAZON.YesIntent").build()).copy_attributes(response_dict).build()
         response_dict = lambda_function.handle_event(req, None)
 
@@ -118,8 +114,8 @@ class RealRecipeTest(unittest.TestCase):
 
         # ask for ingredients
         intent = requester.Intent('IngredientsIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
-            response_dict).with_intent(intent).build()
+        req = requester.Request().type(requester.Types.INTENT).copy_attributes(
+            response_dict).intent(intent).build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -128,8 +124,8 @@ class RealRecipeTest(unittest.TestCase):
 
         # now ask for instructions
         intent = requester.Intent('InstructionsIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).copy_attributes(
-            response_dict).with_intent(intent).build()
+        req = requester.Request().type(requester.Types.INTENT).copy_attributes(
+            response_dict).intent(intent).build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))

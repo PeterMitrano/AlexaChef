@@ -15,8 +15,8 @@ class NoRecipesTest(unittest.TestCase):
         test_util.delete_table(core.LOCAL_DB_URI)
 
         intent = requester.Intent('StartNewRecipeIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(intent).new(
-        ).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).new().attributes(
+            {core.STATE_KEY: core.States.INITIAL_STATE}).build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -31,9 +31,9 @@ class CookbookRecipeTest(unittest.TestCase):
 
     def test_recipe_not_in_cookbook(self):
         # ask to make something else
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName', 'pizza').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-            intent).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).new().build()
+        intent = requester.Intent('StartNewRecipeIntent').slot('RecipeName', 'pizza').build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).attributes(
+            {core.STATE_KEY: core.States.INITIAL_STATE}).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -41,8 +41,8 @@ class CookbookRecipeTest(unittest.TestCase):
 
         # agree to search online
         intent = requester.Intent('AMAZON.YesIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-            intent).copy_attributes(response_dict).new().build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).copy_attributes(
+            response_dict).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -51,8 +51,8 @@ class CookbookRecipeTest(unittest.TestCase):
 
         # agree to make the one recipe it found
         intent = requester.Intent('AMAZON.YesIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-            intent).copy_attributes(response_dict).new().build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).copy_attributes(
+            response_dict).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -61,18 +61,17 @@ class CookbookRecipeTest(unittest.TestCase):
 
         # ask to go right to instructions
         intent = requester.Intent('InstructionsIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-            intent).copy_attributes(response_dict).new().build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).copy_attributes(
+            response_dict).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
 
     def test_unique_recipe_in_cookbook(self):
         # ask to make the recipe we have one of
-        intent = requester.Intent('StartNewRecipeIntent').with_slot('RecipeName',
-                                                                    'Pancakes').build()
-        req = requester.Request().new().with_type(requester.Types.INTENT).with_intent(
-            intent).with_attributes({core.STATE_KEY: core.States.INITIAL_STATE}).build()
+        intent = requester.Intent('StartNewRecipeIntent').slot('RecipeName', 'Pancakes').build()
+        req = requester.Request().new().type(requester.Types.INTENT).intent(intent).attributes(
+            {core.STATE_KEY: core.States.INITIAL_STATE}).build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -81,8 +80,8 @@ class CookbookRecipeTest(unittest.TestCase):
 
         #agree to make it
         intent = requester.Intent('AMAZON.YesIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-            intent).copy_attributes(response_dict).new().build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).copy_attributes(
+            response_dict).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
@@ -90,8 +89,8 @@ class CookbookRecipeTest(unittest.TestCase):
                          core.States.INGREDIENTS_OR_INSTRUCTIONS)
 
         intent = requester.Intent('IngredientsIntent').build()
-        req = requester.Request().with_type(requester.Types.INTENT).with_intent(
-            intent).copy_attributes(response_dict).new().build()
+        req = requester.Request().type(requester.Types.INTENT).intent(intent).copy_attributes(
+            response_dict).new().build()
         response_dict = lambda_function.handle_event(req, None)
 
         self.assertTrue(responder.is_valid(response_dict))
