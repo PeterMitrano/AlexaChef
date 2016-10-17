@@ -17,22 +17,13 @@ class AskSearchHandler():
             persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
             return responder.tell("I don't know of any recipes for that. Try something else")
 
-        elif len(recipes) == 1:
+        else:
             attributes[core.STATE_KEY] = core.States.ASK_MAKE_ONLINE
-            best_guess_recipe_name = recipes[0]['name']
-            attributes['current_recipe'] = recipes[0]
+            best_guess_recipe_name = recipes[0]['Title']
+            attributes['search_recipe_result'] = recipes[0]
             return responder.ask(
                 "I found a recipe for " + best_guess_recipe_name + ". Do you want to use that?",
                 None, attributes)
-        elif len(recipes) < 3:
-            attributes[core.STATE_KEY] = core.States.ASK_WHICH_RECIPE
-            recipe_names = ','.join([recipe['name'] for recipe in recipes])
-            return responder.ask("I found a recipes for " + recipe_names +
-                                 ". Do you want the first one, the second one, or the third one?",
-                                 None, attributes)
-        else:
-            return responder.tell("I found too many recipes. One day I will learn be able to help \
-                    narrow down the options, but for now try asking something more specific.")
 
     def AMAZON_NoIntent(self, handlers, persistant_attributes, attributes, slots):
         attributes[core.STATE_KEY] = core.States.ASK_SEARCH

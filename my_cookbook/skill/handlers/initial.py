@@ -16,9 +16,8 @@ class InitialHandler():
                 attributes)
         else:
             if attributes['new']:
-                persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
-                return responder.tell(
-                    "Welcome back. You can ask for help, or ask to make something.")
+                attributes[core.STATE_KEY] = core.States.NEW_RECIPE
+                return responder.ask("Welcome back. What would you like to make?", None, attributes)
             else:
                 persistant_attributes[core.STATE_KEY] = core.States.INITIAL_STATE
                 return responder.tell("I've already been launched.")

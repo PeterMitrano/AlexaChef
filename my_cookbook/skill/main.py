@@ -1,4 +1,5 @@
 import copy
+import json
 import logging
 import os
 
@@ -54,7 +55,7 @@ class Skill:
         persistant_attributes = {}
         if result.value:  #user at least exists
             persistant_attributes = result.value
-            # but we don't want to pass along the userId so pop that
+            # but we don't want to save the userId so pop that
             persistant_attributes.pop('userId', None)
 
         initial_persistant_attributes = copy.deepcopy(persistant_attributes)
@@ -78,6 +79,7 @@ class Skill:
         # add whether the request is 'new' into the attributes for conveneince
         # and make sure state is in session_attributes, not persistant attributes
         session_attributes['new'] = event['session']['new']
+        session_attributes['user'] = user
 
         # at this point we either know the state, or we have returned an error,
         # or we know it's the users first time and there is no state
@@ -85,14 +87,14 @@ class Skill:
         response = self.intent_handler.dispatch(state, persistant_attributes, session_attributes,
                                                 event)
 
-        # now that we're done, we need to save
+        # now that we're done, we need to favorite the recipe
         # the persistant_attributes dict to our database
         # but only do it if something change
         if persistant_attributes != initial_persistant_attributes:
             self.db_helper.setAll(persistant_attributes)
 
         # don't delete this or you can't debug production
-        logging.getLogger(core.LOGGER).warn(response)
+        logging.getLogger(core.LOGGER).warn(json.dumps(response, indent=2))
 
         # ok we're finally done
         return response

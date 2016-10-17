@@ -1,3 +1,10 @@
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
 APP_ID = "amzn1.echo-sdk-ams.app.5e07c5c2-fba7-46f7-9c5e-2353cec8cb05"
 STATE_KEY = "STATE"
 DB_TABLE = 'my_cookbook_users'
@@ -8,7 +15,7 @@ LOCAL_DB_URI = 'http://localhost:8000'
 class States:
     ASK_MAKE_COOKBOOK = '_ASK_MAKE_COOKBOOK'
     ASK_MAKE_ONLINE = '_ASK_MAKE_ONLINE'
-    ASK_SAVE = '_ASK_SAVE'
+    ASK_FAVORITE = '_ASK_FAVORITE'
     ASK_SEARCH = '_ASK_SEARCH'
     ASK_TUTORIAL = '_ASK_TUTORIAL'
     ASK_MAKE_SOMETHING = '_ASK_MAKE_SOMETHING'
@@ -29,3 +36,7 @@ def all_states():
         if not var.startswith('_'):
             states.append(getattr(States, var))
     return states
+
+
+def load_key():
+    return os.environ['BIG_OVEN_API_KEY']

@@ -8,7 +8,7 @@
 This project uses the local dyanmodb jar which you can download from aws, as well as virtual env.
 
  - Download extract [the dynamodb tar file](http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz)
- - In that folder, run `java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb`
+ - In that folder, run `java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -inMemory`
  - run tests
 
 ```
@@ -21,4 +21,8 @@ or for no work-in-progress tests
 or for only wip tests
 ```
     nosetest -v -a wip
+```
+to not run the bigoven API tests, which use up API calls
+```
+    nosetest -v -a \!bigoven
 ```

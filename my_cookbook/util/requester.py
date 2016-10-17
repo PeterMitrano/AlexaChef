@@ -13,7 +13,7 @@ class Intent():
     def __init__(self, name):
         self.intent = {"name": name}
 
-    def with_slot(self, name, value):
+    def slot(self, name, value):
         self.intent['slots'] = {name: {"name": name, "value": value}}
         return self
 
@@ -42,13 +42,13 @@ class Request():
     def copy_attributes(self, response):
         attrs = response['sessionAttributes']
         logging.getLogger(core.LOGGER).debug('attrs: %s' % attrs)
-        return self.with_attributes(attrs)
+        return self.attributes(attrs)
 
-    def with_app_id(self, app_id):
+    def app_id(self, app_id):
         self.request['session']['application']['applicationId'] = app_id
         return self
 
-    def with_attributes(self, attributes):
+    def attributes(self, attributes):
         self.request['session']['attributes'] = attributes
         return self
 
@@ -56,15 +56,15 @@ class Request():
         self.request['session']['new'] = True
         return self
 
-    def with_type(self, request_type):
+    def type(self, request_type):
         self.request['request']['type'] = request_type
         return self
 
-    def with_user(self, userId):
+    def user(self, userId):
         self.request['session']['user']['userId'] = userId
         return self
 
-    def with_intent(self, intent):
+    def intent(self, intent):
         self.request['request']['intent'] = intent
         return self
 
